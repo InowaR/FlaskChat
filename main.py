@@ -1,28 +1,60 @@
-from flask import Flask, request, render_template
+from flask import Flask, render_template, request
+import sqlite3
 
 app = Flask(__name__)
 
-
-def save_data(file, data):
-    with open(file, 'a') as f:
-        f.write(f'{data}\n')
-
-
-@app.route('/', methods=['GET'])
-def index_html():
-    return render_template('index.html')
+# Создаем базу данных
+with sqlite3.connect('users.db') as conn:
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS users
+                 (username text, password text)''')
+    conn.commit()
 
 
-@app.route('/', methods=['POST'])
-def index_form():
-    if 'name' in request.form:
-        name = request.form['name']
-        save_data('name.txt', name)
-        return render_template('index.html', message1='Name saved')
-    if 'age' in request.form:
-        age = request.form['age']
-        save_data('age.txt', age)
-        return render_template('index.html', message2='Age saved')
+@app.route('/register', methods=['GET'])
+def get_register():
+    return render_template('register.html')
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    username = request.form['username']
+    password = request.form['password']
+    with sqlite3.connect('users.db') as conn:
+        c = conn.cursor()
+        c.execute("SELECT * FROM users WHERE username=?", (username,))
+        user = c.fetchone()
+
+    if user:
+        return 'Username already taken'
+    else:
+        with sqlite3.connect('users.db') as conn:
+            c = conn.cursor()
+            # Добавляем нового пользователя в базу данных
+            c.execute("INSERT INTO users VALUES (?, ?)", (username, password))
+            conn.commit()
+        return f'User {username} registered successfully'
+
+
+@app.route('/login', methods=['GET'])
+def get_login():
+    return render_template('login.html')
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form['username']
+    password = request.form['password']
+    with sqlite3.connect('users.db') as conn:
+        c = conn.cursor()
+        # Проверяем, есть ли пользователь с таким именем и паролем в базе данных
+        c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+        user = c.fetchone()
+
+    if user:
+        return f'Welcome {username}'
+    else:
+        return 'Invalid username or password'
 
 
 if __name__ == '__main__':
