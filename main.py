@@ -3,12 +3,15 @@ import sqlite3
 
 app = Flask(__name__)
 
-# Создаем базу данных
-with sqlite3.connect('users.db') as conn:
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS users
-                 (username text, password text)''')
-    conn.commit()
+db = 'users.db'
+
+
+def create_db():
+    with sqlite3.connect(db) as conn:
+        c = conn.cursor()
+        c.execute('''CREATE TABLE IF NOT EXISTS users
+                     (username text, password text)''')
+        conn.commit()
 
 
 @app.route('/register', methods=['GET'])
@@ -20,17 +23,16 @@ def get_register():
 def register():
     username = request.form['username']
     password = request.form['password']
-    with sqlite3.connect('users.db') as conn:
+    with sqlite3.connect(db) as conn:
         c = conn.cursor()
-        c.execute("SELECT * FROM users WHERE username=?", (username,))
+        c.execute("SELECT * FROM users WHERE username=?", username)
         user = c.fetchone()
 
     if user:
         return 'Username already taken'
     else:
-        with sqlite3.connect('users.db') as conn:
+        with sqlite3.connect(db) as conn:
             c = conn.cursor()
-            # Добавляем нового пользователя в базу данных
             c.execute("INSERT INTO users VALUES (?, ?)", (username, password))
             conn.commit()
         return f'User {username} registered successfully'
@@ -45,9 +47,8 @@ def get_login():
 def login():
     username = request.form['username']
     password = request.form['password']
-    with sqlite3.connect('users.db') as conn:
+    with sqlite3.connect(db) as conn:
         c = conn.cursor()
-        # Проверяем, есть ли пользователь с таким именем и паролем в базе данных
         c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
         user = c.fetchone()
 
