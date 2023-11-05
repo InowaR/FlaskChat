@@ -1,12 +1,16 @@
-from flask import Flask, render_template, request
+import datetime
+
+from flask import Flask, render_template, request, redirect, url_for, session
 from model.db import register_user, login_user
 
 app = Flask(__name__)
+app.secret_key = 'qwerty'
+app.permanent_session_lifetime = datetime.timedelta(minutes=10)
 
 
-@app.route('/profile', methods=['GET'])
-def get_profile():
-    return render_template('profile.html')
+@app.route('/profile/<username>/<message>', methods=['GET'])
+def get_profile(username, message):
+    return render_template('profile.html', username=username, message=message)
 
 
 @app.route('/register', methods=['GET'])
@@ -20,8 +24,11 @@ def register():
     password = request.form['password']
     status = register_user(username, password)
     if status:
+        session['username'] = username
+        session['password'] = password
+        print(session.get('username'), session.get('password'))
         message = 'Регистрация завершена'
-        return render_template('profile.html', username=username, message=message)
+        return redirect(url_for('get_profile', username=username, message=message))
     else:
         return render_template('register.html')
 
@@ -35,10 +42,13 @@ def get_login():
 def login():
     username = request.form['username']
     password = request.form['password']
+    print(session.get('username'), session.get('password'))
     status = login_user(username, password)
     if status:
+        session['username'] = username
+        session['password'] = password
         message = 'Вход выполнен'
-        return render_template('profile.html', username=username, message=message)
+        return redirect(url_for('get_profile', username=username, message=message))
     else:
         return render_template('login.html')
 
