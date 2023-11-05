@@ -1,17 +1,12 @@
 from flask import Flask, render_template, request
-import sqlite3
+from model.db import register_user, login_user
 
 app = Flask(__name__)
 
-db = 'users.db'
 
-
-def create_db():
-    with sqlite3.connect(db) as conn:
-        c = conn.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS users
-                     (username text, password text)''')
-        conn.commit()
+@app.route('/profile', methods=['GET'])
+def get_profile():
+    return render_template('profile.html')
 
 
 @app.route('/register', methods=['GET'])
@@ -23,19 +18,12 @@ def get_register():
 def register():
     username = request.form['username']
     password = request.form['password']
-    with sqlite3.connect(db) as conn:
-        c = conn.cursor()
-        c.execute("SELECT * FROM users WHERE username=?", username)
-        user = c.fetchone()
-
-    if user:
-        return 'Username already taken'
+    status = register_user(username, password)
+    if status:
+        message = 'Регистрация завершена'
+        return render_template('profile.html', username=username, message=message)
     else:
-        with sqlite3.connect(db) as conn:
-            c = conn.cursor()
-            c.execute("INSERT INTO users VALUES (?, ?)", (username, password))
-            conn.commit()
-        return f'User {username} registered successfully'
+        return render_template('register.html')
 
 
 @app.route('/login', methods=['GET'])
@@ -47,15 +35,12 @@ def get_login():
 def login():
     username = request.form['username']
     password = request.form['password']
-    with sqlite3.connect(db) as conn:
-        c = conn.cursor()
-        c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
-        user = c.fetchone()
-
-    if user:
-        return f'Welcome {username}'
+    status = login_user(username, password)
+    if status:
+        message = 'Вход выполнен'
+        return render_template('profile.html', username=username, message=message)
     else:
-        return 'Invalid username or password'
+        return render_template('login.html')
 
 
 if __name__ == '__main__':
