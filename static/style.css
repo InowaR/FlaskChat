@@ -1,0 +1,54 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+}
+
+.header a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px;
+}
+
+.header a:hover {
+  background-color: #555;
+}
+
+.header .logo {
+  color: white;
+  background-color: #4CAF50;
+  font-size: 24px;
+}
+
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  width: 10%;
+  height: 1%;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.login-form input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-form input[type="submit"]:hover {
+  background-color: #3e8e41;
+}

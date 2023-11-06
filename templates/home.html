@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Домашняя страница</title>
-</head>
-<body>
-    <h1>Домашняя страница</h1>
-    <form action="{{ url_for('get_login') }}" method="get">
-        <input type="submit" value="Выйти">
-    </form>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Домашняя страница</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <div class="header">
+            <form action="{{ url_for('get_home') }}" method="get">
+                <input class="logo" type="submit" value="Главная страница">
+            </form>
+            <form action="{{ url_for('get_login') }}" method="get">
+                <input type="submit" value="Выйти">
+            </form>
+        </div>
+        <h1>Домашняя страница</h1>
+    </body>
 </html>
