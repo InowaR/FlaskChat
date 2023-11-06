@@ -1,11 +1,13 @@
 import datetime
 
 from flask import Flask, render_template, request, redirect, url_for, session
+from flask_socketio import SocketIO
 from model.db import register_user, login_user
 
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'qwerty'
 app.permanent_session_lifetime = datetime.timedelta(minutes=10)
+socketio = SocketIO(app)
 
 
 @app.route('/')
@@ -60,4 +62,4 @@ def login():
 
 
 if __name__ == '__main__':
-    app.run()
+    socketio.run(app)

@@ -14,6 +14,31 @@
                 <input type="submit" value="Выйти">
             </form>
         </div>
-        <h1>Домашняя страница</h1>
+        <h1>Чат</h1>
+        <div id="messages"></div>
+        <form action="" method="post">
+            <input type="text" name="message" placeholder="Введите сообщение:">
+            <input type="submit" value="Отправить">
+        </form>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+        <script>
+            const socket = io();
+            socket.on("message", (data) => {
+                const message = JSON.parse(data);
+                const element = document.createElement("div");
+                element.textContent = `${message.user}: ${message.text}`;
+                document.getElementById("messages").appendChild(element);
+             });
+
+            const form = document.querySelector("form");
+            form.addEventListener("submit", (event) => {
+                event.preventDefault();
+                const message = event.target.elements.message.value;
+                socket.emit("message", {
+                    user: "User 1",
+                    text: message,
+                });
+            });
+        </script>
     </body>
 </html>
