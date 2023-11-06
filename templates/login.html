@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8">
-    <title>Login Form</title>
+    <title>Вход на сайт</title>
   </head>
   <body>
-    <h2>Login Form</h2>
     <form action="/login" method="post">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username"><br><br>
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password"><br><br>
-      <input type="submit" value="Submit">
+      <label for="username">Имя пользователя:</label>
+      <input type="text" id="username" name="username" required>
+      <label for="password">Пароль:</label>
+      <input type="password" id="password" name="password" required>
+      <input type="submit" value="Войти">
+    </form>
+    <form action="{{ url_for('get_register') }}" method="get">
+        <input type="submit" value="Зарегистрироваться">
     </form>
   </body>
 </html>

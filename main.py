@@ -8,8 +8,14 @@ app.secret_key = 'qwerty'
 app.permanent_session_lifetime = datetime.timedelta(minutes=10)
 
 
-@app.route('/profile/<username>/<message>', methods=['GET'])
-def get_profile(username, message):
+@app.route('/')
+def get_home():
+    return render_template('home.html')
+
+
+@app.route('/profile/<message>', methods=['GET'])
+def get_profile(message):
+    username = session.get('username')
     return render_template('profile.html', username=username, message=message)
 
 
