@@ -14,7 +14,7 @@ def create_db():
 def register_user(username: str, password: str):
     with sqlite3.connect(db) as conn:
         c = conn.cursor()
-        c.execute("SELECT * FROM users WHERE username=?", username)
+        c.execute("SELECT * FROM users WHERE username=?", (username, ))
         user = c.fetchone()
 
     if user:
