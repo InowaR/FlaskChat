@@ -6,7 +6,7 @@ from model.db import register_user, login_user
 
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'key'
-app.permanent_session_lifetime = datetime.timedelta(minutes=10)
+app.permanent_session_lifetime = datetime.timedelta(minutes=1)
 socketio = SocketIO(app)
 
 
@@ -22,10 +22,11 @@ def handle_new_message(message):
     emit("chat", {"message": message, "username": request.sid}, broadcast=True)
 
 
-@app.route('/profile/<message>', methods=['GET'])
-def get_profile(message):
+@app.route('/profile', methods=['GET'])
+def get_profile():
     username = session.get('username')
-    return render_template('profile.html', username=username, message=message)
+    print(session)
+    return render_template('profile.html', username=username)
 
 
 @app.route('/register', methods=['GET'])
@@ -42,8 +43,7 @@ def register():
         session['username'] = username
         session['password'] = password
         print(session.get('username'), session.get('password'))
-        message = 'Регистрация завершена'
-        return redirect(url_for('get_profile', username=username, message=message))
+        return redirect(url_for('get_profile', username=username))
     else:
         return render_template('register.html')
 
@@ -62,8 +62,7 @@ def login():
     if status:
         session['username'] = username
         session['password'] = password
-        message = 'Вход выполнен'
-        return redirect(url_for('get_profile', username=username, message=message))
+        return redirect(url_for('get_profile', username=username))
     else:
         return render_template('login.html')
 
