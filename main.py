@@ -9,10 +9,24 @@ app.secret_key = 'qwerty'
 app.permanent_session_lifetime = datetime.timedelta(minutes=10)
 socketio = SocketIO(app)
 
+users = {
+    "User1": {"sid": "1234"},
+    "User2": {"sid": "4321"},
+}
+
 
 @app.route('/')
 def get_home():
     return render_template('home.html')
+
+
+@socketio.on("message")
+def on_message(data):
+    user = users[data["user"]]
+    socketio.emit("message", {
+        "user": user["sid"],
+        "text": data["text"],
+    }, to=user["sid"])
 
 
 @app.route('/profile/<message>', methods=['GET'])
@@ -62,4 +76,4 @@ def login():
 
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, allow_unsafe_werkzeug=True)
