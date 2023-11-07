@@ -1,11 +1,11 @@
 import datetime
 from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from flask_socketio import SocketIO, emit
-from model.db import register_user, login_user
+from model.db import register_new_user, check_user
 
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'key'
-app.permanent_session_lifetime = datetime.timedelta(seconds=10)
+app.permanent_session_lifetime = datetime.timedelta(minutes=30)
 socketio = SocketIO(app)
 
 
@@ -40,7 +40,7 @@ def get_register():
 def register():
     username = request.form['username']
     password = request.form['password']
-    status = register_user(username, password)
+    status = register_new_user(username, password)
     if status:
         session['username'] = username
         session['password'] = password
@@ -58,7 +58,7 @@ def get_login():
 def login():
     username = request.form['username']
     password = request.form['password']
-    status = login_user(username, password)
+    status = check_user(username, password)
     if status:
         session['username'] = username
         session['password'] = password

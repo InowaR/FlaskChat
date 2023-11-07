@@ -11,7 +11,7 @@ def create_db():
         conn.commit()
 
 
-def register_user(username: str, password: str):
+def register_new_user(username: str, password: str):
     with sqlite3.connect(db) as conn:
         c = conn.cursor()
         c.execute("SELECT * FROM users WHERE username=?", (username, ))
@@ -27,7 +27,7 @@ def register_user(username: str, password: str):
         return True
 
 
-def login_user(username: str, password: str):
+def check_user(username: str, password: str):
     with sqlite3.connect(db) as conn:
         c = conn.cursor()
         c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
