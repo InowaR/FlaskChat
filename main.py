@@ -18,15 +18,14 @@ def get_home():
 
 @socketio.on("new_message")
 def handle_new_message(message):
-    username = session['username']
+    username = session.get('username')
     print(f"New message: {username} : {message}")
     emit("chat", {"username": username, "message": message}, broadcast=True)
 
 
 @app.route('/profile', methods=['GET'])
 def get_profile():
-    session_id = request.cookies.get('session')
-    if session_id is None:
+    if session.get('username') is None:
         return redirect(url_for('get_login'))
     username = session.get('username')
     return render_template('profile.html', username=username)
