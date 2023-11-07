@@ -1,31 +1,44 @@
 import datetime
-
-from flask import Flask, render_template, request, redirect, url_for, session
+from random import randint
+from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from flask_socketio import SocketIO, emit
 from model.db import register_user, login_user
 
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'key'
-app.permanent_session_lifetime = datetime.timedelta(minutes=1)
+app.permanent_session_lifetime = datetime.timedelta(seconds=10)
 socketio = SocketIO(app)
+
+
+def generate_session_id():
+    return str(randint(100000, 999999))
 
 
 @app.route('/', methods=['GET'])
 def get_home():
+    session_id = request.cookies.get('session_id')
+    print(session_id)
+    if session_id is None:
+        return redirect(url_for('get_login'))
     return render_template('home.html')
 
 
 @socketio.on("new_message")
 def handle_new_message(message):
-    print(request.sid)
-    print(f"New message: {message}")
-    emit("chat", {"message": message, "username": request.sid}, broadcast=True)
+    username = session['username']
+    print(f"New message: {username} : {message}")
+    emit("chat", {"username": username, "message": message}, broadcast=True)
 
 
 @app.route('/profile', methods=['GET'])
 def get_profile():
+    session_id = request.cookies.get('session_id')
+    if session_id is None:
+        session_id = session.get('session_id')
+        response = make_response(redirect(url_for('get_profile')))
+        response.set_cookie('session_id', session_id)
+        return response
     username = session.get('username')
-    print(session)
     return render_template('profile.html', username=username)
 
 
@@ -42,8 +55,8 @@ def register():
     if status:
         session['username'] = username
         session['password'] = password
-        print(session.get('username'), session.get('password'))
-        return redirect(url_for('get_profile', username=username))
+        session['session_id'] = generate_session_id()
+        return redirect(url_for('get_profile'))
     else:
         return render_template('register.html')
 
@@ -57,14 +70,22 @@ def get_login():
 def login():
     username = request.form['username']
     password = request.form['password']
-    print(session.get('username'), session.get('password'))
     status = login_user(username, password)
     if status:
         session['username'] = username
         session['password'] = password
-        return redirect(url_for('get_profile', username=username))
+        session['session_id'] = generate_session_id()
+        return redirect(url_for('get_profile'))
     else:
         return render_template('login.html')
+
+
+@app.route('/logout')
+def get_logout():
+    session.clear()
+    response = make_response(redirect(url_for('get_login')))
+    response.delete_cookie('session_id')
+    return response
 
 
 if __name__ == '__main__':
