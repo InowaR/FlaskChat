@@ -1,5 +1,4 @@
 import datetime
-from random import randint
 from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from flask_socketio import SocketIO, emit
 from model.db import register_user, login_user
@@ -10,15 +9,9 @@ app.permanent_session_lifetime = datetime.timedelta(seconds=10)
 socketio = SocketIO(app)
 
 
-def generate_session_id():
-    return str(randint(100000, 999999))
-
-
 @app.route('/', methods=['GET'])
 def get_home():
-    session_id = request.cookies.get('session_id')
-    print(session_id)
-    if session_id is None:
+    if session.get('username') is None:
         return redirect(url_for('get_login'))
     return render_template('home.html')
 
@@ -32,12 +25,9 @@ def handle_new_message(message):
 
 @app.route('/profile', methods=['GET'])
 def get_profile():
-    session_id = request.cookies.get('session_id')
+    session_id = request.cookies.get('session')
     if session_id is None:
-        session_id = session.get('session_id')
-        response = make_response(redirect(url_for('get_profile')))
-        response.set_cookie('session_id', session_id)
-        return response
+        return redirect(url_for('get_login'))
     username = session.get('username')
     return render_template('profile.html', username=username)
 
@@ -55,7 +45,6 @@ def register():
     if status:
         session['username'] = username
         session['password'] = password
-        session['session_id'] = generate_session_id()
         return redirect(url_for('get_profile'))
     else:
         return render_template('register.html')
@@ -74,7 +63,6 @@ def login():
     if status:
         session['username'] = username
         session['password'] = password
-        session['session_id'] = generate_session_id()
         return redirect(url_for('get_profile'))
     else:
         return render_template('login.html')
@@ -84,7 +72,7 @@ def login():
 def get_logout():
     session.clear()
     response = make_response(redirect(url_for('get_login')))
-    response.delete_cookie('session_id')
+    response.delete_cookie('session')
     return response
 
 
