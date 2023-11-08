@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, m
 from flask_socketio import SocketIO, emit
 from model.db import register_new_user, check_user
 
+
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'key'
 app.permanent_session_lifetime = datetime.timedelta(minutes=30)
