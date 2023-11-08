@@ -12,7 +12,7 @@ def create_db():
                                 password TEXT
                             )''')
 
-        cursor.execute('''CREATE TABLE IF NOT EXISTS chats (
+        cursor.execute('''CREATE TABLE IF NOT EXISTS list_chats (
                                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                                 name TEXT,
                                 created_by TEXT,
@@ -82,3 +82,7 @@ def check_user(username: str, password: str):
         return True
     else:
         return False
+
+
+def find_chat_by_name(chat_name: str):
+    return chat_name

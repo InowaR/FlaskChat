@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="UTF-8">
-        <title>Главная страница</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    </head>
-    <body>
+	<head>
+		<meta charset="UTF-8">
+		<title>Список чатов</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	</head>
+	<body>
 		<div class="header">
 			<form action="{{ url_for('get_home') }}" method="get">
 			<input class="logo" type="submit" value="Главная страница">
@@ -19,11 +19,11 @@
 				</form>
 			</div>
 		</div>
-		<h1>Чат</h1>
+		<h1>Список найденных чатов</h1>
 		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 		<style>
 			ul {
-				height: 300px;
+				height: 200px;
 				width: 300px;
 				overflow-y: scroll;
 			}
@@ -35,31 +35,30 @@
 				background-color: grey;
 			}
 
-			#message {
+			#find {
 				width: 300px;
 			}
 		</style>
-		<div id="chat">
-			<ul id="chat-messages"></ul>
-			<input type="text" id="message" placeholder="Введите сообщение:">
+		<div id="find_chat">
+			<input type="text" id="find" placeholder="Найти чат:">
+			<ul id="list_find_chat"></ul>
 		</div>
 		<script>
 			const socket = io();
-			document.getElementById("message").addEventListener("keyup", function(event) {
+			document.getElementById("find").addEventListener("keyup", function(event) {
 				if (event.key == "Enter") {
-					let message = document.getElementById("message").value;
-					socket.emit("new_message", message);
-					document.getElementById("message").value = "";
+					let data = document.getElementById("find").value;
+					socket.emit("new_find_chat", data);
+					document.getElementById("find").value = "";
 				}
 			})
-			socket.on("chat", function(data) {
-				let ul = document.getElementById("chat-messages");
+			socket.on("list_find_chats", function(data) {
+				let ul = document.getElementById("list_find_chat");
 				let li = document.createElement("li");
-				let br = document.createElement("br");
-				li.appendChild(document.createTextNode(data["username"] + ": " + data["message"]));
+				li.appendChild(document.createTextNode(data["answer"] + ": " + data["data"]));
 				ul.appendChild(li);
-				ul.appendChild(br);
 			})
 		</script>
-    </body>
+
+	</body>
 </html>
