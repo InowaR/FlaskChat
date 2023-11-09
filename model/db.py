@@ -44,12 +44,45 @@ def create_new_chat(name: str, created_by: str):
             return True
 
 
+def add_new_message_to_chat(name, username, time, message):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        cursor.execute('''INSERT INTO chat (chat_id, username, time, message)
+                            VALUES ((SELECT id FROM list_chats WHERE name=?), ?, ?, ?)
+                            ''', (name, username, time, message))
+        connection.commit()
+
+
 def find_chat_by_name(name: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM list_chats WHERE name=?", (name,))
         chat = cursor.fetchone()
         if chat:
+            return True
+        else:
+            return False
+
+
+def register_new_user(username: str, password: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM users WHERE username=?", (username,))
+        user = cursor.fetchone()
+        if user:
+            return False
+        else:
+            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+            connection.commit()
+            return True
+
+
+def check_user(username: str, password: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+        user = cursor.fetchone()
+        if user:
             return True
         else:
             return False
@@ -78,27 +111,3 @@ def select_chat():
         results = cursor.fetchall()
         for row in results:
             print(row)
-
-
-def register_new_user(username: str, password: str):
-    with sqlite3.connect(db) as connection:
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE username=?", (username,))
-        user = cursor.fetchone()
-        if user:
-            return False
-        else:
-            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
-            connection.commit()
-            return True
-
-
-def check_user(username: str, password: str):
-    with sqlite3.connect(db) as connection:
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
-        user = cursor.fetchone()
-        if user:
-            return True
-        else:
-            return False
