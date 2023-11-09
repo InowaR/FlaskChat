@@ -22,15 +22,7 @@ def get_list_chats():
 def find_chat(chat_name):
     status = find_chat_by_name(chat_name)
     if status:
-        emit("list_find_chats", chat_name, broadcast=True)
-
-
-
-@socketio.on("add_new_find_chat")
-def add_find_chat(data):
-    print(data)
-    answer = "answer"
-    emit("listen_answer", {"answer": answer, "data": data}, broadcast=True)
+        emit("list_find_chats", str(chat_name), broadcast=True)
 
 
 @socketio.on("add_new_chat")
@@ -53,10 +45,8 @@ def get_add_new_chat():
 def get_chat():
     if session.get('username') is None:
         return redirect(url_for('get_login'))
-    if request.args.get('new_chat') == 'true':
-        new_chat_number = random.randint(10000, 99999)
-        return render_template('chat.html', new_chat_number=new_chat_number)
-    return render_template('chat.html')
+    chat_name = request.args.get('open_chat')
+    return render_template('chat.html', chat_name=chat_name)
 
 
 @socketio.on("new_message")
