@@ -33,9 +33,13 @@ def add_find_chat(data):
 
 
 @socketio.on("add_new_chat")
-def add_chat(data):
-    print(data)
-    message = "Создан новый чат"
+def add_chat(chat_name):
+    created_by = session.get('username')
+    status = create_new_chat(chat_name, created_by)
+    if status:
+        message = "Создан новый чат"
+    else:
+        message = "Чат уже существует"
     emit("add_new_chat", message, broadcast=True)
 
 

@@ -31,6 +31,19 @@ def create_db():
         connection.commit()
 
 
+def create_new_chat(name: str, created_by: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM list_chats WHERE name=?", (name, ))
+        chat = cursor.fetchone()
+        if chat:
+            return False
+        else:
+            cursor.execute("INSERT INTO list_chats (name, created_by) VALUES (?, ?)", (name, created_by))
+            connection.commit()
+            return True
+
+
 def select_chat():
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
@@ -61,15 +74,12 @@ def register_new_user(username: str, password: str):
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM users WHERE username=?", (username, ))
         user = cursor.fetchone()
-
-    if user:
-        return False
-    else:
-        with sqlite3.connect(db) as connection:
-            cursor = connection.cursor()
+        if user:
+            return False
+        else:
             cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
             connection.commit()
-        return True
+            return True
 
 
 def check_user(username: str, password: str):
@@ -77,11 +87,10 @@ def check_user(username: str, password: str):
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
         user = cursor.fetchone()
-
-    if user:
-        return True
-    else:
-        return False
+        if user:
+            return True
+        else:
+            return False
 
 
 def find_chat_by_name(chat_name: str):
