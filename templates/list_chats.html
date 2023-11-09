@@ -7,7 +7,7 @@
 	</head>
 	<body>
 		<div class="header">
-			<form action="{{ url_for('get_home') }}" method="get">
+			<form action="{{ url_for('get_list_chats') }}" method="get">
 			<input class="logo" type="submit" value="Главная страница">
 			</form>
 			<div class="header-right">
@@ -22,7 +22,13 @@
 		<h1>Список найденных чатов</h1>
 		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 		<style>
-			ul {
+			#list_find_chat {
+				height: 50px;
+				width: 300px;
+				overflow-y: scroll;
+			}
+
+			#list_my_chats {
 				height: 200px;
 				width: 300px;
 				overflow-y: scroll;
@@ -35,6 +41,10 @@
 				background-color: grey;
 			}
 
+			li:hover {
+				cursor: pointer;
+			}
+
 			#find {
 				width: 300px;
 			}
@@ -42,6 +52,11 @@
 		<div id="find_chat">
 			<input type="text" id="find" placeholder="Найти чат:">
 			<ul id="list_find_chat"></ul>
+		</div>
+		<h1>Мои чаты</h1>
+		<a href="{{ url_for('get_home') }}">Ссылка на чат</a>
+		<div id="my_chats">
+			<ul id="list_my_chats"></ul>
 		</div>
 		<script>
 			const socket = io();
@@ -55,6 +70,15 @@
 			socket.on("list_find_chats", function(data) {
 				let ul = document.getElementById("list_find_chat");
 				let li = document.createElement("li");
+				li.addEventListener("click", function(event) {
+					if (event) {
+						let new_ul = document.getElementById("list_my_chats");
+						let new_li = document.createElement("li");
+						new_li.appendChild(document.createTextNode(data["answer"] + ": " + data["data"]));
+						new_ul.appendChild(new_li);
+						li.remove();
+					}
+				});
 				li.appendChild(document.createTextNode(data["answer"] + ": " + data["data"]));
 				ul.appendChild(li);
 			})

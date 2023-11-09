@@ -23,6 +23,13 @@ def find_chat(data):
     emit("list_find_chats", {"answer": answer, "data": data}, broadcast=True)
 
 
+@socketio.on("add_new_find_chat")
+def add_find_chat(data):
+    print(data)
+    answer = "answer"
+    emit("listen_answer", {"answer": answer, "data": data}, broadcast=True)
+
+
 @app.route('/chat', methods=['GET'])
 def get_home():
     if session.get('username') is None:
