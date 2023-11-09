@@ -8,20 +8,24 @@
 	<body>
 		<div class="header">
 			<form action="{{ url_for('get_list_chats') }}" method="get">
-			<input class="logo" type="submit" value="Главная страница">
+				<input class="logo" type="submit" value="Главная страница">
 			</form>
 			<div class="header-right">
 				<form action="{{ url_for('get_profile') }}" method="get">
-				<input type="submit" value="Профиль">
+					<input type="submit" value="Профиль">
 				</form>
 				<form action="{{ url_for('get_logout') }}" method="get">
-				<input type="submit" value="Выйти">
+					<input type="submit" value="Выйти">
 				</form>
 			</div>
 		</div>
-		<h1>Список найденных чатов</h1>
 		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 		<style>
+			#body-area {
+				display: flex;
+				align-items: center;
+			}
+
 			#list_find_chat {
 				height: 50px;
 				width: 300px;
@@ -49,9 +53,17 @@
 				width: 300px;
 			}
 		</style>
-		<div id="find_chat">
-			<input type="text" id="find" placeholder="Найти чат:">
-			<ul id="list_find_chat"></ul>
+		<div id="body-area">
+			<div id="find_chat">
+				<h1>Список найденных чатов</h1>
+				<input type="text" id="find" placeholder="Найти чат:">
+				<ul id="list_find_chat"></ul>
+			</div>
+			<div id="new_chat">
+				<form action="{{ url_for('get_add_new_chat') }}" method="get">
+					<input type="submit" value="Cоздать новый чат">
+				</form>
+			</div>
 		</div>
 		<h1>Мои чаты</h1>
 		<a id="chat_link" href="{{ url_for('get_chat') }}"></a>

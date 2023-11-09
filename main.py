@@ -32,6 +32,18 @@ def add_find_chat(data):
     emit("listen_answer", {"answer": answer, "data": data}, broadcast=True)
 
 
+@socketio.on("add_new_chat")
+def add_chat(data):
+    print(data)
+    message = "Создан новый чат"
+    emit("add_new_chat", message, broadcast=True)
+
+
+@app.route('/add_new_chat', methods=['GET'])
+def get_add_new_chat():
+    return render_template('add_new_chat.html')
+
+
 @app.route('/chat', methods=['GET'])
 def get_chat():
     if session.get('username') is None:
