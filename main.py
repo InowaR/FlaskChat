@@ -1,6 +1,4 @@
 import datetime
-import random
-
 from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from flask_socketio import SocketIO, emit
 from model.db import *
@@ -19,14 +17,14 @@ def get_list_chats():
 
 
 @socketio.on("new_find_chat")
-def find_chat(chat_name):
+def find_chat(chat_name: str):
     status = find_chat_by_name(chat_name)
     if status:
-        emit("list_find_chats", str(chat_name), broadcast=True)
+        emit("list_find_chats", chat_name, broadcast=True)
 
 
 @socketio.on("add_new_chat")
-def add_chat(chat_name):
+def add_chat(chat_name: str):
     created_by = session.get('username')
     status = create_new_chat(chat_name, created_by)
     if status:
@@ -50,7 +48,7 @@ def get_chat():
 
 
 @socketio.on("new_message")
-def handle_new_message(message):
+def handle_new_message(message: str):
     username = session.get('username')
     print(f"New message: {username} : {message}")
     emit("chat", {"username": username, "message": message}, broadcast=True)
