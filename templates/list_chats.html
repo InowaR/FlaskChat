@@ -86,18 +86,18 @@
 					if (event) {
 						let new_ul = document.getElementById("list_my_chats");
 						let new_li = document.createElement("li");
-						new_li.appendChild(document.createTextNode(data["answer"] + ": " + data["data"]));
+						new_li.appendChild(document.createTextNode(data));
 						new_ul.appendChild(new_li);
 						li.remove();
 						new_li.addEventListener("click", function(event) {
-							console.log(data["answer"] + ": " + data["data"])
+							console.log(data)
 							chat_link = document.getElementById("chat_link");
 							console.log(chat_link)
 							window.location.href = chat_link + "?new_chat=true";
 						});
 					}
 				});
-				li.appendChild(document.createTextNode(data["answer"] + ": " + data["data"]));
+				li.appendChild(document.createTextNode(data));
 				ul.appendChild(li);
 			})
 		</script>

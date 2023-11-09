@@ -25,7 +25,7 @@ def create_db():
                                 username TEXT,
                                 time INTEGER,
                                 message TEXT,
-                                FOREIGN KEY (chat_id) REFERENCES chats (id)
+                                FOREIGN KEY (chat_id) REFERENCES list_chats (id)
                             )''')
 
         connection.commit()
@@ -34,7 +34,7 @@ def create_db():
 def create_new_chat(name: str, created_by: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM list_chats WHERE name=?", (name, ))
+        cursor.execute("SELECT * FROM list_chats WHERE name=?", (name,))
         chat = cursor.fetchone()
         if chat:
             return False
@@ -42,6 +42,17 @@ def create_new_chat(name: str, created_by: str):
             cursor.execute("INSERT INTO list_chats (name, created_by) VALUES (?, ?)", (name, created_by))
             connection.commit()
             return True
+
+
+def find_chat_by_name(name: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM list_chats WHERE name=?", (name,))
+        chat = cursor.fetchone()
+        if chat:
+            return True
+        else:
+            return False
 
 
 def select_chat():
@@ -72,7 +83,7 @@ def select_chat():
 def register_new_user(username: str, password: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE username=?", (username, ))
+        cursor.execute("SELECT * FROM users WHERE username=?", (username,))
         user = cursor.fetchone()
         if user:
             return False
@@ -91,7 +102,3 @@ def check_user(username: str, password: str):
             return True
         else:
             return False
-
-
-def find_chat_by_name(chat_name: str):
-    return chat_name
