@@ -54,7 +54,7 @@
 			<ul id="list_find_chat"></ul>
 		</div>
 		<h1>Мои чаты</h1>
-		<a href="{{ url_for('get_home') }}">Ссылка на чат</a>
+		<a id="chat_link" href="{{ url_for('get_chat') }}"></a>
 		<div id="my_chats">
 			<ul id="list_my_chats"></ul>
 		</div>
@@ -77,6 +77,12 @@
 						new_li.appendChild(document.createTextNode(data["answer"] + ": " + data["data"]));
 						new_ul.appendChild(new_li);
 						li.remove();
+						new_li.addEventListener("click", function(event) {
+							console.log(data["answer"] + ": " + data["data"])
+							chat_link = document.getElementById("chat_link");
+							console.log(chat_link)
+							window.location.href = chat_link + "?new_chat=true";
+						});
 					}
 				});
 				li.appendChild(document.createTextNode(data["answer"] + ": " + data["data"]));

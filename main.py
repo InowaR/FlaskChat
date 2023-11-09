@@ -1,4 +1,6 @@
 import datetime
+import random
+
 from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from flask_socketio import SocketIO, emit
 from model.db import *
@@ -31,9 +33,12 @@ def add_find_chat(data):
 
 
 @app.route('/chat', methods=['GET'])
-def get_home():
+def get_chat():
     if session.get('username') is None:
         return redirect(url_for('get_login'))
+    if request.args.get('new_chat') == 'true':
+        new_chat_number = random.randint(10000, 99999)
+        return render_template('chat.html', new_chat_number=new_chat_number)
     return render_template('chat.html')
 
 
