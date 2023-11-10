@@ -40,7 +40,11 @@
 			}
 		</style>
 		<div id="chat">
-			<ul id="chat-messages"></ul>
+			<ul id="chat-messages">
+				{% for message in list_messages %}
+					<li>{{ message[0] }}: {{ message[1] }}</li>
+				{% endfor %}
+			</ul>
 			<input type="text" id="message" placeholder="Введите сообщение:">
 		</div>
 		<script>

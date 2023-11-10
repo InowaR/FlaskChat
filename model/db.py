@@ -72,6 +72,22 @@ def load_all_user_chats(username: str):
         return user_list_chats
 
 
+def load_all_messages_by_chat_name(chat_name: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        query = '''
+                SELECT chat.message, users.username
+                FROM chat
+                INNER JOIN list_chats ON chat.chat_id = list_chats.id
+                INNER JOIN users ON chat.username = users.username
+                WHERE list_chats.name=?
+                ORDER BY chat.time ASC;
+                '''
+        cursor.execute(query, (chat_name,))
+        results = cursor.fetchall()
+        return results
+
+
 def register_new_user(username: str, password: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()

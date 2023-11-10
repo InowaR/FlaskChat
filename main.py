@@ -46,7 +46,8 @@ def get_chat():
     if session.get('username') is None:
         return redirect(url_for('get_login'))
     chat_name = request.args.get('open_chat')
-    return render_template('chat.html', chat_name=chat_name)
+    list_messages = load_all_messages_by_chat_name(chat_name)
+    return render_template('chat.html', chat_name=chat_name, list_messages=list_messages)
 
 
 @socketio.on("new_message")
