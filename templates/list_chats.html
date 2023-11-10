@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Список чатов</title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 	</head>
 	<body>
 		<div class="header">
@@ -21,23 +21,6 @@
 		</div>
 		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 		<style>
-			#body-area {
-				display: flex;
-				align-items: center;
-			}
-
-			#list_find_chat {
-				height: 50px;
-				width: 300px;
-				overflow-y: scroll;
-			}
-
-			#list_my_chats {
-				height: 200px;
-				width: 300px;
-				overflow-y: scroll;
-			}
-
 			li {
 				height: min-content;
 				width: min-content;
@@ -49,31 +32,27 @@
 				cursor: pointer;
 			}
 
-			#find {
-				width: 300px;
-			}
-
 			a:visited {
 				color: transparent;
 			}
 
 		</style>
-		<div id="body-area">
+		<div class="body-area">
 			<div id="find_chat">
 				<h1>Список найденных чатов</h1>
-				<input type="text" id="find" placeholder="Найти чат:">
-				<ul id="list_find_chat"></ul>
+				<input class="input-body" type="text" id="find" placeholder="Найти чат:">
+				<ul class="find-chat-input" id="list_find_chat"></ul>
 			</div>
 			<div id="new_chat">
 				<form action="{{ url_for('get_add_new_chat') }}" method="get">
-					<input type="submit" value="Создать чат">
+					<input type="submit" value="Новый чат">
 				</form>
 			</div>
 		</div>
 		<h1>Мои чаты</h1>
 		<a id="chat_link" href="{{ url_for('get_chat') }}"></a>
 		<div id="my_chats">
-			<ul id="list_my_chats">
+			<ul class="list-chats" id="list_my_chats">
 				{% for chat_name in list_chats %}
 					<li><a href="{{ url_for('get_chat') }}?open_chat={{ chat_name }}" style="text-decoration: none; background-color: grey;">{{ chat_name }}</a></li><br>
 				{% endfor %}

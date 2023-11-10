@@ -47,3 +47,24 @@
 .login-form input[type="submit"]:hover {
     background-color: #0D47A1;
 }
+
+.body-area {
+    display: flex;
+    align-items: center;
+}
+
+.input-body {
+    width: 300px;
+}
+
+.find-chat-input {
+    height: 50px;
+    width: 300px;
+    overflow-y: scroll;
+}
+
+.list-chats {
+    height: 200px;
+    width: 300px;
+    overflow-y: scroll;
+}

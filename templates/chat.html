@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Главная страница</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     <body>
 		<div class="header">
@@ -35,17 +35,14 @@
 				background-color: grey;
 			}
 
-			#message {
-				width: 300px;
-			}
 		</style>
 		<div id="chat">
-			<ul id="chat-messages">
+			<ul id="chat_messages">
 				{% for message in list_messages %}
 					<li>{{ message[0] }}: {{ message[1] }}</li><br>
 				{% endfor %}
 			</ul>
-			<input type="text" id="message" placeholder="Введите сообщение:">
+			<input class="input-body" type="text" id="message" placeholder="Введите сообщение:">
 		</div>
 		<script>
 			const socket = io();
@@ -59,7 +56,7 @@
 				}
 			})
 			socket.on("chat", function(data) {
-				let ul = document.getElementById("chat-messages");
+				let ul = document.getElementById("chat_messages");
 				let li = document.createElement("li");
 				let br = document.createElement("br");
 				li.appendChild(document.createTextNode(data["username"] + ": " + data["message"]));
