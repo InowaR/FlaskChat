@@ -64,6 +64,14 @@ def find_chat_by_name(name: str):
             return False
 
 
+def load_all_user_chats(username: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT name FROM list_chats WHERE created_by=?", (username,))
+        user_list_chats = [row[0] for row in cursor.fetchall()]
+        return user_list_chats
+
+
 def register_new_user(username: str, password: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()

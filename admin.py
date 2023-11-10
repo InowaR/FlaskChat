@@ -5,3 +5,5 @@ from model.db import *
 # add_new_message_to_chat(chat_id, username, time, message)
 
 # select_chat()
+
+load_all_user_chats('qqqq')

@@ -13,7 +13,9 @@ socketio = SocketIO(app)
 def get_list_chats():
     if session.get('username') is None:
         return redirect(url_for('get_login'))
-    return render_template('list_chats.html')
+    username = session.get('username')
+    list_chats = load_all_user_chats(username)
+    return render_template('list_chats.html', list_chats=list_chats)
 
 
 @socketio.on("new_find_chat")
