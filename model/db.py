@@ -110,28 +110,3 @@ def check_user(username: str, password: str):
             return True
         else:
             return False
-
-
-def select_chat():
-    with sqlite3.connect(db) as connection:
-        cursor = connection.cursor()
-        cursor.execute('''
-                            SELECT
-                                chat.id,
-                                chat.name,
-                                chat.created_by,
-                                chat.username,
-                                chat.time,
-                                chat.message
-                            FROM
-                                chat
-                            INNER JOIN
-                                chats
-                            ON
-                                chat.chat_id = chats.id
-                            WHERE
-                                chats.name = 'Chat 1';
-                        ''')
-        results = cursor.fetchall()
-        for row in results:
-            print(row)

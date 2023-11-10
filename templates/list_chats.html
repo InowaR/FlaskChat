@@ -71,7 +71,7 @@
 		<div id="my_chats">
 			<ul id="list_my_chats">
 				{% for chat_name in list_chats %}
-					<li><a href="{{ url_for('get_chat') }}?open_chat={{ chat_name }}">{{ chat_name }}</a></li>
+					<li><a href="{{ url_for('get_chat') }}?open_chat={{ chat_name }}">{{ chat_name }}</a></li><br>
 				{% endfor %}
 			</ul>
 		</div>
