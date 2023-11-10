@@ -53,6 +53,10 @@
 				width: 300px;
 			}
 
+			a:visited {
+				color: transparent;
+			}
+
 		</style>
 		<div id="body-area">
 			<div id="find_chat">
@@ -71,7 +75,7 @@
 		<div id="my_chats">
 			<ul id="list_my_chats">
 				{% for chat_name in list_chats %}
-					<li><a href="{{ url_for('get_chat') }}?open_chat={{ chat_name }}">{{ chat_name }}</a></li><br>
+					<li><a href="{{ url_for('get_chat') }}?open_chat={{ chat_name }}" style="text-decoration: none; background-color: grey;">{{ chat_name }}</a></li><br>
 				{% endfor %}
 			</ul>
 		</div>
