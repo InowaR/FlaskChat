@@ -85,17 +85,10 @@
 				let li = document.createElement("li");
 				li.addEventListener("click", function(event) {
 					if (event) {
-						let new_ul = document.getElementById("list_my_chats");
-						let new_li = document.createElement("li");
-						new_li.appendChild(document.createTextNode(data));
-						new_ul.appendChild(new_li);
-						li.remove();
-						new_li.addEventListener("click", function(event) {
-							console.log(data)
-							chat_link = document.getElementById("chat_link");
-							console.log(chat_link + "?open_chat=" + data)
-							window.location.href = chat_link + "?open_chat=" + data;
-						});
+						console.log(data)
+						chat_link = document.getElementById("chat_link");
+						console.log(chat_link + "?open_chat=" + data)
+						window.location.href = chat_link + "?open_chat=" + data;
 					}
 				});
 				li.appendChild(document.createTextNode(data));
