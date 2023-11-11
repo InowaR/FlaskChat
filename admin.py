@@ -2,7 +2,11 @@ from model.db import *
 
 create_db()
 
-# add_new_message_to_chat(chat_id, username, time, message)
+# create_new_chat("мой чат", "qqqq")
+
+# delete_chat_by_name_with_all_messages()
+
+# add_new_message_to_chat("мой чат", "qqqq", "1", "hi")
 
 # select_chat()
 

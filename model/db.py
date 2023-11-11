@@ -44,6 +44,19 @@ def create_new_chat(chat_name: str, created_by: str):
             return True
 
 
+def delete_chat_by_name_with_all_messages():
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        query = '''
+                    DELETE chat FROM chat
+                    LEFT JOIN list_chats ON chat.id = list_chats.id
+                    WHERE list_chats.id IS NULL
+                '''
+        cursor.execute(query)
+        # print(cursor.fetchall())
+        # connection.commit()
+
+
 def add_new_message_to_chat(chat_name: str, username: str, time, message: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
@@ -76,12 +89,12 @@ def load_all_messages_by_chat_name(chat_name: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         query = '''
-                SELECT chat.message, users.username
-                FROM chat
-                INNER JOIN list_chats ON chat.chat_id = list_chats.id
-                INNER JOIN users ON chat.username = users.username
-                WHERE list_chats.chat_name=?
-                ORDER BY chat.time ASC;
+                    SELECT chat.message, users.username
+                    FROM chat
+                    INNER JOIN list_chats ON chat.chat_id = list_chats.id
+                    INNER JOIN users ON chat.username = users.username
+                    WHERE list_chats.chat_name=?
+                    ORDER BY chat.time ASC;
                 '''
         cursor.execute(query, (chat_name,))
         results = cursor.fetchall()

@@ -48,13 +48,13 @@
     background-color: #0D47A1;
 }
 
-.body-area {
-    display: flex;
-    align-items: center;
-}
-
 .input-button {
     width: 300px;
+}
+
+.list-chats-body-area {
+    display: flex;
+    align-items: center;
 }
 
 .find-chat-area {
