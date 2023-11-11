@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<title>Список чатов</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js" async></script>
 	</head>
 	<body>
 		<div class="header">
@@ -19,7 +20,6 @@
 				</form>
 			</div>
 		</div>
-		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 		<style>
 			li {
 				height: min-content;
@@ -30,6 +30,11 @@
 
 			li:hover {
 				cursor: pointer;
+			}
+
+			a {
+				color: black;
+				text-decoration: none;
 			}
 
 			a:visited {
@@ -54,34 +59,10 @@
 		<div id="my_chats">
 			<ul class="list-chats" id="list_my_chats">
 				{% for chat_name in list_chats %}
-					<li><a href="{{ url_for('get_chat') }}?open_chat={{ chat_name }}" style="text-decoration: none; background-color: grey;">{{ chat_name }}</a></li><br>
+					<li><a href="{{ url_for('get_chat') }}?open_chat={{ chat_name }}">{{ chat_name }}</a></li><br>
 				{% endfor %}
 			</ul>
 		</div>
-		<script>
-			const socket = io();
-			document.getElementById("find").addEventListener("keyup", function(event) {
-				if (event.key == "Enter") {
-					let data = document.getElementById("find").value;
-					socket.emit("new_find_chat", data);
-					document.getElementById("find").value = "";
-				}
-			})
-			socket.on("list_find_chats", function(data) {
-				let ul = document.getElementById("list_find_chat");
-				let li = document.createElement("li");
-				li.addEventListener("click", function(event) {
-					if (event) {
-						console.log(data)
-						chat_link = document.getElementById("chat_link");
-						console.log(chat_link + "?open_chat=" + data)
-						window.location.href = chat_link + "?open_chat=" + data;
-					}
-				});
-				li.appendChild(document.createTextNode(data));
-				ul.appendChild(li);
-			})
-		</script>
-
+		<script src="{{ url_for('static', filename='js/list_chats.js') }}" async></script>
 	</body>
 </html>

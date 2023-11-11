@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>Главная страница</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js" async></script>
     </head>
     <body>
 		<div class="header">
@@ -20,9 +21,8 @@
 			</div>
 		</div>
 		<h1 id="chat_name" data-name="{{ chat_name }}" >Чат {{ chat_name }}</h1>
-		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 		<style>
-			ul {
+			.chat-area {
 				height: 300px;
 				width: 300px;
 				overflow-y: scroll;
@@ -37,32 +37,13 @@
 
 		</style>
 		<div id="chat">
-			<ul id="chat_messages">
+			<ul class="chat-area" id="chat_messages">
 				{% for message in list_messages %}
 					<li>{{ message[0] }}: {{ message[1] }}</li><br>
 				{% endfor %}
 			</ul>
 			<input class="input-body" type="text" id="message" placeholder="Введите сообщение:">
 		</div>
-		<script>
-			const socket = io();
-			document.getElementById("message").addEventListener("keyup", function(event) {
-				if (event.key == "Enter") {
-					let message = document.getElementById("message").value;
-					chat_name = document.getElementById("chat_name").getAttribute("data-name");
-					console.log(chat_name)
-					socket.emit("new_message", chat_name, message);
-					document.getElementById("message").value = "";
-				}
-			})
-			socket.on("chat", function(data) {
-				let ul = document.getElementById("chat_messages");
-				let li = document.createElement("li");
-				let br = document.createElement("br");
-				li.appendChild(document.createTextNode(data["username"] + ": " + data["message"]));
-				ul.appendChild(li);
-				ul.appendChild(br);
-			})
-		</script>
+		<script src="{{ url_for('static', filename='js/chat.js') }}" async></script>
     </body>
 </html>

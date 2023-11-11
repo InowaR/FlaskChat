@@ -68,3 +68,9 @@
     width: 300px;
     overflow-y: scroll;
 }
+
+.chat-area {
+    height: 300px;
+    width: 300px;
+    overflow-y: scroll;
+}

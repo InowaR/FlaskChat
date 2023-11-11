@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>Главная страница</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js" async></script>
     </head>
     <body>
 		<div class="header">
@@ -20,24 +21,9 @@
 			</div>
 		</div>
 		<h1>Новый чат</h1>
-		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 		<div class="input-body">
 			<input class="input-body" type="text" id="create_new_chat" placeholder="Введите название:">
 		</div>
-		<script>
-			const socket = io();
-			document.getElementById("create_new_chat").addEventListener("keyup", function(event) {
-				if (event.key == "Enter") {
-					let message = document.getElementById("create_new_chat").value;
-					socket.emit("add_new_chat", message);
-					document.getElementById("create_new_chat").value = "";
-				}
-			})
-			socket.on("add_new_chat", function(data) {
-				let message = document.createElement("h1");
-				message.textContent = data;
-				document.body.appendChild(message);
-			})
-		</script>
+		<script src="{{ url_for('static', filename='js/add_new_chat.js') }}" async></script>
     </body>
 </html>
