@@ -20,33 +20,11 @@
 				</form>
 			</div>
 		</div>
-		<style>
-			li {
-				height: min-content;
-				width: min-content;
-				list-style: none;
-				background-color: grey;
-			}
-
-			li:hover {
-				cursor: pointer;
-			}
-
-			a {
-				color: black;
-				text-decoration: none;
-			}
-
-			a:visited {
-				color: transparent;
-			}
-
-		</style>
 		<div class="body-area">
 			<div id="find_chat">
 				<h1>Список найденных чатов</h1>
-				<input class="input-body" type="text" id="find" placeholder="Найти чат:">
-				<ul class="find-chat-input" id="list_find_chat"></ul>
+				<input class="input-button" type="text" id="find" placeholder="Найти чат:">
+				<ul class="find-chat-area" id="list_find_chat"></ul>
 			</div>
 			<div id="new_chat">
 				<form action="{{ url_for('get_add_new_chat') }}" method="get">
@@ -57,7 +35,7 @@
 		<h1>Мои чаты</h1>
 		<a id="chat_link" href="{{ url_for('get_chat') }}"></a>
 		<div id="my_chats">
-			<ul class="list-chats" id="list_my_chats">
+			<ul class="list-my-chats-area" id="list_my_chats">
 				{% for chat_name in list_chats %}
 					<li><a href="{{ url_for('get_chat') }}?open_chat={{ chat_name }}">{{ chat_name }}</a></li><br>
 				{% endfor %}
