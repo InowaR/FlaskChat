@@ -68,6 +68,18 @@ def check_user(username: str, password: str):
             return False
 
 
+def load_all_user_chats(username: str):
+    with (sqlite3.connect(db) as connection):
+        cursor = connection.cursor()
+        query = """ SELECT u.id, c.chatname
+                    FROM users u
+                    JOIN chats c ON u.id = c.user_id
+                    WHERE u.username=?
+                """
+        cursor.execute(query, (username,))
+        return [row[0] for row in cursor.fetchall()]
+
+
 def add_chat(username, chatname):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
