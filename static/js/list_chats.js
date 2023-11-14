@@ -9,14 +9,15 @@ document.getElementById("find").addEventListener("keyup", function(event) {
 socket.on("list_find_chats", function(data) {
     let ul = document.getElementById("list_find_chat");
     let li = document.createElement("li");
-    li.addEventListener("click", function(event) {
-        if (event) {
-            console.log(data)
-            chat_link = document.getElementById("chat_link");
-            console.log(chat_link + "?open_chat=" + data)
-            window.location.href = chat_link + "?open_chat=" + data;
-        }
-    });
+    if (data == "") {alert("Чат не найден");}
+    else {
+        li.addEventListener("click", function(event) {
+            if (event) {
+                chat_link = document.getElementById("chat_link");
+                window.location.href = chat_link + "?open_chat=" + data;
+            }
+        });
+    }
     li.appendChild(document.createTextNode(data));
     ul.appendChild(li);
 })
