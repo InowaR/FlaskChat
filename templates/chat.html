@@ -9,7 +9,7 @@
     <body>
 		<div class="header">
 			<form action="{{ url_for('get_list_chats') }}" method="get">
-				<input class="logo" type="submit" value="Главная страница">
+				<input class="logo" type="submit" value="Главная">
 			</form>
 			<div class="header-right">
 				<form action="{{ url_for('get_profile') }}" method="get">
@@ -20,14 +20,14 @@
 				</form>
 			</div>
 		</div>
-		<h1 id="chatname" data-name="{{ chatname }}" >Чат {{ chatname }}</h1>
+		<h3 id="chatname" data-name="{{ chatname }}" >Чат {{ chatname }}</h3>
 		<div id="chat">
 			<ul class="chat-area" id="chat_messages">
 				{% for message in list_messages %}
 					<div class="my_chats_links">
 						<li>{{ message[0] }}: {{ message[1] }}</li>
 						<form action="{{ url_for('get_delete_message') }}" method="post">
-							<input class="delete_button" type="submit" value="{{ message[0] }},{{ chatname }},{{ message[1] }}" name="button-delete-message">
+							<input class="delete_button" id="chat-button" type="submit" value="{{ message[0] }},{{ chatname }},{{ message[1] }}" name="button-delete-message">
 						</form>
 					</div>
 				{% endfor %}

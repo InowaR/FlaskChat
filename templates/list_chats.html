@@ -5,6 +5,7 @@
 		<title>Список чатов</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js" defer></script>
+		<a id="chat_link" href="{{ url_for('get_chat') }}"></a>
 	</head>
 	<body>
 		<div class="header">
@@ -20,16 +21,19 @@
 				</form>
 			</div>
 		</div>
-		<p>Список найденных чатов</p>
 		<div class="list-chats-body-area">
 			<div id="find_chat">
 				<input class="input-button" type="text" id="find" placeholder="Найти чат:">
 				<ul class="find-chat-area" id="list_find_chat"></ul>
 			</div>
+			<div>
+				<form action="{{ url_for('get_add_new_chat') }}" method="get">
+				<input type="submit" value="Новый чат">
+			</div>
+        </form>
 		</div>
-		<a id="chat_link" href="{{ url_for('get_chat') }}"></a>
-		<p>Мои чаты</p>
 		<div class="my_chats">
+			<h3>Мои чаты</h3>
 			<ul class="list-my-chats-area" id="list_my_chats">
 				{% for chatname in list_chats %}
 					<div class="my_chats_links">

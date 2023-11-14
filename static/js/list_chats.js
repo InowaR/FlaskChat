@@ -18,7 +18,6 @@ socket.on("list_find_chats", function(data) {
             }
         });
     }
-//    if (message.length < 1) {return;}
     li.appendChild(document.createTextNode(data));
     ul.appendChild(li);
 })

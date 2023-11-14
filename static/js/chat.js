@@ -11,8 +11,6 @@ document.getElementById("message").addEventListener("keyup", function(event) {
 socket.on("chat", function(data) {
     let ul = document.getElementById("chat_messages");
     let li = document.createElement("li");
-    let br = document.createElement("br");
     li.appendChild(document.createTextNode(data["username"] + ": " + data["message"]));
     ul.appendChild(li);
-    ul.appendChild(br);
 })

@@ -17,9 +17,6 @@
         <h1>Профиль пользователя {{ username }}</h1>
         <p>{{ message }}</p>
         <div class="profile">
-        <form action="{{ url_for('get_add_new_chat') }}" method="get">
-            <input type="submit" value="Новый чат">
-        </form>
         <form action="{{ url_for('get_delete_user') }}" method="get">
             <input type="submit" value="Удалить пользователя">
         </form>

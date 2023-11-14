@@ -3,13 +3,14 @@
     justify-content: space-between;
     align-items: center;
     background-color: #333;
-    padding: 10px;
+    padding: 8px;
+    margin-bottom: 30px;
 }
 
 .header .logo {
     color: white;
     background-color: #4169E1;
-    font-size: 22px;
+    font-size: 20px;
 }
 
 .header .logo:hover {
@@ -54,7 +55,11 @@
 
 .list-chats-body-area {
     display: flex;
-    justify-content: center;
+}
+
+.my_chats_links {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -67,40 +72,23 @@
 
 .list-my-chats-area {
     background-color: pink;
-    height: 200px;
-    width: 300px;
-    overflow-y: scroll;
-}
-
-.my_chats {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.chat-area {
-    background-color: pink;
     height: 300px;
     width: 300px;
     overflow-y: scroll;
 }
 
-.my_chats_links {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.chat-area {
+    background-color: pink;
+    height: 400px;
+    width: 300px;
+    overflow-y: scroll;
 }
 
 .delete_button {
     width: 25px;
     background-color: #4169E1;
     color: transparent;
-}
-
-.profile {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    cursor: pointer;
 }
 
 li {
@@ -109,6 +97,7 @@ li {
     list-style: none;
     background-color: grey;
     padding: 5px;
+    cursor: pointer;
 }
 
 li:hover {
