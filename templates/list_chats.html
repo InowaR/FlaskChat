@@ -4,7 +4,7 @@
 		<meta charset="UTF-8">
 		<title>Список чатов</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js" async></script>
+		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js" defer></script>
 	</head>
 	<body>
 		<div class="header">
@@ -41,6 +41,6 @@
 				{% endfor %}
 			</ul>
 		</div>
-		<script src="{{ url_for('static', filename='js/list_chats.js') }}" async></script>
+		<script src="{{ url_for('static', filename='js/list_chats.js') }}" defer></script>
 	</body>
 </html>

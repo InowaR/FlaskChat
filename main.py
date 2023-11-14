@@ -22,7 +22,9 @@ def get_list_chats():
 def find_chat(chatname: str):
     status = find_chat_by_name(chatname)
     if status:
+        username = session.get('username')
         message = chatname
+        create_new_chat(username, chatname)
     else:
         message = ""
     emit("list_find_chats", message, broadcast=True)

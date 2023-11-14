@@ -74,13 +74,25 @@ def load_all_user_chats(username: str):
                     WHERE u.username=?
                 """
         cursor.execute(query, (username,))
+        # print(cursor.fetchall())
         return [row[1] for row in cursor.fetchall()]
 
 
 def create_new_chat(username: str, chatname: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT id FROM chats WHERE chatname = ?", (chatname,))
+        query = """ SELECT
+                        chats.id,
+                        chats.chatname,
+                        users.username
+                    FROM
+                        chats
+                    INNER JOIN users ON chats.user_id = users.id
+                    WHERE
+                        chats.chatname=? AND users.username=?;
+                """
+        cursor.execute(query, (chatname, username))
+        # print(cursor.fetchone())
         chat = cursor.fetchone()
         if chat:
             print("Чат существует")
@@ -113,7 +125,7 @@ def find_chat_by_name(chatname: str):
 def load_all_messages_by_chat_name(chatname: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        query = """ SELECT m.message, u.username
+        query = """ SELECT u.username, m.message
                     FROM messages m
                     INNER JOIN users u ON m.user_id = u.id
                     INNER JOIN chats c ON m.chat_id = c.id
@@ -143,10 +155,9 @@ def delete_user(username):
         connection.commit()
 
 
-def delete_chat(username, chatname):
+def delete_chat(chatname):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        user_id = cursor.execute("SELECT id FROM users WHERE username = ?", (username,)).fetchone()[0]
         chat_id = cursor.execute("SELECT id FROM chats WHERE chatname = ?", (chatname,)).fetchone()[0]
         cursor.execute("DELETE FROM messages WHERE chat_id = ?", (chat_id,))
         cursor.execute("DELETE FROM chats WHERE id = ?", (chat_id,))
