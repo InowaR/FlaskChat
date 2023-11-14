@@ -52,6 +52,8 @@ def get_chat():
         return redirect(url_for('get_login'))
     username = session.get('username')
     chatname = request.args.get('open_chat')
+    if chatname is None:
+        chatname = session.get('chatname')
     list_messages = load_all_messages_by_chat_name(username, chatname)
     return render_template('chat.html', chatname=chatname, list_messages=list_messages)
 
@@ -128,10 +130,22 @@ def get_delete_user():
 
 @app.route('/', methods=['POST'])
 def get_delete_chat():
-    chatname = request.form['button']
+    chatname = request.form['button-delete-chat']
     print(chatname)
     delete_chat(chatname)
     return redirect(url_for('get_list_chats'))
+
+
+@app.route('/chat', methods=['POST'])
+def get_delete_message():
+    button = request.form['button-delete-message']
+    arr = button.split(',')
+    username = arr[0]
+    chatname = arr[1]
+    message = arr[2]
+    session['chatname'] = chatname
+    delete_message(username, chatname, message)
+    return redirect(url_for('get_chat'))
 
 
 if __name__ == '__main__':

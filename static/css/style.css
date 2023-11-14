@@ -82,7 +82,7 @@
     align-items: center;
 }
 
-.delete_chat {
+.delete_button {
     width: 25px;
     background-color: #4169E1;
     color: transparent;
