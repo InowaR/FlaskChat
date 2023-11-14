@@ -54,13 +54,11 @@ def get_chat():
 
 
 @socketio.on("new_message")
-def handle_new_message(chat_name, message: str):
-    pass
-    # username = session.get('username')
-    # time = datetime.datetime.now()
-    # print(f"New message: {chat_name}, {username} {time} {message}")
-    # add_new_message_to_chat(chat_name, username, time, message)
-    # emit("chat", {"username": username, "message": message}, broadcast=True)
+def handle_new_message(chatname: str, message: str):
+    username = session.get('username')
+    print(f"New message: {username}, {chatname} {message}")
+    add_new_message_to_chat(username, chatname, message)
+    emit("chat", {"username": username, "message": message}, broadcast=True)
 
 
 @app.route('/profile', methods=['GET'])

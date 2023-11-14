@@ -20,11 +20,11 @@
 				</form>
 			</div>
 		</div>
-		<h1 id="chat_name" data-name="{{ chat_name }}" >Чат {{ chatname }}</h1>
+		<h1 id="chatname" data-name="{{ chatname }}" >Чат {{ chatname }}</h1>
 		<div id="chat">
 			<ul class="chat-area" id="chat_messages">
 				{% for message in list_messages %}
-					<li>{{ message[0] }}: {{ message[1] }}</li><br>
+					<li>{{ message[1] }}: {{ message[0] }}</li><br>
 				{% endfor %}
 			</ul>
 			<input class="input-button" type="text" id="message" placeholder="Введите сообщение:">
