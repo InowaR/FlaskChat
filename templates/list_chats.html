@@ -36,8 +36,8 @@
 		<a id="chat_link" href="{{ url_for('get_chat') }}"></a>
 		<div id="my_chats">
 			<ul class="list-my-chats-area" id="list_my_chats">
-				{% for chat_name in list_chats %}
-					<li><a href="{{ url_for('get_chat') }}?open_chat={{ chat_name }}">{{ chat_name }}</a></li><br>
+				{% for chatname in list_chats %}
+					<li><a href="{{ url_for('get_chat') }}?open_chat={{ chatname }}">{{ chatname }}</a></li><br>
 				{% endfor %}
 			</ul>
 		</div>

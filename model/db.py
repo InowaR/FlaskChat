@@ -7,37 +7,34 @@ def create_db():
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         cursor.execute(
+            """ CREATE TABLE IF NOT EXISTS users (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    username TEXT NOT NULL,
+                    password TEXT NOT NULL
+                )
             """
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL,
-            password TEXT NOT NULL
-        )
-        """
         )
         cursor.execute(
+            """ CREATE TABLE IF NOT EXISTS chats (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    chatname TEXT NOT NULL,
+                    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+                )
             """
-        CREATE TABLE IF NOT EXISTS chats (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            chatname TEXT NOT NULL,
-            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-        )
-        """
         )
         cursor.execute(
+            """ CREATE TABLE IF NOT EXISTS messages (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    chat_id INTEGER NOT NULL,
+                    message TEXT NOT NULL,
+                    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                    FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE
+                )
             """
-        CREATE TABLE IF NOT EXISTS messages (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            chat_id INTEGER NOT NULL,
-            message TEXT NOT NULL,
-            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-            FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE
-        )
-        """
         )
         connection.commit()
 
@@ -113,7 +110,21 @@ def find_chat_by_name(chatname: str):
             return False
 
 
-def add_message(username, chatname, message):
+def load_all_messages_by_chat_name(chatname: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        query = """ SELECT m.message, u.username
+                    FROM messages m
+                    INNER JOIN users u ON m.user_id = u.id
+                    INNER JOIN chats c ON m.chat_id = c.id
+                    WHERE c.chatname=?
+                    ORDER BY m.created_at ASC;
+                """
+        cursor.execute(query, (chatname,))
+        return cursor.fetchall()
+
+
+def add_new_message_to_chat(username, chatname, message):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         user_id = cursor.execute("SELECT id FROM users WHERE username = ?", (username,)).fetchone()[0]

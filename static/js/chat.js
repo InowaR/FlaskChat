@@ -2,8 +2,8 @@ const socket = io();
 document.getElementById("message").addEventListener("keyup", function(event) {
     if (event.key == "Enter") {
         let message = document.getElementById("message").value;
-        chat_name = document.getElementById("chat_name").getAttribute("data-name");
-        socket.emit("new_message", chat_name, message);
+        chatname = document.getElementById("chatname").getAttribute("data-name");
+        socket.emit("new_message", chatname, message);
         document.getElementById("message").value = "";
     }
 })
