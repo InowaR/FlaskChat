@@ -45,12 +45,13 @@ def create_db():
 def register_new_user(username: str, password: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        user = cursor.execute(f"SELECT id FROM users WHERE username={username}").fetchone()[0]
-        if user is not None:
+        cursor.execute("SELECT id FROM users WHERE username=?", (username,))
+        user = cursor.fetchone()
+        if user:
             print("Пользователь существует")
             return False
         else:
-            cursor.execute(f"INSERT INTO users (username, password) VALUES ({username}, {password})")
+            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
             connection.commit()
             return True
 
@@ -58,8 +59,9 @@ def register_new_user(username: str, password: str):
 def check_user(username: str, password: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        user = cursor.execute(f"SELECT id FROM users WHERE username={username} AND password={password}").fetchone()[0]
-        if user is not None:
+        cursor.execute("SELECT id FROM users WHERE username=? AND password=?", (username, password))
+        user = cursor.fetchone()
+        if user:
             print("Логин и пароль совпадают")
             return True
         else:
