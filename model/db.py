@@ -74,7 +74,6 @@ def load_all_user_chats(username: str):
                     WHERE u.username=?
                 """
         cursor.execute(query, (username,))
-        # print(cursor.fetchall())
         return [row[1] for row in cursor.fetchall()]
 
 
@@ -92,7 +91,6 @@ def create_new_chat(username: str, chatname: str):
                         chats.chatname=? AND users.username=?;
                 """
         cursor.execute(query, (chatname, username))
-        # print(cursor.fetchone())
         chat = cursor.fetchone()
         if chat:
             print("Чат существует")
@@ -122,17 +120,19 @@ def find_chat_by_name(chatname: str):
             return False
 
 
-def load_all_messages_by_chat_name(chatname: str):
+def load_all_messages_by_chat_name(username: str, chatname: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
+        cursor.execute("SELECT id FROM users WHERE username=?", (username,))
+        user_id = cursor.fetchone()[0]
         query = """ SELECT u.username, m.message
                     FROM messages m
                     INNER JOIN users u ON m.user_id = u.id
                     INNER JOIN chats c ON m.chat_id = c.id
-                    WHERE c.chatname=?
+                    WHERE c.chatname=? AND c.user_id=?
                     ORDER BY m.created_at ASC;
                 """
-        cursor.execute(query, (chatname,))
+        cursor.execute(query, (chatname, user_id))
         return cursor.fetchall()
 
 
@@ -155,20 +155,25 @@ def delete_user(username):
         connection.commit()
 
 
-def delete_chat(chatname):
+def delete_chat(chatname: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        chat_id = cursor.execute("SELECT id FROM chats WHERE chatname = ?", (chatname,)).fetchone()[0]
-        cursor.execute("DELETE FROM messages WHERE chat_id = ?", (chat_id,))
-        cursor.execute("DELETE FROM chats WHERE id = ?", (chat_id,))
-        connection.commit()
+        list_chat_id = cursor.execute("SELECT id FROM chats WHERE chatname=?", (chatname,)).fetchall()
+        for chat_id in list_chat_id:
+            cursor.execute("DELETE FROM messages WHERE chat_id = ?", (chat_id[0],))
+            cursor.execute("DELETE FROM chats WHERE id=?", (chat_id[0],))
+            connection.commit()
 
 
-def delete_message(username, chatname, message):
+def delete_message(username: str, chatname: str, message: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         user_id = cursor.execute("SELECT id FROM users WHERE username = ?", (username,)).fetchone()[0]
-        chat_id = cursor.execute("SELECT id FROM chats WHERE chatname = ?", (chatname,)).fetchone()[0]
-        cursor.execute("DELETE FROM messages WHERE user_id = ? AND chat_id = ? AND message = ?",
-                       (user_id, chat_id, message,))
+        list_chat_id = cursor.execute("SELECT id FROM chats WHERE chatname = ?", (chatname,)).fetchall()
+        query = """ DELETE
+                    FROM messages
+                    WHERE user_id = ? AND chat_id = ? AND message = ?;
+                """
+        for chat_id in list_chat_id:
+            cursor.execute(query, (user_id, chat_id[0], message,))
         connection.commit()
