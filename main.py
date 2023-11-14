@@ -27,14 +27,14 @@ def find_chat(chat_name: str):
 
 
 @socketio.on("add_new_chat")
-def add_chat(chat_name: str):
-    created_by = session.get('username')
-    # status = create_new_chat(chat_name, created_by)
-    # if status:
-    #     message = "Создан новый чат"
-    # else:
-    #     message = "Чат уже существует"
-    # emit("add_new_chat", message, broadcast=True)
+def add_chat(chatname: str):
+    username = session.get('username')
+    status = create_new_chat(username, chatname)
+    if status:
+        message = "Создан новый чат"
+    else:
+        message = "Чат уже существует"
+    emit("add_new_chat", message, broadcast=True)
 
 
 @app.route('/add_new_chat', methods=['GET'])

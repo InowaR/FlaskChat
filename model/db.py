@@ -80,16 +80,19 @@ def load_all_user_chats(username: str):
         return [row[0] for row in cursor.fetchall()]
 
 
-def add_chat(username, chatname):
+def create_new_chat(username: str, chatname: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        chat = cursor.execute("SELECT id FROM chats WHERE chatname = ?", (chatname,)).fetchone()[0]
-        if chat is not None:
+        chat = cursor.execute("SELECT id FROM chats WHERE chatname = ?", (chatname,)).fetchone()
+        if chat:
             print("Чат существует")
-            return
-        user_id = cursor.execute("SELECT id FROM users WHERE username = ?", (username,)).fetchone()[0]
-        cursor.execute("INSERT INTO chats (user_id, chatname) VALUES (?, ?)", (user_id, chatname,))
-        connection.commit()
+            return False
+        else:
+            user_id = cursor.execute("SELECT id FROM users WHERE username = ?", (username,)).fetchone()[0]
+            cursor.execute("INSERT INTO chats (user_id, chatname) VALUES (?, ?)", (user_id, chatname,))
+            connection.commit()
+            print("Чат создан")
+            return True
 
 
 def add_message(username, chatname, message):
