@@ -108,8 +108,18 @@ def login():
         return render_template('login.html')
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET'])
 def get_logout():
+    session.clear()
+    response = make_response(redirect(url_for('get_login')))
+    response.delete_cookie('session')
+    return response
+
+
+@app.route('/delete_user', methods=['GET'])
+def get_delete_user():
+    username = session.get('username')
+    delete_user(username)
     session.clear()
     response = make_response(redirect(url_for('get_login')))
     response.delete_cookie('session')

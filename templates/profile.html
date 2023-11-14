@@ -16,5 +16,8 @@
         </div>
         <h1>Профиль пользователя {{ username }}</h1>
         <p>{{ message }}</p>
+        <form action="{{ url_for('get_delete_user') }}" method="get">
+            <input type="submit" value="Удалить пользователя">
+        </form>
     </body>
 </html>
