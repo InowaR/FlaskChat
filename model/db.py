@@ -45,7 +45,6 @@ def register_new_user(username: str, password: str):
         cursor.execute("SELECT id FROM users WHERE username=?", (username,))
         user = cursor.fetchone()
         if user:
-            print("Пользователь существует")
             return False
         else:
             cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
@@ -59,7 +58,6 @@ def check_user(username: str, password: str):
         cursor.execute("SELECT id FROM users WHERE username=? AND password=?", (username, password))
         user = cursor.fetchone()
         if user:
-            print("Логин и пароль совпадают")
             return True
         else:
             return False
@@ -93,7 +91,6 @@ def create_new_chat(username: str, chatname: str):
         cursor.execute(query, (chatname, username))
         chat = cursor.fetchone()
         if chat:
-            print("Чат существует")
             return False
         else:
             query = """ INSERT INTO chats (user_id, chatname)
@@ -103,7 +100,6 @@ def create_new_chat(username: str, chatname: str):
                     """
             cursor.execute(query, (chatname, username))
             connection.commit()
-            print("Чат создан")
             return True
 
 
@@ -113,10 +109,8 @@ def find_chat_by_name(chatname: str):
         cursor.execute("SELECT id FROM chats WHERE chatname=?", (chatname,))
         chat = cursor.fetchone()
         if chat:
-            print("Чат существует")
             return True
         else:
-            print("Чат не найден")
             return False
 
 
