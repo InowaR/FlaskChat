@@ -127,10 +127,12 @@ def load_all_messages_by_chat_name(chatname: str):
 def add_new_message_to_chat(username, chatname, message):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        user_id = cursor.execute("SELECT id FROM users WHERE username = ?", (username,)).fetchone()[0]
-        chat_id = cursor.execute("SELECT id FROM chats WHERE chatname = ?", (chatname,)).fetchone()[0]
-        cursor.execute("INSERT INTO messages (user_id, chat_id, message) VALUES (?, ?, ?)",
-                       (user_id, chat_id, message,))
+        query = """ INSERT INTO messages (user_id, chat_id, message)
+                    SELECT u.id, c.id, ?
+                    FROM users u
+                    INNER JOIN chats c ON u.username=? AND c.chatname=?;
+                    """
+        cursor.execute(query, (message, username, chatname))
         connection.commit()
 
 
