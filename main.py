@@ -128,10 +128,10 @@ def get_delete_user():
 
 @app.route('/', methods=['POST'])
 def get_delete_chat():
-    name = request.form['button']
-    print(name)
-    # delete_chat(chatname)
-    return redirect(url_for('get_profile'))
+    chatname = request.form['button']
+    print(chatname)
+    delete_chat(chatname)
+    return redirect(url_for('get_list_chats'))
 
 
 if __name__ == '__main__':

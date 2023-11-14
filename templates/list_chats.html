@@ -40,7 +40,7 @@
 					<div class="my_chats_links">
 						<li><a href="{{ url_for('get_chat') }}?open_chat={{ chatname }}">{{ chatname }}</a></li>
 						<form action="{{ url_for('get_delete_chat') }}" method="post">
-							<input class="delete_chat" type="submit" value="Удалить {{ chatname }}" name="button">
+							<input class="delete_chat" type="submit" value="{{ chatname }}" name="button">
 						</form>
 					</div>
 				{% endfor %}
