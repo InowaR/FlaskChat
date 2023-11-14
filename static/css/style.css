@@ -49,15 +49,17 @@
 }
 
 .input-button {
-    width: 300px;
+    width: 320px;
 }
 
 .list-chats-body-area {
     display: flex;
+    justify-content: center;
     align-items: center;
 }
 
 .find-chat-area {
+    background-color: pink;
     height: 50px;
     width: 300px;
     overflow-y: scroll;
@@ -70,7 +72,14 @@
     overflow-y: scroll;
 }
 
+.my_chats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .chat-area {
+    background-color: pink;
     height: 300px;
     width: 300px;
     overflow-y: scroll;
@@ -86,6 +95,12 @@
     width: 25px;
     background-color: #4169E1;
     color: transparent;
+}
+
+.profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 li {

@@ -9,7 +9,7 @@ document.getElementById("find").addEventListener("keyup", function(event) {
 socket.on("list_find_chats", function(data) {
     let ul = document.getElementById("list_find_chat");
     let li = document.createElement("li");
-    if (data == "") {alert("Чат не найден");}
+    if (data == "") {alert("Чат не найден"); return;}
     else {
         li.addEventListener("click", function(event) {
             if (event) {
@@ -18,6 +18,7 @@ socket.on("list_find_chats", function(data) {
             }
         });
     }
+//    if (message.length < 1) {return;}
     li.appendChild(document.createTextNode(data));
     ul.appendChild(li);
 })

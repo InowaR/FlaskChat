@@ -20,21 +20,16 @@
 				</form>
 			</div>
 		</div>
+		<p>Список найденных чатов</p>
 		<div class="list-chats-body-area">
 			<div id="find_chat">
-				<h1>Список найденных чатов</h1>
 				<input class="input-button" type="text" id="find" placeholder="Найти чат:">
 				<ul class="find-chat-area" id="list_find_chat"></ul>
 			</div>
-			<div id="new_chat">
-				<form action="{{ url_for('get_add_new_chat') }}" method="get">
-					<input type="submit" value="Новый чат">
-				</form>
-			</div>
 		</div>
-		<h1>Мои чаты</h1>
 		<a id="chat_link" href="{{ url_for('get_chat') }}"></a>
-		<div id="my_chats">
+		<p>Мои чаты</p>
+		<div class="my_chats">
 			<ul class="list-my-chats-area" id="list_my_chats">
 				{% for chatname in list_chats %}
 					<div class="my_chats_links">
