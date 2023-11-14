@@ -126,5 +126,13 @@ def get_delete_user():
     return response
 
 
+@app.route('/', methods=['POST'])
+def get_delete_chat():
+    name = request.form['button']
+    print(name)
+    # delete_chat(chatname)
+    return redirect(url_for('get_profile'))
+
+
 if __name__ == '__main__':
     socketio.run(app, allow_unsafe_werkzeug=True)
