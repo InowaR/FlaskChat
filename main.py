@@ -20,10 +20,9 @@ def get_list_chats():
 
 @socketio.on("new_find_chat")
 def find_chat(chat_name: str):
-    pass
-    # status = find_chat_by_name(chat_name)
-    # if status:
-    #     emit("list_find_chats", chat_name, broadcast=True)
+    status = find_chat_by_name(chat_name)
+    if status:
+        emit("list_find_chats", chat_name, broadcast=True)
 
 
 @socketio.on("add_new_chat")

@@ -100,6 +100,19 @@ def create_new_chat(username: str, chatname: str):
             return True
 
 
+def find_chat_by_name(chatname: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT id FROM chats WHERE chatname=?", (chatname,))
+        chat = cursor.fetchone()
+        if chat:
+            print("Чат существует")
+            return True
+        else:
+            print("Чат не найден")
+            return False
+
+
 def add_message(username, chatname, message):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
