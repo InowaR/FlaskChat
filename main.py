@@ -62,7 +62,6 @@ def get_chat():
 @socketio.on("new_message")
 def handle_new_message(chatname: str, message: str):
     __login = session.get('login')
-    print(f"New message: {__login}, {chatname} {message}")
     send_message(__login, chatname, message)
     emit("chat", {"login": __login, "message": message}, broadcast=True)
 
@@ -133,7 +132,6 @@ def get_delete_user():
 def get_delete_chat():
     __login = session.get('login')
     chatname = request.form['button-delete-chat']
-    print(chatname)
     delete_chat(__login, chatname)
     return redirect(url_for('get_list_chats'))
 
@@ -146,8 +144,11 @@ def get_delete_message():
     chatname = arr[1]
     message = arr[2]
     session['chatname'] = chatname
-    delete_message(__login, chatname, message)
-    return redirect(url_for('get_chat'))
+    if __login == session['login']:
+        delete_message(__login, chatname, message)
+        return redirect(url_for('get_chat'))
+    else:
+        return redirect(url_for('get_chat'))
 
 
 if __name__ == '__main__':
