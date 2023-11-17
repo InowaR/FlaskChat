@@ -11,10 +11,10 @@ socketio = SocketIO(app)
 
 @app.route('/', methods=['GET'])
 def get_list_chats():
-    if session.get('username') is None:
+    if session.get('login') is None:
         return redirect(url_for('get_login'))
-    username = session.get('username')
-    list_chats = load_all_user_chats(username)
+    __login = session.get('login')
+    list_chats = load_all_user_chats(__login)
     return render_template('list_chats.html', list_chats=list_chats)
 
 
@@ -22,9 +22,10 @@ def get_list_chats():
 def find_chat(chatname: str):
     status = find_chat_by_name(chatname)
     if status:
-        username = session.get('username')
+        __login = session.get('login')
         message = chatname
-        create_new_chat(username, chatname)
+        create_chat(__login, chatname)
+        add_user_to_chat(__login, chatname)
     else:
         message = ""
     emit("list_find_chats", message, broadcast=True)
@@ -32,9 +33,10 @@ def find_chat(chatname: str):
 
 @socketio.on("add_new_chat")
 def add_chat(chatname: str):
-    username = session.get('username')
-    status = create_new_chat(username, chatname)
+    __login = session.get('login')
+    status = create_chat(__login, chatname)
     if status:
+        add_user_to_chat(__login, chatname)
         message = "Создан новый чат"
     else:
         message = "Чат уже существует"
@@ -48,30 +50,29 @@ def get_add_new_chat():
 
 @app.route('/chat', methods=['GET'])
 def get_chat():
-    if session.get('username') is None:
+    if session.get('login') is None:
         return redirect(url_for('get_login'))
-    username = session.get('username')
     chatname = request.args.get('open_chat')
     if chatname is None:
         chatname = session.get('chatname')
-    list_messages = load_all_messages_by_chat_name(username, chatname)
+    list_messages = load_all_messages_by_chat_name(chatname)
     return render_template('chat.html', chatname=chatname, list_messages=list_messages)
 
 
 @socketio.on("new_message")
 def handle_new_message(chatname: str, message: str):
-    username = session.get('username')
-    print(f"New message: {username}, {chatname} {message}")
-    add_new_message_to_chat(username, chatname, message)
-    emit("chat", {"username": username, "message": message}, broadcast=True)
+    __login = session.get('login')
+    print(f"New message: {__login}, {chatname} {message}")
+    send_message(__login, chatname, message)
+    emit("chat", {"login": __login, "message": message}, broadcast=True)
 
 
 @app.route('/profile', methods=['GET'])
 def get_profile():
-    if session.get('username') is None:
+    if session.get('login') is None:
         return redirect(url_for('get_login'))
-    username = session.get('username')
-    return render_template('profile.html', username=username)
+    __login = session.get('login')
+    return render_template('profile.html', login=__login)
 
 
 @app.route('/register', methods=['GET'])
@@ -81,11 +82,11 @@ def get_register():
 
 @app.route('/register', methods=['POST'])
 def register():
-    username = request.form['username']
+    __login = request.form['login']
     password = request.form['password']
-    status = register_new_user(username, password)
+    status = register_new_user(__login, password)
     if status:
-        session['username'] = username
+        session['login'] = __login
         session['password'] = password
         return redirect(url_for('get_profile'))
     else:
@@ -99,11 +100,11 @@ def get_login():
 
 @app.route('/login', methods=['POST'])
 def login():
-    username = request.form['username']
+    __login = request.form['login']
     password = request.form['password']
-    status = check_user(username, password)
+    status = check_user(__login, password)
     if status:
-        session['username'] = username
+        session['login'] = __login
         session['password'] = password
         return redirect(url_for('get_profile'))
     else:
@@ -120,8 +121,8 @@ def get_logout():
 
 @app.route('/delete_user', methods=['GET'])
 def get_delete_user():
-    username = session.get('username')
-    delete_user(username)
+    __login = session.get('login')
+    delete_user(__login)
     session.clear()
     response = make_response(redirect(url_for('get_login')))
     response.delete_cookie('session')
@@ -130,9 +131,10 @@ def get_delete_user():
 
 @app.route('/', methods=['POST'])
 def get_delete_chat():
+    __login = session.get('login')
     chatname = request.form['button-delete-chat']
     print(chatname)
-    delete_chat(chatname)
+    delete_chat(__login, chatname)
     return redirect(url_for('get_list_chats'))
 
 
@@ -140,11 +142,11 @@ def get_delete_chat():
 def get_delete_message():
     button = request.form['button-delete-message']
     arr = button.split(',')
-    username = arr[0]
+    __login = arr[0]
     chatname = arr[1]
     message = arr[2]
     session['chatname'] = chatname
-    delete_message(username, chatname, message)
+    delete_message(__login, chatname, message)
     return redirect(url_for('get_chat'))
 
 
