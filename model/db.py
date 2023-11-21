@@ -20,7 +20,6 @@ def create_db():
         cursor.execute(
             """
                 CREATE TABLE IF NOT EXISTS chats (
-                    login TEXT,
                     chatname TEXT,
                     description TEXT,
                     created_at DATETIME
@@ -98,11 +97,11 @@ def load_all_user_chats(login: str):
         return [row[0] for row in cursor.fetchall()]
 
 
-def create_chat(login: str, chatname: str):
+def create_chat(chatname: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         query = """
-                    SELECT login
+                    SELECT chatname
                     FROM chats
                     WHERE chatname = ?
                 """
@@ -112,10 +111,10 @@ def create_chat(login: str, chatname: str):
             return False
         else:
             query = """
-                        INSERT INTO chats (login, chatname, created_at)
-                        VALUES (?, ?, CURRENT_TIMESTAMP)
+                        INSERT INTO chats (chatname, created_at)
+                        VALUES (?, CURRENT_TIMESTAMP)
                     """
-            cursor.execute(query, (login, chatname))
+            cursor.execute(query, (chatname,))
             connection.commit()
             return True
 
@@ -135,7 +134,7 @@ def find_chat_by_name(chatname: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         query = """
-                    SELECT login
+                    SELECT chatname
                     FROM chats
                     WHERE chatname = ?
                 """

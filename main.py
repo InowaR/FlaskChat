@@ -2,6 +2,7 @@ import datetime
 from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from flask_socketio import SocketIO, emit
 from model.db import *
+from model.utils.random_chat import *
 
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'key'
@@ -24,8 +25,10 @@ def find_chat(chatname: str):
     if status:
         __login = session.get('login')
         message = chatname
-        create_chat(__login, chatname)
-        add_user_to_chat(__login, chatname)
+        create_chat(chatname)
+        status = is_user_in_chat(__login, chatname)
+        if not status:
+            add_user_to_chat(__login, chatname)
     else:
         message = ""
     emit("list_find_chats", message, broadcast=True)
@@ -34,7 +37,7 @@ def find_chat(chatname: str):
 @socketio.on("add_new_chat")
 def add_chat(chatname: str):
     __login = session.get('login')
-    status = create_chat(__login, chatname)
+    status = create_chat(chatname)
     if status:
         add_user_to_chat(__login, chatname)
         message = "Создан новый чат"
@@ -45,16 +48,21 @@ def add_chat(chatname: str):
 
 @app.route('/add_new_chat', methods=['GET'])
 def get_add_new_chat():
-    return render_template('add_new_chat.html')
+    random_chats = find_all_chats()
+    return render_template('add_new_chat.html', random_chats=random_chats)
 
 
 @app.route('/chat', methods=['GET'])
 def get_chat():
-    if session.get('login') is None:
+    __login = session.get('login')
+    if __login is None:
         return redirect(url_for('get_login'))
     chatname = request.args.get('open_chat')
     if chatname is None:
         chatname = session.get('chatname')
+    status = is_user_in_chat(__login, chatname)
+    if not status:
+        add_user_to_chat(__login, chatname)
     list_messages = load_all_messages_by_chat_name(chatname)
     return render_template('chat.html', chatname=chatname, list_messages=list_messages)
 

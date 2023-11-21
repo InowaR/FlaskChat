@@ -24,6 +24,16 @@
 		<div>
 			<input class="input-button" type="text" id="create_new_chat" placeholder="Введите название:" maxlength="20">
 		</div>
+		<div class="my_chats">
+			<h3>Случайные чаты</h3>
+			<ul class="list-my-chats-area" id="list_my_chats">
+				{% for chatname in random_chats %}
+					<div class="my_chats_links">
+						<li><a href="{{ url_for('get_chat') }}?open_chat={{ chatname }}">{{ chatname }}</a></li>
+					</div>
+				{% endfor %}
+			</ul>
+		</div>
 		<script src="{{ url_for('static', filename='js/add_new_chat.js') }}"></script>
     </body>
 </html>

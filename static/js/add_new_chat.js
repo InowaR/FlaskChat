@@ -8,7 +8,5 @@ document.getElementById("create_new_chat").addEventListener("keyup", function(ev
     }
 })
 socket.on("add_new_chat", function(data) {
-    let message = document.createElement("h1");
-    message.textContent = data;
-    document.body.appendChild(message);
+    alert(data);
 })
