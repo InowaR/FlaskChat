@@ -12,9 +12,9 @@ socketio = SocketIO(app)
 
 @app.route('/', methods=['GET'])
 def get_list_chats():
-    if session.get('login') is None:
-        return redirect(url_for('get_login'))
     __login = session.get('login')
+    if __login is None:
+        return redirect(url_for('get_login'))
     list_chats = load_all_user_chats(__login)
     return render_template('list_chats.html', list_chats=list_chats)
 
@@ -48,6 +48,9 @@ def add_chat(chatname: str):
 
 @app.route('/add_new_chat', methods=['GET'])
 def get_add_new_chat():
+    __login = session.get('login')
+    if __login is None:
+        return redirect(url_for('get_login'))
     random_chats = find_all_chats()
     return render_template('add_new_chat.html', random_chats=random_chats)
 
@@ -76,9 +79,9 @@ def handle_new_message(chatname: str, message: str):
 
 @app.route('/profile', methods=['GET'])
 def get_profile():
-    if session.get('login') is None:
-        return redirect(url_for('get_login'))
     __login = session.get('login')
+    if __login is None:
+        return redirect(url_for('get_login'))
     return render_template('profile.html', login=__login)
 
 
@@ -97,7 +100,8 @@ def register():
         session['password'] = password
         return redirect(url_for('get_profile'))
     else:
-        return render_template('register.html')
+        message = "Пользователь уже существует"
+        return render_template('register.html', message=message)
 
 
 @app.route('/login', methods=['GET'])
@@ -115,7 +119,8 @@ def login():
         session['password'] = password
         return redirect(url_for('get_profile'))
     else:
-        return render_template('login.html')
+        message = "Пользователь не найден"
+        return render_template('login.html', message=message)
 
 
 @app.route('/logout', methods=['GET'])
@@ -129,6 +134,8 @@ def get_logout():
 @app.route('/delete_user', methods=['GET'])
 def get_delete_user():
     __login = session.get('login')
+    if __login is None:
+        return redirect(url_for('get_login'))
     delete_user(__login)
     session.clear()
     response = make_response(redirect(url_for('get_login')))
@@ -139,6 +146,8 @@ def get_delete_user():
 @app.route('/', methods=['POST'])
 def get_delete_chat():
     __login = session.get('login')
+    if __login is None:
+        return redirect(url_for('get_login'))
     chatname = request.form['button-delete-chat']
     delete_chat(__login, chatname)
     return redirect(url_for('get_list_chats'))
@@ -146,6 +155,8 @@ def get_delete_chat():
 
 @app.route('/chat', methods=['POST'])
 def get_delete_message():
+    if session.get('login') is None:
+        return redirect(url_for('get_login'))
     button = request.form['button-delete-message']
     arr = button.split(',')
     __login = arr[0]

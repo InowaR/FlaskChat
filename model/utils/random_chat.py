@@ -1,3 +1,4 @@
+import random
 import sqlite3
 
 db = 'model/site.db'
@@ -11,7 +12,9 @@ def find_all_chats():
                     FROM chats
                 """
         cursor.execute(query)
-        return [row[0] for row in cursor.fetchall()]
+        chats = [row[0] for row in cursor.fetchall()]
+        random.shuffle(chats)
+        return chats[:5]
 
 
 def is_user_in_chat(login: str, chatname: str):
