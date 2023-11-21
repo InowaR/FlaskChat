@@ -3,12 +3,13 @@
     <head>
         <meta charset="UTF-8">
         <title>Главная страница</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     </head>
-    <body>
+    <body class="body">
 		<div class="header">
 			<form action="{{ url_for('get_list_chats') }}" method="get">
-				<input class="logo" type="submit" value="Главная страница">
+				<input class="logo" type="submit" value="Главная">
 			</form>
 			<div class="header-right">
 				<form action="{{ url_for('get_profile') }}" method="get">
@@ -19,49 +20,20 @@
 				</form>
 			</div>
 		</div>
-		<h1 id="chat_name" data-name="{{ chat_name }}" >Чат {{ chat_name }}</h1>
-		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-		<style>
-			ul {
-				height: 300px;
-				width: 300px;
-				overflow-y: scroll;
-			}
-
-			li {
-				height: min-content;
-				width: min-content;
-				list-style: none;
-				background-color: grey;
-			}
-
-			#message {
-				width: 300px;
-			}
-		</style>
+		<h3 id="chatname" data-name="{{ chatname }}" >Чат {{ chatname }}</h3>
 		<div id="chat">
-			<ul id="chat-messages"></ul>
-			<input type="text" id="message" placeholder="Введите сообщение:">
+			<ul class="chat-area" id="chat_messages">
+				{% for message in list_messages %}
+					<div class="my_chats_links">
+						<li>{{ message[0] }}: {{ message[1] }}</li>
+						<form action="{{ url_for('get_delete_message') }}" method="post">
+							<input class="delete_button" id="chat-button" type="submit" value="{{ message[0] }},{{ chatname }},{{ message[1] }}" name="button-delete-message">
+						</form>
+					</div>
+				{% endfor %}
+			</ul>
+			<input class="input-button" type="text" id="message" placeholder="Введите сообщение:">
 		</div>
-		<script>
-			const socket = io();
-			document.getElementById("message").addEventListener("keyup", function(event) {
-				if (event.key == "Enter") {
-					let message = document.getElementById("message").value;
-					chat_name = document.getElementById("chat_name").getAttribute("data-name");
-					console.log(chat_name)
-					socket.emit("new_message", chat_name, message);
-					document.getElementById("message").value = "";
-				}
-			})
-			socket.on("chat", function(data) {
-				let ul = document.getElementById("chat-messages");
-				let li = document.createElement("li");
-				let br = document.createElement("br");
-				li.appendChild(document.createTextNode(data["username"] + ": " + data["message"]));
-				ul.appendChild(li);
-				ul.appendChild(br);
-			})
-		</script>
+		<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
     </body>
 </html>

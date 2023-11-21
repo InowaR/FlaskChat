@@ -1,7 +1,7 @@
 from model.db import *
+from model.utils.random_chat import find_all_chats
 
 # create_db()
 
-# add_new_message_to_chat(chat_id, username, time, message)
-
-# select_chat()
+a = find_all_chats()
+print(a)

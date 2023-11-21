@@ -3,12 +3,13 @@
     <head>
         <meta charset="UTF-8">
         <title>Главная страница</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     </head>
-    <body>
+    <body class="body">
 		<div class="header">
 			<form action="{{ url_for('get_list_chats') }}" method="get">
-				<input class="logo" type="submit" value="Главная страница">
+				<input class="logo" type="submit" value="Главная">
 			</form>
 			<div class="header-right">
 				<form action="{{ url_for('get_profile') }}" method="get">
@@ -19,30 +20,20 @@
 				</form>
 			</div>
 		</div>
-		<h1>Новый чат</h1>
-		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-		<style>
-			#message {
-				width: 300px;
-			}
-		</style>
-		<div id="new_chat">
-			<input type="text" id="message" placeholder="Введите название:">
+		<h3>Новый чат</h3>
+		<div>
+			<input class="input-button" type="text" id="create_new_chat" placeholder="Введите название:" maxlength="20">
 		</div>
-		<script>
-			const socket = io();
-			document.getElementById("message").addEventListener("keyup", function(event) {
-				if (event.key == "Enter") {
-					let message = document.getElementById("message").value;
-					socket.emit("add_new_chat", message);
-					document.getElementById("message").value = "";
-				}
-			})
-			socket.on("add_new_chat", function(data) {
-				let message = document.createElement("h1");
-				message.textContent = data;
-				document.body.appendChild(message);
-			})
-		</script>
+		<div class="my_chats">
+			<h3>Случайные чаты</h3>
+			<ul class="list-my-chats-area" id="list_my_chats">
+				{% for chatname in random_chats %}
+					<div class="my_chats_links">
+						<li><a href="{{ url_for('get_chat') }}?open_chat={{ chatname }}">{{ chatname }}</a></li>
+					</div>
+				{% endfor %}
+			</ul>
+		</div>
+		<script src="{{ url_for('static', filename='js/add_new_chat.js') }}"></script>
     </body>
 </html>

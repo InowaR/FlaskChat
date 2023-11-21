@@ -3,12 +3,14 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Список чатов</title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+		<a id="chat_link" href="{{ url_for('get_chat') }}"></a>
 	</head>
-	<body>
+	<body class="body">
 		<div class="header">
 			<form action="{{ url_for('get_list_chats') }}" method="get">
-				<input class="logo" type="submit" value="Главная страница">
+				<input class="logo" type="submit" value="Главная">
 			</form>
 			<div class="header-right">
 				<form action="{{ url_for('get_profile') }}" method="get">
@@ -19,89 +21,30 @@
 				</form>
 			</div>
 		</div>
-		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-		<style>
-			#body-area {
-				display: flex;
-				align-items: center;
-			}
-
-			#list_find_chat {
-				height: 50px;
-				width: 300px;
-				overflow-y: scroll;
-			}
-
-			#list_my_chats {
-				height: 200px;
-				width: 300px;
-				overflow-y: scroll;
-			}
-
-			li {
-				height: min-content;
-				width: min-content;
-				list-style: none;
-				background-color: grey;
-			}
-
-			li:hover {
-				cursor: pointer;
-			}
-
-			#find {
-				width: 300px;
-			}
-
-		</style>
-		<div id="body-area">
+		<div class="list-chats-body-area">
 			<div id="find_chat">
-				<h1>Список найденных чатов</h1>
-				<input type="text" id="find" placeholder="Найти чат:">
-				<ul id="list_find_chat"></ul>
+				<input class="input-button" type="text" id="find" placeholder="Найти чат:">
+				<ul class="find-chat-area" id="list_find_chat"></ul>
 			</div>
-			<div id="new_chat">
+			<div>
 				<form action="{{ url_for('get_add_new_chat') }}" method="get">
-					<input type="submit" value="Создать чат">
+					<input type="submit" value="Новый чат">
 				</form>
 			</div>
 		</div>
-		<h1>Мои чаты</h1>
-		<a id="chat_link" href="{{ url_for('get_chat') }}"></a>
-		<div id="my_chats">
-			<ul id="list_my_chats"></ul>
+		<div class="my_chats">
+			<h3>Мои чаты</h3>
+			<ul class="list-my-chats-area" id="list_my_chats">
+				{% for chatname in list_chats %}
+					<div class="my_chats_links">
+						<li><a href="{{ url_for('get_chat') }}?open_chat={{ chatname }}">{{ chatname }}</a></li>
+						<form action="{{ url_for('get_delete_chat') }}" method="post">
+							<input class="delete_button" type="submit" value="{{ chatname }}" name="button-delete-chat">
+						</form>
+					</div>
+				{% endfor %}
+			</ul>
 		</div>
-		<script>
-			const socket = io();
-			document.getElementById("find").addEventListener("keyup", function(event) {
-				if (event.key == "Enter") {
-					let data = document.getElementById("find").value;
-					socket.emit("new_find_chat", data);
-					document.getElementById("find").value = "";
-				}
-			})
-			socket.on("list_find_chats", function(data) {
-				let ul = document.getElementById("list_find_chat");
-				let li = document.createElement("li");
-				li.addEventListener("click", function(event) {
-					if (event) {
-						let new_ul = document.getElementById("list_my_chats");
-						let new_li = document.createElement("li");
-						new_li.appendChild(document.createTextNode(data));
-						new_ul.appendChild(new_li);
-						li.remove();
-						new_li.addEventListener("click", function(event) {
-							console.log(data)
-							chat_link = document.getElementById("chat_link");
-							console.log(chat_link + "?open_chat=" + data)
-							window.location.href = chat_link + "?open_chat=" + data;
-						});
-					}
-				});
-				li.appendChild(document.createTextNode(data));
-				ul.appendChild(li);
-			})
-		</script>
-
+		<script src="{{ url_for('static', filename='js/list_chats.js') }}"></script>
 	</body>
 </html>

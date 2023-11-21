@@ -3,24 +3,25 @@
     <head>
         <meta charset="UTF-8">
         <title>Вход на сайт</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
-    <body>
+    <body class="body">
         <div class="header">
             <form action="{{ url_for('get_list_chats') }}" method="get">
-                <input class="logo" type="submit" value="Главная страница">
+                <input class="logo" type="submit" value="Главная">
             </form>
             <form action="{{ url_for('get_register') }}" method="get">
                 <input type="submit" value="Зарегистрироваться">
             </form>
         </div>
-        <h1>Вход</h1>
+        <h3>Вход</h3>
         <form class="login-form" action="/login" method="post">
-            <label for="username">Имя пользователя:</label>
-            <input type="text" id="username" name="username" maxlength="12" minlength="4" required>
+            <label for="login">Имя пользователя:</label>
+            <input type="text" id="login" name="login" maxlength="12" minlength="4" required>
             <label for="password">Пароль:</label>
             <input type="password" id="password" name="password" maxlength="12" minlength="4" required>
             <input type="submit" value="Войти">
-          </form>
+            <p>{{ message }}</p>
+        </form>
     </body>
 </html>

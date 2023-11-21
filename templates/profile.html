@@ -3,18 +3,23 @@
     <head>
         <meta charset="UTF-8">
         <title>Профиль</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
-    <body>
+    <body class="body">
         <div class="header">
             <form action="{{ url_for('get_list_chats') }}" method="get">
-                <input class="logo" type="submit" value="Главная страница">
+                <input class="logo" type="submit" value="Главная">
             </form>
             <form action="{{ url_for('get_logout') }}" method="get">
                 <input type="submit" value="Выйти">
             </form>
         </div>
-        <h1>Профиль пользователя {{ username }}</h1>
+        <h3>Профиль пользователя {{ login }}</h3>
         <p>{{ message }}</p>
+        <div class="profile">
+        <form action="{{ url_for('get_delete_user') }}" method="get">
+            <input type="submit" value="Удалить пользователя">
+        </form>
+        </div>
     </body>
 </html>

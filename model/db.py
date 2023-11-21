@@ -6,81 +6,78 @@ db = 'model/site.db'
 def create_db():
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        cursor.execute('''CREATE TABLE IF NOT EXISTS users (
-                                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                username TEXT UNIQUE,
-                                password TEXT
-                            )''')
-
-        cursor.execute('''CREATE TABLE IF NOT EXISTS list_chats (
-                                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                name TEXT,
-                                created_by TEXT,
-                                FOREIGN KEY (created_by) REFERENCES users (username)
-                            )''')
-
-        cursor.execute('''CREATE TABLE IF NOT EXISTS chat (
-                                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                chat_id INTEGER,
-                                username TEXT,
-                                time INTEGER,
-                                message TEXT,
-                                FOREIGN KEY (chat_id) REFERENCES list_chats (id)
-                            )''')
-
+        cursor.execute(
+            """
+                CREATE TABLE IF NOT EXISTS users (
+                    login TEXT,
+                    password TEXT,
+                    username TEXT,
+                    age INTEGER,
+                    city TEXT
+                );
+            """
+        )
+        cursor.execute(
+            """
+                CREATE TABLE IF NOT EXISTS chats (
+                    chatname TEXT,
+                    description TEXT,
+                    created_at DATETIME
+                );
+            """
+        )
+        cursor.execute(
+            """
+                CREATE TABLE IF NOT EXISTS chat_users (
+                    login TEXT,
+                    chatname TEXT
+                );
+            """
+        )
+        cursor.execute(
+            """
+                CREATE TABLE IF NOT EXISTS messages (
+                    login TEXT,
+                    chatname TEXT,
+                    message TEXT,
+                    created_at DATETIME
+                );
+            """
+        )
         connection.commit()
 
 
-def create_new_chat(name: str, created_by: str):
+def register_new_user(login: str, password: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM list_chats WHERE name=?", (name,))
-        chat = cursor.fetchone()
-        if chat:
-            return False
-        else:
-            cursor.execute("INSERT INTO list_chats (name, created_by) VALUES (?, ?)", (name, created_by))
-            connection.commit()
-            return True
-
-
-def add_new_message_to_chat(name, username, time, message):
-    with sqlite3.connect(db) as connection:
-        cursor = connection.cursor()
-        cursor.execute('''INSERT INTO chat (chat_id, username, time, message)
-                            VALUES ((SELECT id FROM list_chats WHERE name=?), ?, ?, ?)
-                            ''', (name, username, time, message))
-        connection.commit()
-
-
-def find_chat_by_name(name: str):
-    with sqlite3.connect(db) as connection:
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM list_chats WHERE name=?", (name,))
-        chat = cursor.fetchone()
-        if chat:
-            return True
-        else:
-            return False
-
-
-def register_new_user(username: str, password: str):
-    with sqlite3.connect(db) as connection:
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE username=?", (username,))
+        query = """
+                    SELECT login
+                    FROM users
+                    WHERE login = ?
+                """
+        cursor.execute(query, (login,))
         user = cursor.fetchone()
         if user:
             return False
         else:
-            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+            query = """
+                        INSERT INTO users (login, password)
+                        VALUES (?, ?)
+                    """
+            cursor.execute(query, (login, password))
             connection.commit()
             return True
 
 
-def check_user(username: str, password: str):
+def check_user(login: str, password: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+        query = """
+                    SELECT login
+                    FROM users
+                    WHERE login = ? AND password = ?
+                """
+        cursor.execute(query, (login, password))
         user = cursor.fetchone()
         if user:
             return True
@@ -88,26 +85,121 @@ def check_user(username: str, password: str):
             return False
 
 
-def select_chat():
+def load_all_user_chats(login: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        cursor.execute('''
-                            SELECT
-                                chat.id,
-                                chat.name,
-                                chat.created_by,
-                                chat.username,
-                                chat.time,
-                                chat.message
-                            FROM
-                                chat
-                            INNER JOIN
-                                chats
-                            ON
-                                chat.chat_id = chats.id
-                            WHERE
-                                chats.name = 'Chat 1';
-                        ''')
-        results = cursor.fetchall()
-        for row in results:
-            print(row)
+        query = """
+                    SELECT chatname
+                    FROM chat_users
+                    WHERE login = ?
+                """
+        cursor.execute(query, (login,))
+        return [row[0] for row in cursor.fetchall()]
+
+
+def create_chat(chatname: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        query = """
+                    SELECT chatname
+                    FROM chats
+                    WHERE chatname = ?
+                """
+        cursor.execute(query, (chatname,))
+        chat = cursor.fetchone()
+        if chat:
+            return False
+        else:
+            query = """
+                        INSERT INTO chats (chatname, created_at)
+                        VALUES (?, CURRENT_TIMESTAMP)
+                    """
+            cursor.execute(query, (chatname,))
+            connection.commit()
+            return True
+
+
+def add_user_to_chat(login: str, chatname: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        query = """
+                    INSERT INTO chat_users (login, chatname)
+                    VALUES (?, ?)
+                """
+        cursor.execute(query, (login, chatname))
+        connection.commit()
+
+
+def find_chat_by_name(chatname: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        query = """
+                    SELECT chatname
+                    FROM chats
+                    WHERE chatname = ?
+                """
+        cursor.execute(query, (chatname,))
+        chat = cursor.fetchone()
+        if chat:
+            return True
+        else:
+            return False
+
+
+def load_all_messages_by_chat_name(chatname: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        query = """
+                    SELECT login, message
+                    FROM messages
+                    WHERE chatname = ?
+                """
+        cursor.execute(query, (chatname,))
+        return cursor.fetchall()
+
+
+def send_message(login: str, chatname: str, message: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        query = """
+                    INSERT INTO messages (login, chatname, message, created_at)
+                    VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+                """
+        cursor.execute(query, (login, chatname, message))
+        connection.commit()
+
+
+def delete_user(login: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        query = """
+                    DELETE
+                    FROM users
+                    WHERE login = ?
+                """
+        cursor.execute(query, (login,))
+        connection.commit()
+
+
+def delete_chat(login: str, chatname: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        query = """
+                    DELETE
+                    FROM chat_users
+                    WHERE login = ? AND chatname = ?
+                """
+        cursor.execute(query, (login, chatname))
+        connection.commit()
+
+
+def delete_message(login: str, chatname: str, message: str):
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        query = """
+                    DELETE
+                    FROM messages
+                    WHERE login = ? AND chatname = ? AND message = ?
+                """
+        cursor.execute(query, (login, chatname, message))
+        connection.commit()

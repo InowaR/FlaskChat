@@ -1,0 +1,121 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 8px;
+    margin-bottom: 30px;
+}
+
+.header .logo {
+    color: white;
+    border: 3px;
+    background-color: #0b57d0;
+    font-size: 20px;
+}
+
+.header .logo:hover {
+    background-color: #094abf;
+}
+
+.header-right {
+    display: flex;
+}
+
+.body {
+    background-color: #f3f6fc;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 10%;
+    height: 1%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.login-form input[type="submit"] {
+    background-color: #4169E1;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-form input[type="submit"]:hover {
+    background-color: #0D47A1;
+}
+
+.input-button {
+    width: 320px;
+}
+
+.list-chats-body-area {
+    display: flex;
+}
+
+.my_chats_links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.find-chat-area {
+    background-color: #B0A2C2;
+    height: 50px;
+    width: 300px;
+    overflow-y: scroll;
+}
+
+.list-my-chats-area {
+    background-color: #B0A2C2;
+    height: 300px;
+    width: 300px;
+    overflow-y: scroll;
+}
+
+.chat-area {
+    background-color: #B0A2C2;
+    opacity: 10;
+    height: 400px;
+    width: 300px;
+    overflow-y: scroll;
+}
+
+.delete_button {
+    width: 25px;
+    background-color: #FF3300;
+    color: transparent;
+    border: 3px;
+    cursor: pointer;
+}
+
+li {
+    height: min-content;
+    width: min-content;
+    list-style: none;
+    background-color: #00FFFF;
+    padding: 5px;
+    cursor: pointer;
+}
+
+li:hover {
+    cursor: pointer;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:visited {
+    color: transparent;
+}
