@@ -53,12 +53,21 @@ def create_db():
 def register_new_user(login: str, password: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT id FROM users WHERE login = ?", (login,))
+        query = """
+                    SELECT id
+                    FROM users
+                    WHERE login = ?
+                """
+        cursor.execute(query, (login,))
         user = cursor.fetchone()
         if user:
             return False
         else:
-            cursor.execute("INSERT INTO users (login, password) VALUES (?, ?)", (login, password))
+            query = """
+                        INSERT INTO users (login, password)
+                        VALUES (?, ?)
+                    """
+            cursor.execute(query, (login, password))
             connection.commit()
             return True
 
@@ -66,7 +75,12 @@ def register_new_user(login: str, password: str):
 def check_user(login: str, password: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT id FROM users WHERE login = ? AND password = ?", (login, password))
+        query = """
+                    SELECT id
+                    FROM users
+                    WHERE login = ? AND password = ?
+                """
+        cursor.execute(query, (login, password))
         user = cursor.fetchone()
         if user:
             return True
@@ -78,7 +92,9 @@ def load_all_user_chats(login: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         query = """
-                    SELECT chatname FROM chat_users WHERE login = ?
+                    SELECT chatname
+                    FROM chat_users
+                    WHERE login = ?
                 """
         cursor.execute(query, (login,))
         return [row[0] for row in cursor.fetchall()]
@@ -87,15 +103,20 @@ def load_all_user_chats(login: str):
 def create_chat(login: str, chatname: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT id FROM chats WHERE chatname=?", (chatname,))
+        query = """
+                    SELECT id
+                    FROM chats
+                    WHERE chatname = ?
+                """
+        cursor.execute(query, (chatname,))
         chat = cursor.fetchone()
         if chat:
             return False
         else:
             query = """
-                      INSERT INTO chats (login, chatname, created_at)
-                      VALUES (?, ?, CURRENT_TIMESTAMP)
-                  """
+                        INSERT INTO chats (login, chatname, created_at)
+                        VALUES (?, ?, CURRENT_TIMESTAMP)
+                    """
             cursor.execute(query, (login, chatname))
             connection.commit()
             return True
@@ -115,7 +136,12 @@ def add_user_to_chat(login: str, chatname: str):
 def find_chat_by_name(chatname: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT id FROM chats WHERE chatname=?", (chatname,))
+        query = """
+                    SELECT id
+                    FROM chats
+                    WHERE chatname = ?
+                """
+        cursor.execute(query, (chatname,))
         chat = cursor.fetchone()
         if chat:
             return True
@@ -127,7 +153,9 @@ def load_all_messages_by_chat_name(chatname: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         query = """
-                    SELECT login, message FROM messages WHERE chatname = ?
+                    SELECT login, message
+                    FROM messages
+                    WHERE chatname = ?
                 """
         cursor.execute(query, (chatname,))
         return cursor.fetchall()
@@ -148,7 +176,8 @@ def delete_user(login: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         query = """
-                    DELETE FROM users
+                    DELETE
+                    FROM users
                     WHERE login = ?
                 """
         cursor.execute(query, (login,))
@@ -159,7 +188,8 @@ def delete_chat(login: str, chatname: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         query = """
-                    DELETE FROM chat_users
+                    DELETE
+                    FROM chat_users
                     WHERE login = ? AND chatname = ?
                 """
         cursor.execute(query, (login, chatname))
@@ -170,7 +200,8 @@ def delete_message(login: str, chatname: str, message: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         query = """
-                    DELETE FROM messages
+                    DELETE
+                    FROM messages
                     WHERE login = ? AND chatname = ? AND message = ?
                 """
         cursor.execute(query, (login, chatname, message))
