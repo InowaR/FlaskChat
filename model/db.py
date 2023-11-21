@@ -9,9 +9,9 @@ def create_db():
         cursor.execute(
             """
                 CREATE TABLE IF NOT EXISTS users (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                     login TEXT,
                     password TEXT,
+                    username TEXT,
                     age INTEGER,
                     city TEXT
                 );
@@ -20,7 +20,6 @@ def create_db():
         cursor.execute(
             """
                 CREATE TABLE IF NOT EXISTS chats (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                     login TEXT,
                     chatname TEXT,
                     description TEXT,
@@ -39,7 +38,6 @@ def create_db():
         cursor.execute(
             """
                 CREATE TABLE IF NOT EXISTS messages (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                     login TEXT,
                     chatname TEXT,
                     message TEXT,
@@ -54,7 +52,7 @@ def register_new_user(login: str, password: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         query = """
-                    SELECT id
+                    SELECT login
                     FROM users
                     WHERE login = ?
                 """
@@ -76,7 +74,7 @@ def check_user(login: str, password: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         query = """
-                    SELECT id
+                    SELECT login
                     FROM users
                     WHERE login = ? AND password = ?
                 """
@@ -104,7 +102,7 @@ def create_chat(login: str, chatname: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         query = """
-                    SELECT id
+                    SELECT login
                     FROM chats
                     WHERE chatname = ?
                 """
@@ -137,7 +135,7 @@ def find_chat_by_name(chatname: str):
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         query = """
-                    SELECT id
+                    SELECT login
                     FROM chats
                     WHERE chatname = ?
                 """
