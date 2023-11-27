@@ -98,9 +98,7 @@
 }
 
 li {
-    display: flex;
-    height: min-content;
-    width: min-content;
+    word-break: normal;
     list-style: none;
     background-color: #00FFFF;
     padding: 5px;
