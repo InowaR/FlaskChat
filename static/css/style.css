@@ -84,7 +84,6 @@
 
 .chat-area {
     background-color: #B0A2C2;
-    opacity: 10;
     height: 400px;
     width: 300px;
     overflow-y: scroll;
@@ -94,11 +93,12 @@
     width: 25px;
     background-color: #FF3300;
     color: transparent;
-    border: 3px;
+    border: none;
     cursor: pointer;
 }
 
 li {
+    display: flex;
     height: min-content;
     width: min-content;
     list-style: none;

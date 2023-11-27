@@ -5,6 +5,7 @@
 		<title>Список чатов</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<a id="chat_link" href="{{ url_for('get_chat') }}"></a>
 	</head>
 	<body class="body">
@@ -46,5 +47,6 @@
 			</ul>
 		</div>
 		<script src="{{ url_for('static', filename='js/list_chats.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/alert_delete.js') }}"></script>
 	</body>
 </html>
