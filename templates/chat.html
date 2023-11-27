@@ -23,14 +23,16 @@
 			</div>
 		</div>
 		<h3 id="chatname" data-name="{{ chatname }}" >Чат {{ chatname }}</h3>
-		<div id="chat">
+		<div id="chat" data-login="{{ login }}">
 			<ul class="chat-area" id="chat_messages">
 				{% for message in list_messages %}
-					<div class="my_chats_links" {% if message[0] == login %} style="justify-content: flex-end" {% endif %}>
-						<li>{{ message[0] }}: {{ message[1] }}</li>
-						<form action="{{ url_for('get_delete_message') }}" method="post">
-							<input class="delete_button" id="chat-button" type="submit" value="{{ message[0] }},{{ chatname }},{{ message[1] }}" name="button-delete-message">
-						</form>
+					<div class="my_chats_links" id="my_links" {% if message[0] == login %} style="justify-content: flex-end" {% endif %}>
+						<li class="new_li">{{ message[0] }}: {{ message[1] }}</li>
+						{% if message[0] == login %}
+							<form action="{{ url_for('get_delete_message') }}" method="post">
+								<input class="delete_button" id="chat-button" type="submit" value="{{ message[0] }},{{ chatname }},{{ message[1] }}" name="button-delete-message">
+							</form>
+						{% endif %}
 					</div>
 				{% endfor %}
 			</ul>

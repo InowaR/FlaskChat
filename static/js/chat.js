@@ -12,5 +12,16 @@ socket.on("chat", function(data) {
     let ul = document.getElementById("chat_messages");
     let li = document.createElement("li");
     li.appendChild(document.createTextNode(data["login"] + ": " + data["message"]));
-    ul.appendChild(li);
+    let jinjaNumber = document.getElementById("chat").getAttribute("data-login");
+    if (data["login"] == jinjaNumber) {
+        let delete_button = document.createElement("li");
+        delete_button.setAttribute("style", "width: 15px; height: 7px; background-color: #FF3300;");
+        let bar = document.createElement("div");
+        bar.setAttribute("style", "display: flex; justify-content: flex-end; align-items: center;");
+        bar.appendChild(li);
+        bar.appendChild(delete_button);
+        ul.appendChild(bar);
+    } else {
+        ul.appendChild(li);
+    }
 })
