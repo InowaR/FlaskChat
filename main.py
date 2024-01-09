@@ -67,7 +67,7 @@ def get_chat():
     if not status:
         add_user_to_chat(__login, chatname)
     list_messages = load_all_messages_by_chat_name(chatname)
-    return render_template('chat.html', chatname=chatname, list_messages=list_messages)
+    return render_template('chat.html', chatname=chatname, list_messages=list_messages, login=__login)
 
 
 @socketio.on("new_message")

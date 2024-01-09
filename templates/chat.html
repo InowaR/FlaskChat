@@ -5,6 +5,8 @@
         <title>Главная страница</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     </head>
     <body class="body">
 		<div class="header">
@@ -21,19 +23,23 @@
 			</div>
 		</div>
 		<h3 id="chatname" data-name="{{ chatname }}" >Чат {{ chatname }}</h3>
-		<div id="chat">
+		<div id="chat" data-login="{{ login }}">
 			<ul class="chat-area" id="chat_messages">
 				{% for message in list_messages %}
-					<div class="my_chats_links">
-						<li>{{ message[0] }}: {{ message[1] }}</li>
-						<form action="{{ url_for('get_delete_message') }}" method="post">
-							<input class="delete_button" id="chat-button" type="submit" value="{{ message[0] }},{{ chatname }},{{ message[1] }}" name="button-delete-message">
-						</form>
+					<div class="my_chats_links" id="my_links" {% if message[0] == login %} style="justify-content: flex-end" {% endif %}>
+						<li class="new_li">{{ message[0] }}: {{ message[1] }}</li>
+						{% if message[0] == login %}
+							<form action="{{ url_for('get_delete_message') }}" method="post">
+								<input class="delete_button" id="chat-button" type="submit" value="{{ message[0] }},{{ chatname }},{{ message[1] }}" name="button-delete-message">
+							</form>
+						{% endif %}
 					</div>
 				{% endfor %}
 			</ul>
 			<input class="input-button" type="text" id="message" placeholder="Введите сообщение:">
 		</div>
 		<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/resize_chat_window.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/alert_delete.js') }}"></script>
     </body>
 </html>

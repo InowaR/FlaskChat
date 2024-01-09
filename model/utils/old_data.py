@@ -25,3 +25,13 @@ def delete_old_messages():
                 """
         cursor.execute(query)
         connection.commit()
+
+
+def delete_all_messages():
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        query = """
+                    DELETE FROM messages;
+                """
+        cursor.execute(query)
+        connection.commit()
