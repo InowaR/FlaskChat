@@ -170,5 +170,19 @@ def get_delete_message():
         return redirect(url_for('get_chat'))
 
 
+@app.route("/game", methods=["GET", "POST"])
+def game():
+    __login = session.get('login')
+    if __login is None:
+        return redirect(url_for('get_login'))
+    return render_template("game.html")
+
+
+@socketio.on("get_button")
+def get_button(message: str):
+    print(message)
+    emit("buttons", message, broadcast=True)
+
+
 if __name__ == '__main__':
     socketio.run(app, allow_unsafe_werkzeug=True)

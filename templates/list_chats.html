@@ -27,11 +27,14 @@
 				<input class="input-button" type="text" id="find" placeholder="Найти чат:">
 				<ul class="find-chat-area" id="list_find_chat"></ul>
 			</div>
-			<div>
+			<div class="chat_buttons">
 				<form action="{{ url_for('get_add_new_chat') }}" method="get">
 					<input type="submit" value="Новый чат">
 				</form>
 			</div>
+				<form action="{{ url_for('game') }}" method="get">
+					<input class="logo" type="submit" value="Играть">
+				</form>
 		</div>
 		<div class="my_chats">
 			<h3>Мои чаты</h3>

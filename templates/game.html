@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>Покер</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+        <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    </head>
+    <body>
+        <form action="{{ url_for('get_list_chats') }}" method="get">
+            <input class="logo" type="submit" value="Главная">
+        </form>
+        <div class="area">
+            <div class="table">
+                <div class="buttons">
+                    <button type="submit" id="fold" onclick="fold();">Fold</button>
+                    <button type="submit" id="check" onclick="check();">Check</button>
+                    <button type="submit" id="raise" onclick="raise();">Raise</button>
+                </div>
+            </div>
+        </div>
+        <script>
+            const socket = io();
+            function fold() {
+                socket.emit("get_button", 'fold');
+            }
+            function check() {
+                socket.emit("get_button", 'check');
+            }
+            function raise() {
+                socket.emit("get_button", 'raise');
+            }
+
+            socket.on("buttons", function(data) {
+                alert(data);
+            })
+
+            $(".logo").click(function() {
+                let answer = confirm("Вы действительно хотите покинуть игру?");
+                if (answer) {
+                    $(this).closest("form").submit();
+                } else {
+                    event.preventDefault();
+                }
+            });
+        </script>
+    </body>
+</html>

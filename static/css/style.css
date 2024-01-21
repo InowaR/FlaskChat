@@ -62,6 +62,11 @@
     display: flex;
 }
 
+.chat_buttons {
+    width: 85px;
+    display: flex;
+}
+
 .my_chats_links {
     display: flex;
     justify-content: space-between;
