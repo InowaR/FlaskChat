@@ -186,7 +186,12 @@ def game():
     if not game_id:
         return render_template("game.html", message='Ожидайте 2 игрока')
     else:
-        return render_template("game.html", message='Игра началась')
+        return redirect(url_for('play_game', game_id=game_id))
+
+
+@app.route("/game/<game_id>", methods=["GET", "POST"])
+def play_game(game_id):
+    return render_template("game.html", message='Игра началась')
 
 
 @socketio.on("get_button")
