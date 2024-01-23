@@ -2,12 +2,15 @@ import datetime
 from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from flask_socketio import SocketIO, emit
 from model.db import *
+from model.game.service import Service
 from model.utils.random_chat import *
 
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'key'
 app.permanent_session_lifetime = datetime.timedelta(minutes=30)
 socketio = SocketIO(app)
+
+poker = Service()
 
 
 @app.route('/', methods=['GET'])
@@ -175,7 +178,15 @@ def game():
     __login = session.get('login')
     if __login is None:
         return redirect(url_for('get_login'))
-    return render_template("game.html")
+    print(__login)
+    check = poker.check_players(__login)
+    if not check:
+        poker.add_new_player(__login)
+    game_id = poker.add_new_playing_game()
+    if not game_id:
+        return render_template("game.html", message='Ожидайте 2 игрока')
+    else:
+        return render_template("game.html", message='Игра началась')
 
 
 @socketio.on("get_button")

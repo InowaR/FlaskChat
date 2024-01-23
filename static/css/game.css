@@ -14,3 +14,10 @@
     top: 110%;
     left: 40%;
 }
+
+.message {
+    position: absolute;
+    color: red;
+    top: 40%;
+    left: 36%;
+}
