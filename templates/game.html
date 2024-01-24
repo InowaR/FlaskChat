@@ -14,7 +14,7 @@
         <div class="area">
             <div class="table">
                 <h2 class="player2">{{ player2 }}</h2>
-                <h2 class="message">{{ message }}</h2>
+                <h2 id="mes" class="message">{{ message }}</h2>
                 <h2 class="player1">{{ player1 }}</h2>
                 <div class="buttons">
                     <button type="submit" id="fold" onclick="fold();">Fold</button>
@@ -46,6 +46,24 @@
                 } else {
                     event.preventDefault();
                 }
+            });
+
+            $(document).ready(() => {
+                const tag = $("#mes");
+                setInterval(() => {
+                    const content = tag.html();
+                    if (content === "Ожидайте игру") {
+                        location.reload();
+                    }
+                }, 2000);
+            });
+
+            $(document).ready(() => {
+                setTimeout(() => {
+                    const tag = $("#mes");
+                    console.log(tag.html());
+                    tag.html("");
+                }, 4000);
             });
         </script>
     </body>

@@ -194,12 +194,12 @@ def play_game(game_id):
     player1 = ''
     player2 = ''
     __login = session.get('login')
-    players = poker.find_game_by_id(game_id)
-    for player in players:
+    game_session = poker.find_game_by_id(game_id)
+    for player in game_session.show_players():
         if player[0] == __login:
             player1 = player
         if player[0] != __login:
-            player2 = player[:-1]
+            player2 = player
     return render_template("game.html", player1=player1, player2=player2, message='Игра началась!')
 
 

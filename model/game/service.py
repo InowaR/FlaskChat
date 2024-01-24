@@ -40,6 +40,8 @@ class Service:
                 game.add_player(player1)
                 game.add_player(player2)
                 self.list_playing_games.append(game)
+                game.create_deck()
+                game.deal_cards()
                 return game.game_id
         else:
             print('Ожидайте')
@@ -48,4 +50,10 @@ class Service:
     def find_game_by_id(self, number: str):
         for game in self.list_playing_games:
             if game.game_id == int(number):
-                return game.show_players()
+                return game
+
+    def start_game(self, number: str):
+        for game in self.list_playing_games:
+            if game.game_id == int(number):
+                game.create_deck()
+                game.deal_cards()
