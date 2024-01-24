@@ -11,6 +11,8 @@
         <form action="{{ url_for('get_list_chats') }}" method="get">
             <input class="logo" type="submit" value="Главная">
         </form>
+        <h2 id="login">{{ login }}</h2>
+        <h2 id="game_id">{{ game_id }}</h2>
         <div class="area">
             <div class="table">
                 <h2 class="player2">{{ player2 }}</h2>
@@ -25,43 +27,47 @@
         </div>
         <script>
             const socket = io();
+            const login = $("#login").html();
+            const game_id = $("#game_id").html();
             function fold() {
-                socket.emit("get_button", 'fold');
+                let tuple = [game_id, login, 'fold'];
+                socket.emit("get_button", tuple);
             }
             function check() {
-                socket.emit("get_button", 'check');
+                let tuple = [game_id, login, 'check'];
+                socket.emit("get_button", tuple);
             }
             function raise() {
-                socket.emit("get_button", 'raise');
+                let tuple = [game_id, login, 'raise'];
+                socket.emit("get_button", tuple);
             }
 
-            socket.on("buttons", function(data) {
-                alert(data);
-            })
+<!--            socket.on("buttons", function(data) {-->
+<!--                alert(data);-->
+<!--            })-->
 
-            $(".logo").click(function() {
-                let answer = confirm("Вы действительно хотите покинуть игру?");
-                if (answer) {
-                    $(this).closest("form").submit();
-                } else {
-                    event.preventDefault();
-                }
-            });
+<!--            $(".logo").click(function() {-->
+<!--                let answer = confirm("Вы действительно хотите покинуть игру?");-->
+<!--                if (answer) {-->
+<!--                    $(this).closest("form").submit();-->
+<!--                } else {-->
+<!--                    event.preventDefault();-->
+<!--                }-->
+<!--            });-->
 
-            $(document).ready(() => {
-                const tag = $("#mes");
-                setInterval(() => {
-                    const content = tag.html();
-                    if (content === "Ожидайте игру") {
-                        location.reload();
-                    }
-                }, 2000);
-            });
+<!--            $(document).ready(() => {-->
+<!--                const tag = $("#mes");-->
+<!--                setInterval(() => {-->
+<!--                    const content = tag.html();-->
+<!--                    if (content === "Ожидайте игру") {-->
+<!--                        location.reload();-->
+<!--                    }-->
+<!--                }, 2000);-->
+<!--            });-->
 
             $(document).ready(() => {
                 setTimeout(() => {
                     const tag = $("#mes");
-                    console.log(tag.html());
                     tag.html("");
                 }, 4000);
             });

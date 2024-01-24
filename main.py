@@ -190,22 +190,28 @@ def game():
 
 
 @app.route("/game/<game_id>", methods=["GET", "POST"])
-def play_game(game_id):
+def play_game(game_id: str):
     player1 = ''
     player2 = ''
     __login = session.get('login')
+    print(__login)
     game_session = poker.find_game_by_id(game_id)
     for player in game_session.show_players():
         if player[0] == __login:
             player1 = player
         if player[0] != __login:
             player2 = player
-    return render_template("game.html", player1=player1, player2=player2, message='Игра началась!')
+    return render_template("game.html", game_id=game_id, login=__login, player1=player1, player2=player2, message='Игра началась!')
 
 
 @socketio.on("get_button")
 def get_button(message: str):
-    print(message)
+    game_id = message[0]
+    player = message[1]
+    button = message[2]
+    game_session = poker.find_game_by_id(game_id)
+    for player in game_session.show_players():
+        print(player)
     emit("buttons", message, broadcast=True)
 
 

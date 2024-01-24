@@ -51,9 +51,3 @@ class Service:
         for game in self.list_playing_games:
             if game.game_id == int(number):
                 return game
-
-    def start_game(self, number: str):
-        for game in self.list_playing_games:
-            if game.game_id == int(number):
-                game.create_deck()
-                game.deal_cards()
