@@ -8,11 +8,6 @@ class Service:
         self.list_games = []
         self.list_playing_games = []
 
-    def show(self):
-        print(self.list_players)
-        print(self.list_games)
-        print(self.list_playing_games)
-
     def check_players(self, player_name):
         for name in self.list_players:
             if name == player_name:
@@ -36,7 +31,7 @@ class Service:
 
     def add_new_playing_game(self):
         if self.add_new_game():
-            print('ok')
+            print('Игра началась')
             for _ in self.list_games:
                 p1, p2 = _
                 player1 = Player(p1)
@@ -45,24 +40,12 @@ class Service:
                 game.add_player(player1)
                 game.add_player(player2)
                 self.list_playing_games.append(game)
-                return game.name
+                return game.game_id
         else:
             print('Ожидайте')
             return False
 
-
-    # def play(self):
-    #     for game in self.list_games:
-    #         game.show_players()
-
-# player1 = Player('Иван')
-# player2 = Player('Аня')
-#
-# game = Game()
-# game.add_player(player1)
-# game.add_player(player2)
-# game.show_players()
-# game.create_deck()
-# game.show_deck()
-# game.deal_cards()
-# game.show_players_cards()
+    def find_game_by_id(self, number: str):
+        for game in self.list_playing_games:
+            if game.game_id == int(number):
+                return game.show_players()

@@ -7,13 +7,15 @@
         <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     </head>
-    <body>
+    <body class="body">
         <form action="{{ url_for('get_list_chats') }}" method="get">
             <input class="logo" type="submit" value="Главная">
         </form>
         <div class="area">
             <div class="table">
+                <h2 class="player2">{{ player2 }}</h2>
                 <h2 class="message">{{ message }}</h2>
+                <h2 class="player1">{{ player1 }}</h2>
                 <div class="buttons">
                     <button type="submit" id="fold" onclick="fold();">Fold</button>
                     <button type="submit" id="check" onclick="check();">Check</button>

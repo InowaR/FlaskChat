@@ -3,7 +3,7 @@ import random
 
 class Game:
     def __init__(self):
-        self.name = random.randint(1, 10)
+        self.game_id = random.randint(1, 10)
         self.list_players = []
         self.deck = []
         self.table_cards = []
@@ -14,8 +14,10 @@ class Game:
                 return player
 
     def show_players(self):
+        players = []
         for player in self.list_players:
-            return player
+            players.append(player.info())
+        return players
 
     def show_deck(self):
         for card in self.deck:

@@ -1,23 +1,39 @@
+.body {
+    background-image: url(../img/poker/poker-background.jpg);
+}
+
 .table {
     position: absolute;
-    top: 10%;
+    top: 15%;
     left: 25%;
     width: 650px;
     height: 350px;
     background-color: #013220;
     border-radius: 50%;
-    border: 1px solid black;
+
 }
 
 .buttons {
     position: absolute;
-    top: 110%;
-    left: 40%;
+    top: 105%;
+    left: 39%;
 }
 
 .message {
     position: absolute;
-    color: red;
+    color: white;
     top: 40%;
-    left: 36%;
+    left: 35%;
+}
+
+.player1 {
+    position: absolute;
+    top: -20%;
+    left: 44%;
+}
+
+.player2 {
+    position: absolute;
+    top: 120%;
+    left: 46%;
 }
