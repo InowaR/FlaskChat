@@ -22,18 +22,20 @@
 .message {
     position: absolute;
     color: white;
-    top: 40%;
-    left: 35%;
+    top: 41%;
+    left: 38%;
 }
 
 .player1 {
     position: absolute;
+    color: white;
     top: -20%;
     left: 44%;
 }
 
 .player2 {
     position: absolute;
+    color: white;
     top: 120%;
     left: 46%;
 }

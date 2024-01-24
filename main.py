@@ -184,7 +184,7 @@ def game():
         poker.add_new_player(__login)
     game_id = poker.add_new_playing_game()
     if not game_id:
-        return render_template("game.html", message='Ожидайте 2 игрока')
+        return render_template("game.html", message='Ожидайте игру')
     else:
         return redirect(url_for('play_game', game_id=game_id))
 
@@ -196,10 +196,10 @@ def play_game(game_id):
     players = poker.find_game_by_id(game_id)
     for player in players:
         if player[0] == __login:
-            player1 = player[0]
-        if player[0] != __login:
             player2 = player[0]
-    return render_template("game.html", player1=player1, player2=player2, message='Игра началась')
+        if player[0] != __login:
+            player1 = player[0]
+    return render_template("game.html", player1=player1, player2=player2, message='Игра началась!')
 
 
 @socketio.on("get_button")
