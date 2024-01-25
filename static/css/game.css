@@ -2,10 +2,25 @@
     background-image: url(../img/poker/poker-background.jpg);
 }
 
+.bar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.info {
+   display: flex;
+   flex-direction: row;
+   gap: 10px;
+}
+
+.area {
+    display: grid;
+    place-content: center;
+}
+
 .table {
-    position: absolute;
-    top: 15%;
-    left: 25%;
+    display: grid;
+    place-content: center;
     width: 650px;
     height: 350px;
     background-color: #013220;
@@ -14,28 +29,23 @@
 }
 
 .buttons {
-    position: absolute;
-    top: 105%;
-    left: 39%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
 }
 
 .message {
-    position: absolute;
     color: white;
-    top: 41%;
-    left: 38%;
 }
 
 .player2 {
-    position: absolute;
+    display: flex;
+    justify-content: center;
     color: white;
-    top: -20%;
-    left: 44%;
 }
 
 .player1 {
-    position: absolute;
+    display: flex;
+    justify-content: center;
     color: white;
-    top: 120%;
-    left: 46%;
 }
