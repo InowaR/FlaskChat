@@ -209,9 +209,9 @@ def get_button(message: str):
     game_id = message[0]
     player = message[1]
     button = message[2]
+    print(game_id, player, message)
     game_session = poker.find_game_by_id(game_id)
-    for player in game_session.show_players():
-        print(player)
+    game_session.press_button(player, button)
     emit("buttons", message, broadcast=True)
 
 

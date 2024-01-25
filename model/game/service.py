@@ -31,7 +31,6 @@ class Service:
 
     def add_new_playing_game(self):
         if self.add_new_game():
-            print('Игра началась')
             for _ in self.list_games:
                 p1, p2 = _
                 player1 = Player(p1)
@@ -44,7 +43,6 @@ class Service:
                 game.deal_cards()
                 return game.game_id
         else:
-            print('Ожидайте')
             return False
 
     def find_game_by_id(self, number: str):

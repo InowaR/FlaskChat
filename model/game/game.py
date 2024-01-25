@@ -1,5 +1,4 @@
 import random
-import asyncio
 
 
 class Game:
@@ -9,16 +8,24 @@ class Game:
         self.deck = []
         self.table_cards = []
 
-    def find_player(self, player_name):
+    def press_button(self, player_name, button):
         for player in self.list_players:
             if player.name == player_name:
-                return player
+                if button == 'fold':
+                    player.round += 1
+                if button == 'check':
+                    player.round += 1
+                if button == 'raise':
+                    player.money -= 100
 
     def show_players(self):
         players = []
         for player in self.list_players:
             players.append(player.info())
         return players
+
+    def show_table_cards(self):
+        return self.table_cards
 
     def add_player(self, player):
         self.list_players.append(player)
@@ -38,4 +45,5 @@ class Game:
                 player.hand.append(self.deck.pop())
 
     def flop(self):
-        self.table_cards.append(self.deck.pop())
+        for _ in range(3):
+            self.table_cards.append(self.deck.pop())

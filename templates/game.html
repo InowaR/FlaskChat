@@ -19,9 +19,9 @@
                 <h2 id="mes" class="message">{{ message }}</h2>
                 <h2 class="player1">{{ player1 }}</h2>
                 <div class="buttons">
-                    <button type="submit" id="fold" onclick="fold();">Fold</button>
-                    <button type="submit" id="check" onclick="check();">Check</button>
-                    <button type="submit" id="raise" onclick="raise();">Raise</button>
+                    <button type="submit" id="fold" onclick="this.disabled = true; fold();">Fold</button>
+                    <button type="submit" id="check" onclick="this.disabled = true; check();">Check</button>
+                    <button type="submit" id="raise" onclick="this.disabled = true; raise();">Raise</button>
                 </div>
             </div>
         </div>
@@ -29,17 +29,22 @@
             const socket = io();
             const login = $("#login").html();
             const game_id = $("#game_id").html();
+
+
             function fold() {
                 let tuple = [game_id, login, 'fold'];
-                socket.emit("get_button", tuple);
+                if tuple[0] != null:
+                    socket.emit("get_button", tuple);
             }
             function check() {
                 let tuple = [game_id, login, 'check'];
-                socket.emit("get_button", tuple);
+                if tuple[0] != null:
+                    socket.emit("get_button", tuple);
             }
             function raise() {
                 let tuple = [game_id, login, 'raise'];
-                socket.emit("get_button", tuple);
+                if tuple[0] != null:
+                    socket.emit("get_button", tuple);
             }
 
 <!--            socket.on("buttons", function(data) {-->
@@ -65,12 +70,12 @@
 <!--                }, 2000);-->
 <!--            });-->
 
-            $(document).ready(() => {
-                setTimeout(() => {
-                    const tag = $("#mes");
-                    tag.html("");
-                }, 4000);
-            });
+<!--            $(document).ready(() => {-->
+<!--                setTimeout(() => {-->
+<!--                    const tag = $("#mes");-->
+<!--                    tag.html("");-->
+<!--                }, 4000);-->
+<!--            });-->
         </script>
     </body>
 </html>
