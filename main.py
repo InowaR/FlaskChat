@@ -182,7 +182,6 @@ def game():
     if not check:
         poker.add_new_player(__login)
     game_id = poker.add_new_playing_game()
-    print(game_id)
     if not game_id:
         return render_template("game.html", message='Ожидайте игру')
     else:
@@ -191,7 +190,6 @@ def game():
 
 @app.route("/game/<game_id>", methods=["GET", "POST"])
 def play_game(game_id: str):
-    print(game_id)
     player1 = ''
     player2 = ''
     __login = session.get('login')
@@ -210,7 +208,7 @@ def get_button(message: str):
     game_id = message[0]
     player = message[1]
     button = message[2]
-    # print(game_id, player, message)
+    print(game_id, player, message)
     # game_session = poker.find_game_by_id(game_id)
     # game_session.press_button(player, button)
     # game_session.next_round()
