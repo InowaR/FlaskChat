@@ -38,9 +38,10 @@ class Service:
                 game = Game()
                 game.add_player(player1)
                 game.add_player(player2)
-                self.list_playing_games.append(game)
                 game.create_deck()
                 game.deal_cards()
+                game.blind()
+                self.list_playing_games.append(game)
                 return game.game_id
         else:
             return False

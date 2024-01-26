@@ -14,18 +14,21 @@
             </form>
             <div class="info">
                 <h2 id="login">{{ login }}</h2>
-                <h2 id="game_id">стол {{ game_id }}</h2>
+                <h2 id="game_id">{{ game_id }}</h2>
             </div>
         </div>
         <div class="area">
             <h2 class="player2">{{ player2 }}</h2>
             <div class="table">
+                <h2>{{ bet2 }}</h2>
                 <h2 id="mes" class="message">{{ message }}</h2>
+                <h2>{{ table_cards }}</h2>
+                <h2>{{ bet1 }}</h2>
             </div>
             <div class="buttons">
-                <button type="submit" id="fold" onclick="this.disabled = true; fold();">Fold</button>
-                <button type="submit" id="check" onclick="this.disabled = true; check();">Check</button>
-                <button type="submit" id="raise" onclick="this.disabled = true; raise();">Raise</button>
+                <button type="submit" id="fold" onclick="fold();">Fold</button>
+                <button type="submit" id="check" onclick="check();">Check</button>
+                <button type="submit" id="raise" onclick="raise();">Raise</button>
             </div>
             <h2 class="player1">{{ player1 }}</h2>
         </div>
@@ -34,22 +37,40 @@
             const login = $("#login").html();
             const game_id = $("#game_id").html();
 
+            const fold_button = document.getElementById("fold");
+            fold_button.disabled = true;
+            const check_button = document.getElementById("check");
+            check_button.disabled = true;
+            const raise_button = document.getElementById("raise");
+            raise_button.disabled = true;
 
-            function fold() {
-                let tuple = [game_id, login, 'fold'];
-                if tuple[0] != null:
-                    socket.emit("get_button", tuple);
-            }
-            function check() {
-                let tuple = [game_id, login, 'check'];
-                if tuple[0] != null:
-                    socket.emit("get_button", tuple);
-            }
-            function raise() {
-                let tuple = [game_id, login, 'raise'];
-                if tuple[0] != null:
-                    socket.emit("get_button", tuple);
-            }
+
+            $(document).ready(() => {
+                if (game_id != false) {
+                    fold_button.disabled = false;
+                    check_button.disabled = false;
+                    raise_button.disabled = false;
+                }
+            });
+
+
+
+<!--            fold() {-->
+<!--                console.log(11111111111111111);-->
+<!--                let tuple = [game_id, login, 'fold'];-->
+<!--                if tuple[0] != null:-->
+<!--                    socket.emit("get_button", tuple);-->
+<!--            }-->
+<!--            function check() {-->
+<!--                let tuple = [game_id, login, 'check'];-->
+<!--                if tuple[0] != null:-->
+<!--                    socket.emit("get_button", tuple);-->
+<!--            }-->
+<!--            function raise() {-->
+<!--                let tuple = [game_id, login, 'raise'];-->
+<!--                if tuple[0] != null:-->
+<!--                    socket.emit("get_button", tuple);-->
+<!--            }-->
 
 <!--            socket.on("buttons", function(data) {-->
 <!--                alert(data);-->
@@ -71,7 +92,7 @@
 <!--                    if (content === "Ожидайте игру") {-->
 <!--                        location.reload();-->
 <!--                    }-->
-<!--                }, 2000);-->
+<!--                }, 3000);-->
 <!--            });-->
 
 <!--            $(document).ready(() => {-->

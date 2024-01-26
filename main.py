@@ -178,11 +178,11 @@ def game():
     __login = session.get('login')
     if __login is None:
         return redirect(url_for('get_login'))
-    print(__login)
     check = poker.check_players(__login)
     if not check:
         poker.add_new_player(__login)
     game_id = poker.add_new_playing_game()
+    print(game_id)
     if not game_id:
         return render_template("game.html", message='Ожидайте игру')
     else:
@@ -191,17 +191,18 @@ def game():
 
 @app.route("/game/<game_id>", methods=["GET", "POST"])
 def play_game(game_id: str):
+    print(game_id)
     player1 = ''
     player2 = ''
     __login = session.get('login')
-    print(__login)
     game_session = poker.find_game_by_id(game_id)
     for player in game_session.show_players():
         if player[0] == __login:
             player1 = player
         if player[0] != __login:
             player2 = player
-    return render_template("game.html", game_id=game_id, login=__login, player1=player1, player2=player2, message='Игра началась!')
+    return render_template("game.html", game_id=game_id,
+                           login=__login, player1=player1, player2=player2, message='Игра началась!')
 
 
 @socketio.on("get_button")
@@ -209,10 +210,11 @@ def get_button(message: str):
     game_id = message[0]
     player = message[1]
     button = message[2]
-    print(game_id, player, message)
-    game_session = poker.find_game_by_id(game_id)
-    game_session.press_button(player, button)
-    emit("buttons", message, broadcast=True)
+    # print(game_id, player, message)
+    # game_session = poker.find_game_by_id(game_id)
+    # game_session.press_button(player, button)
+    # game_session.next_round()
+    emit("buttons", button, broadcast=True)
 
 
 if __name__ == '__main__':

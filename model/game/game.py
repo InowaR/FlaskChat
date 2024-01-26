@@ -7,16 +7,27 @@ class Game:
         self.list_players = []
         self.deck = []
         self.table_cards = []
+        self.table_money = 0
+
+    def blind(self):
+        value1 = 100
+        value2 = 200
+        p1 = self.list_players[0]
+        p2 = self.list_players[1]
+        p1.money -= value1
+        p2.money -= value2
+        self.table_money += (value1 + value2)
+        return value1, value2
 
     def press_button(self, player_name, button):
         for player in self.list_players:
             if player.name == player_name:
                 if button == 'fold':
                     player.round += 1
-                if button == 'check':
-                    player.round += 1
-                if button == 'raise':
-                    player.money -= 100
+
+    def next_round(self):
+        for player in self.list_players:
+            print(player.round)
 
     def show_players(self):
         players = []
