@@ -4,7 +4,7 @@ document.getElementById("create_new_chat").addEventListener("keyup", function(ev
         let message = document.getElementById("create_new_chat").value;
         if (message.length < 4) {return;}
         socket.emit("add_new_chat", message);
-        message.value = "";
+        message = "";
     }
 })
 socket.on("add_new_chat", function(data) {

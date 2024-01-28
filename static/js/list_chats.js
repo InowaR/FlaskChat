@@ -3,7 +3,7 @@ document.getElementById("find").addEventListener("keyup", function(event) {
     if (event.key == "Enter") {
         let data = document.getElementById("find").value;
         socket.emit("new_find_chat", data);
-        document.getElementById("find").value = "";
+        data = "";
     }
 })
 socket.on("list_find_chats", function(data) {

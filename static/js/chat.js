@@ -5,7 +5,7 @@ document.getElementById("message").addEventListener("keyup", function(event) {
         if (message.length < 1) {return;}
         chatname = document.getElementById("chatname").getAttribute("data-name");
         socket.emit("new_message", chatname, message);
-        document.getElementById("message").value = "";
+        message = "";
     }
 })
 socket.on("chat", function(data) {

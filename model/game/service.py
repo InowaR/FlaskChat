@@ -66,7 +66,7 @@ class Service:
             if game.game_id == int(number):
                 return game.check_round(player_name)
 
-    def round_number(self, number: str, player_name):
+    def player_round_number(self, number: str, player_name):
         for game in self.list_playing_games:
             if game.game_id == int(number):
-                return game.round_number(player_name)
+                return game.player_round_number(player_name)

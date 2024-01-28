@@ -42,7 +42,7 @@ class Game:
                 else:
                     return False
 
-    def round_number(self, player_name):
+    def player_round_number(self, player_name):
         for player in self.list_players:
             if player.name == player_name:
                 return player.round
