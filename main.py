@@ -183,7 +183,7 @@ def game():
         poker.add_new_player(__login)
     game_id = poker.add_new_playing_game()
     if not game_id:
-        return render_template("game.html", message='Ожидайте игру')
+        return render_template("game.html", game_id=False, message='Ожидайте игру')
     else:
         return redirect(url_for('play_game', game_id=game_id))
 
@@ -193,14 +193,18 @@ def play_game(game_id: str):
     player1 = ''
     player2 = ''
     __login = session.get('login')
-    game_session = poker.find_game_by_id(game_id)
-    for player in game_session.show_players():
-        if player[0] == __login:
-            player1 = player
-        if player[0] != __login:
-            player2 = player
-    return render_template("game.html", game_id=game_id,
-                           login=__login, player1=player1, player2=player2, message='Игра началась!')
+    check = poker.find_game_by_id(game_id)
+    if check:
+        for player in poker.show_players(game_id):
+            if player[0] == __login:
+                player1 = player
+            if player[0] != __login:
+                player2 = player
+        check_round = poker.check_round(game_id, __login)
+        round_number = poker.round_number(game_id, __login)
+        print(f'Четность: {check_round}, Номер раунда: {round_number}, Номер стола: {game_id}, Имя: {__login}')
+        return render_template("game.html", game_id=game_id,
+                               login=__login, check_round=check_round, player1=player1, player2=player2, message='Игра началась!')
 
 
 @socketio.on("get_button")
@@ -208,12 +212,13 @@ def get_button(message: str):
     game_id = message[0]
     player = message[1]
     button = message[2]
-    print(game_id, player, message)
-    game_session = poker.find_game_by_id(game_id)
-    game_session.press_button(player, button)
-    check_round = game_session.next_round()
-    print(check_round)
-    emit("buttons", {"button": button, "check_round": check_round}, broadcast=True)
+    check = poker.find_game_by_id(game_id)
+    if check:
+        poker.press_button(game_id, player, button)
+        check_round = poker.check_round(game_id, player)
+        round_number = poker.round_number(game_id, player)
+        print(f'Четность: {check_round}, Номер раунда: {round_number}, Номер стола: {game_id}, Имя: {player}, Команда: {button}')
+        emit("buttons", str(check_round), broadcast=True)
 
 
 if __name__ == '__main__':

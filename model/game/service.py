@@ -8,6 +8,11 @@ class Service:
         self.list_games = []
         self.list_playing_games = []
 
+    def show_players(self, number: str):
+        for game in self.list_playing_games:
+            if game.game_id == int(number):
+                return game.show_players()
+
     def check_players(self, player_name):
         for name in self.list_players:
             if name == player_name:
@@ -49,4 +54,19 @@ class Service:
     def find_game_by_id(self, number: str):
         for game in self.list_playing_games:
             if game.game_id == int(number):
-                return game
+                return True
+
+    def press_button(self, number: str, player, button):
+        for game in self.list_playing_games:
+            if game.game_id == int(number):
+                game.press_button(player, button)
+
+    def check_round(self, number: str, player_name):
+        for game in self.list_playing_games:
+            if game.game_id == int(number):
+                return game.check_round(player_name)
+
+    def round_number(self, number: str, player_name):
+        for game in self.list_playing_games:
+            if game.game_id == int(number):
+                return game.round_number(player_name)

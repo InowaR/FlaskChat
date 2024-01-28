@@ -8,7 +8,6 @@ class Game:
         self.deck = []
         self.table_cards = []
         self.table_money = 0
-        self.sum_round = 0
 
     def blind(self):
         value1 = 100
@@ -26,22 +25,27 @@ class Game:
                 if button == 'fold':
                     print(f'{player.name} ======= {player.round}')
                     player.round += 1
-                    self.sum_round += 1
                     print(f'{player.name} ======= {player.round}')
                 if button == 'check':
                     print(f'{player.name} ======= {player.round}')
                     player.round += 1
-                    self.sum_round += 1
                     print(f'{player.name} ======= {player.round}')
                 if button == 'raise':
                     player.money -= 100
                     self.table_money += 100
 
-    def next_round(self):
-        if self.sum_round % 2 == 0:
-            return True
-        else:
-            return False
+    def check_round(self, player_name):
+        for player in self.list_players:
+            if player.name == player_name:
+                if player.round % 2 == 0:
+                    return True
+                else:
+                    return False
+
+    def round_number(self, player_name):
+        for player in self.list_players:
+            if player.name == player_name:
+                return player.round
 
     def show_players(self):
         players = []
