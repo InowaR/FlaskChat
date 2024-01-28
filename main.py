@@ -193,18 +193,15 @@ def play_game(game_id: str):
     player1 = ''
     player2 = ''
     __login = session.get('login')
-    check = poker.find_game_by_id(game_id)
-    if check:
+    for player in poker.show_players(game_id):
+        if player[0] == __login:
+            player1 = player
+        if player[0] != __login:
+            player2 = player
+    if poker.find_game_by_id(game_id):
         b1, b2 = poker.preflop(game_id)
-        table_cards = poker.flop(game_id)
-        for player in poker.show_players(game_id):
-            if player[0] == __login:
-                player1 = player
-            if player[0] != __login:
-                player2 = player
-        print(f'Номер стола: {game_id}, Имя: {__login}')
         return render_template("game.html", game_id=game_id, login=__login,
-                               player1=player1, player2=player2, bet1=b1, bet2=b2, table_cards=table_cards,
+                               player1=player1, player2=player2, bet1=b1, bet2=b2,
                                message='Игра началась!')
 
 
@@ -213,17 +210,9 @@ def get_button(message: str):
     game_id = message[0]
     player = message[1]
     button = message[2]
-    check = poker.find_game_by_id(game_id)
-    if check:
+    if poker.find_game_by_id(game_id):
         poker.press_button(game_id, player, button)
-        check_round = poker.check_round(game_id)
-        print(f'Четность: {check_round}, Номер стола: {game_id},'
-              f'Имя: {player}, Команда: {button}')
-        if check_round:
-            print('flop started')
-            flop_cards = poker.flop(game_id)
-            print(flop_cards)
-            emit("buttons", flop_cards, broadcast=True)
+        emit("buttons", button, broadcast=True)
 
 
 if __name__ == '__main__':

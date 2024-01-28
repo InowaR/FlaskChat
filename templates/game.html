@@ -44,11 +44,6 @@
             const check_button = document.getElementById("check");
             const raise_button = document.getElementById("raise");
 
-            function on() {
-                fold_button.disabled = false;
-                check_button.disabled = false;
-                raise_button.disabled = false;
-            }
 
             function off() {
                 fold_button.disabled = true;
@@ -57,18 +52,18 @@
             }
 
 
-            $(document).ready(() => {
-                if (game_id == 'False') {
-                    off();
-                }
-                if (check_round == 'False') {
-                    off();
-                }
-            });
+<!--            $(document).ready(() => {-->
+<!--                if (game_id == 'False') {-->
+<!--                    off();-->
+<!--                }-->
+<!--                if (check_round == 'False') {-->
+<!--                    off();-->
+<!--                }-->
+<!--            });-->
 
             $(function() {
                 $(".fold").click(function() {
-                    off();
+<!--                    off();-->
                     let tuple = [game_id, login, 'fold'];
                     socket.emit("get_button", tuple);
                 });
@@ -76,7 +71,7 @@
 
             $(function() {
                 $(".check").click(function() {
-                    off();
+<!--                    off();-->
                     let tuple = [game_id, login, 'check'];
                     socket.emit("get_button", tuple);
                 });
@@ -84,17 +79,20 @@
 
             $(function() {
                 $(".raise").click(function() {
-                    off();
+<!--                    off();-->
                     let tuple = [game_id, login, 'raise'];
                     socket.emit("get_button", tuple);
                 });
             });
 
-
             socket.on("buttons", function(data) {
-                console.log(data);
-                table_cards.html(data);
+                alert(data);
             })
+
+<!--            socket.on("buttons", function(data) {-->
+<!--                console.log(data);-->
+<!--                table_cards.html(data);-->
+<!--            })-->
 
 <!--            $(".logo").click(function() {-->
 <!--                let answer = confirm("Вы действительно хотите покинуть игру?");-->
