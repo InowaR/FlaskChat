@@ -43,9 +43,9 @@ class Service:
                 game = Game()
                 game.add_player(player1)
                 game.add_player(player2)
-                game.create_deck()
-                game.deal_cards()
-                game.blind()
+                # game.create_deck()
+                # game.deal_cards()
+                # game.blind()
                 self.list_playing_games.append(game)
                 return game.game_id
         else:
@@ -61,12 +61,12 @@ class Service:
             if game.game_id == int(number):
                 game.press_button(player, button)
 
-    def check_round(self, number: str, player_name):
+    def check_round(self, number: str):
         for game in self.list_playing_games:
             if game.game_id == int(number):
-                return game.check_round(player_name)
+                return game.check_round()
 
-    def player_round_number(self, number: str, player_name):
+    def preflop(self, number: str):
         for game in self.list_playing_games:
             if game.game_id == int(number):
-                return game.player_round_number(player_name)
+                return game.preflop()

@@ -8,44 +8,37 @@ class Game:
         self.deck = []
         self.table_cards = []
         self.table_money = 0
+        self.make_preflop = False
+        self.blind1 = 100
+        self.blind2 = 200
+        self.round = 0
 
     def blind(self):
-        value1 = 100
-        value2 = 200
         p1 = self.list_players[0]
         p2 = self.list_players[1]
-        p1.money -= value1
-        p2.money -= value2
-        self.table_money += (value1 + value2)
-        return value1, value2
+        p1.money -= self.blind1
+        p2.money -= self.blind2
+        self.table_money += (self.blind1 + self.blind2)
+        return self.blind1, self.blind2
 
     def press_button(self, player_name, button):
         for player in self.list_players:
             if player.name == player_name:
                 if button == 'fold':
-                    print(f'{player.name} ======= {player.round}')
-                    player.round += 1
-                    print(f'{player.name} ======= {player.round}')
+                    self.round += 1
                 if button == 'check':
-                    print(f'{player.name} ======= {player.round}')
-                    player.round += 1
-                    print(f'{player.name} ======= {player.round}')
+                    self.round += 1
                 if button == 'raise':
                     player.money -= 100
                     self.table_money += 100
 
-    def check_round(self, player_name):
-        for player in self.list_players:
-            if player.name == player_name:
-                if player.round % 2 == 0:
-                    return True
-                else:
-                    return False
-
-    def player_round_number(self, player_name):
-        for player in self.list_players:
-            if player.name == player_name:
-                return player.round
+    def check_round(self):
+        if self.round % 2 == 0:
+            print(f'{self.round} - сумма раундов')
+            return True
+        else:
+            print(f'{self.round} - сумма раундов')
+            return False
 
     def show_players(self):
         players = []
@@ -72,6 +65,16 @@ class Game:
             player.hand = []
             for _ in range(2):
                 player.hand.append(self.deck.pop())
+
+    def preflop(self):
+        if not self.make_preflop:
+            self.create_deck()
+            self.deal_cards()
+            blind1, blind2 = self.blind()
+            self.make_preflop = True
+            return blind1, blind2
+        else:
+            return self.blind1, self.blind2
 
     def flop(self):
         for _ in range(3):
