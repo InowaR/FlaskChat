@@ -23,7 +23,7 @@
             <div class="table">
                 <h2>{{ bet2 }}</h2>
                 <h2 id="mes" class="message">{{ message }}</h2>
-                <h2>{{ table_cards }}</h2>
+                <h2 id="table_cards">{{ table_cards }}</h2>
                 <h2>{{ bet1 }}</h2>
             </div>
             <div class="buttons">
@@ -38,6 +38,7 @@
             const login = $("#login").html();
             const game_id = $("#game_id").html();
             let check_round = $("#check_round").html();
+            let table_cards = $("#table_cards");
 
             const fold_button = document.getElementById("fold");
             const check_button = document.getElementById("check");
@@ -90,9 +91,10 @@
             });
 
 
-<!--            socket.on("buttons", function(data) {-->
-<!--                console.log(data);-->
-<!--            })-->
+            socket.on("buttons", function(data) {
+                console.log(data);
+                table_cards.html(data);
+            })
 
 <!--            $(".logo").click(function() {-->
 <!--                let answer = confirm("Вы действительно хотите покинуть игру?");-->

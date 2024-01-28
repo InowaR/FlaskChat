@@ -70,3 +70,8 @@ class Service:
         for game in self.list_playing_games:
             if game.game_id == int(number):
                 return game.preflop()
+
+    def flop(self, number: str) -> list:
+        for game in self.list_playing_games:
+            if game.game_id == int(number):
+                return game.flop()

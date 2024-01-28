@@ -9,6 +9,7 @@ class Game:
         self.table_cards = []
         self.table_money = 0
         self.make_preflop = False
+        self.make_flop = False
         self.blind1 = 100
         self.blind2 = 200
         self.round = 0
@@ -76,6 +77,14 @@ class Game:
         else:
             return self.blind1, self.blind2
 
-    def flop(self):
-        for _ in range(3):
-            self.table_cards.append(self.deck.pop())
+    def flop(self) -> list:
+        if not self.round == 2:
+            return []
+        elif not self.make_flop:
+            for _ in range(3):
+                self.table_cards.append(self.deck.pop())
+            self.make_flop = True
+            return self.table_cards
+        else:
+            return self.table_cards
+

@@ -196,6 +196,7 @@ def play_game(game_id: str):
     check = poker.find_game_by_id(game_id)
     if check:
         b1, b2 = poker.preflop(game_id)
+        table_cards = poker.flop(game_id)
         for player in poker.show_players(game_id):
             if player[0] == __login:
                 player1 = player
@@ -203,7 +204,8 @@ def play_game(game_id: str):
                 player2 = player
         print(f'Номер стола: {game_id}, Имя: {__login}')
         return render_template("game.html", game_id=game_id, login=__login,
-                               player1=player1, player2=player2, bet1=b1, bet2=b2, message='Игра началась!')
+                               player1=player1, player2=player2, bet1=b1, bet2=b2, table_cards=table_cards,
+                               message='Игра началась!')
 
 
 @socketio.on("get_button")
@@ -219,7 +221,9 @@ def get_button(message: str):
               f'Имя: {player}, Команда: {button}')
         if check_round:
             print('flop started')
-        # emit("buttons", (b1, b2), broadcast=True)
+            flop_cards = poker.flop(game_id)
+            print(flop_cards)
+            emit("buttons", flop_cards, broadcast=True)
 
 
 if __name__ == '__main__':
