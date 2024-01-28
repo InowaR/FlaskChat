@@ -84,7 +84,7 @@
 
 
             socket.on("buttons", function(data) {
-                alert(data);
+                alert(`${data['button']}, ${data['check_round']}`);
             })
 
 <!--            $(".logo").click(function() {-->

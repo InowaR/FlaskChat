@@ -209,10 +209,11 @@ def get_button(message: str):
     player = message[1]
     button = message[2]
     print(game_id, player, message)
-    # game_session = poker.find_game_by_id(game_id)
-    # game_session.press_button(player, button)
-    # game_session.next_round()
-    emit("buttons", button, broadcast=True)
+    game_session = poker.find_game_by_id(game_id)
+    game_session.press_button(player, button)
+    check_round = game_session.next_round()
+    print(check_round)
+    emit("buttons", {"button": button, "check_round": check_round}, broadcast=True)
 
 
 if __name__ == '__main__':
