@@ -202,16 +202,20 @@ def play_game(game_id: str):
         group_round = poker.group_round_number(game_id)
         player_round = poker.player_round_number(game_id, __login)
         print(f'Групповой раунд страница: {group_round}')
-        print(f'Раунд игрока: {player_round}')
+        print(f'Раунд игрока страница: {player_round}')
 
-        if group_round <= 2:
+        if group_round < 2:
             b1, b2 = poker.preflop(game_id)
             return render_template("game.html", game_id=game_id, login=__login,
-                                   player1=player1, player2=player2, bet1=b1, bet2=b2, message='Игра началась!')
-        if 2 < group_round < 4:
+                                   player1=player1, player2=player2, bet1=b1, bet2=b2,
+                                   player_round=player_round, message='Игра началась!')
+        if 2 <= group_round < 4:
+            if group_round == 2:
+                poker.reset_player_round_number(game_id, __login)
             flop_cards = poker.flop(game_id)
             return render_template("game.html", game_id=game_id, login=__login,
-                                   player1=player1, player2=player2, table_cards=flop_cards)
+                                   player1=player1, player2=player2, table_cards=flop_cards,
+                                   player_round=player_round)
 
 
 @socketio.on("get_button")
@@ -222,7 +226,9 @@ def get_button(message: str):
     if poker.find_game_by_id(game_id):
         poker.press_button(game_id, player, button)
         group_round = poker.group_round_number(game_id)
+        player_round = poker.player_round_number(game_id, player)
         print(f'Групповой раунд сокет: {group_round}')
+        print(f'Раунд игрока сокет: {player_round}')
         # emit("buttons", group_round, broadcast=True)
 
 

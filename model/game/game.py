@@ -14,6 +14,8 @@ class Game:
         self.blind2 = 200
         self.play_preflop = False
         self.play_flop = False
+        self.play_turn = False
+        self.play_river = False
         self.round = 0
 
     def blind(self) -> tuple:
@@ -44,6 +46,11 @@ class Game:
         for player in self.list_players:
             if player.name == player_name:
                 return player.round
+
+    def reset_player_round_number(self, player_name: str):
+        for player in self.list_players:
+            if player.name == player_name:
+                player.round = 0
 
     def show_players(self) -> list:
         players = []
@@ -89,6 +96,15 @@ class Game:
         return self.table_cards
 
     def turn(self) -> list:
-        for _ in range(1):
-            self.table_cards.append(self.deck.pop())
+        if not self.play_turn:
+            for _ in range(1):
+                self.table_cards.append(self.deck.pop())
+            return self.table_cards
+        return self.table_cards
+
+    def river(self) -> list:
+        if not self.play_river:
+            for _ in range(1):
+                self.table_cards.append(self.deck.pop())
+            return self.table_cards
         return self.table_cards

@@ -16,6 +16,7 @@
                 <h2 id="login">{{ login }}</h2>
                 <h2 id="game_id">{{ game_id }}</h2>
                 <h2 id="group_round">{{ group_round }}</h2>
+                <h2 id="player_round">{{ player_round }}</h2>
             </div>
         </div>
         <div class="area">
@@ -37,8 +38,9 @@
             const socket = io();
             const login = $("#login").html();
             const game_id = $("#game_id").html();
-            let group_round = $("#group_round");
-            let table_cards = $("#table_cards");
+            const group_round = $("#group_round").html();
+            const player_round = $("#player_round").html();
+            const table_cards = $("#table_cards").html();
 
             const fold_button = document.getElementById("fold");
             const check_button = document.getElementById("check");
@@ -57,13 +59,14 @@
                     off();
                 }
 
-                if (group_round > 0 && group_round % 2 == ) {
+                if (player_round == 1) {
                     off();
                 }
 
                 setInterval(() => {
                     location.reload();
-                }, 3000);
+                    console.log(player_round);
+                }, 5000);
             });
 
             $(function() {

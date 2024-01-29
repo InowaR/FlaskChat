@@ -69,6 +69,11 @@ class Service:
             if game.game_id == int(number):
                 return game.player_round_number(player_name)
 
+    def reset_player_round_number(self, number: str, player_name: str):
+        for game in self.list_playing_games:
+            if game.game_id == int(number):
+                game.reset_player_round_number(player_name)
+
     def preflop(self, number: str) -> tuple:
         for game in self.list_playing_games:
             if game.game_id == int(number):
@@ -93,3 +98,8 @@ class Service:
         for game in self.list_playing_games:
             if game.game_id == int(number):
                 return game.turn()
+
+    def river(self, number: str) -> list:
+        for game in self.list_playing_games:
+            if game.game_id == int(number):
+                return game.river()
