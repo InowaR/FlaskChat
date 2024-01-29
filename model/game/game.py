@@ -12,6 +12,8 @@ class Game:
         self.table_money = 0
         self.blind1 = 100
         self.blind2 = 200
+        self.play_preflop = False
+        self.play_flop = False
         self.round = 0
 
     def blind(self) -> tuple:
@@ -35,15 +37,10 @@ class Game:
                     player.money -= 100
                     self.table_money += 100
 
-    def check_group_round_number(self) -> int:
-        if self.round % 2 == 0:
-            print(f'{self.round} - сумма раундов')
-            return self.round
-        else:
-            print(f'{self.round} - сумма раундов')
-            return self.round
+    def group_round_number(self) -> int:
+        return self.round
 
-    def check_player_round_number(self, player_name: str) -> int:
+    def player_round_number(self, player_name: str) -> int:
         for player in self.list_players:
             if player.name == player_name:
                 return player.round
@@ -75,14 +72,20 @@ class Game:
                 player.hand.append(self.deck.pop())
 
     def preflop(self) -> tuple:
-        self.create_deck()
-        self.deal_cards()
-        blind1, blind2 = self.blind()
-        return blind1, blind2
+        if not self.play_preflop:
+            self.create_deck()
+            self.deal_cards()
+            blind1, blind2 = self.blind()
+            self.play_preflop = True
+            return blind1, blind2
+        return self.blind1, self.blind2
 
     def flop(self) -> list:
-        for _ in range(3):
-            self.table_cards.append(self.deck.pop())
+        if not self.play_flop:
+            for _ in range(3):
+                self.table_cards.append(self.deck.pop())
+            self.play_flop = True
+            return self.table_cards
         return self.table_cards
 
     def turn(self) -> list:

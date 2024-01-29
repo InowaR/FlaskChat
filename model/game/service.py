@@ -59,25 +59,35 @@ class Service:
             if game.game_id == int(number):
                 game.press_button(player_name, button)
 
-    def check_group_round_number(self, number: str) -> int:
+    def group_round_number(self, number: str) -> int:
         for game in self.list_playing_games:
             if game.game_id == int(number):
-                return game.check_group_round_number()
+                return game.group_round_number()
 
-    def check_player_round_number(self, number: str, player_name: str) -> int:
+    def player_round_number(self, number: str, player_name: str) -> int:
         for game in self.list_playing_games:
             if game.game_id == int(number):
-                return game.check_group_round_number(player_name)
+                return game.player_round_number(player_name)
 
     def preflop(self, number: str) -> tuple:
         for game in self.list_playing_games:
             if game.game_id == int(number):
                 return game.preflop()
 
+    def check_preflop(self, number: str) -> bool:
+        for game in self.list_playing_games:
+            if game.game_id == int(number):
+                return game.play_preflop
+
     def flop(self, number: str) -> list:
         for game in self.list_playing_games:
             if game.game_id == int(number):
                 return game.flop()
+
+    def check_flop(self, number: str) -> bool:
+        for game in self.list_playing_games:
+            if game.game_id == int(number):
+                return game.play_flop
 
     def turn(self, number: str) -> list:
         for game in self.list_playing_games:

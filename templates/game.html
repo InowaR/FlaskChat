@@ -15,7 +15,7 @@
             <div class="info">
                 <h2 id="login">{{ login }}</h2>
                 <h2 id="game_id">{{ game_id }}</h2>
-                <h2 id="check_round">{{ check_round }}</h2>
+                <h2 id="group_round">{{ group_round }}</h2>
             </div>
         </div>
         <div class="area">
@@ -37,7 +37,7 @@
             const socket = io();
             const login = $("#login").html();
             const game_id = $("#game_id").html();
-            let check_round = $("#check_round").html();
+            let group_round = $("#group_round");
             let table_cards = $("#table_cards");
 
             const fold_button = document.getElementById("fold");
@@ -52,18 +52,23 @@
             }
 
 
-<!--            $(document).ready(() => {-->
-<!--                if (game_id == 'False') {-->
-<!--                    off();-->
-<!--                }-->
-<!--                if (check_round == 'False') {-->
-<!--                    off();-->
-<!--                }-->
-<!--            });-->
+            $(document).ready(() => {
+                if (game_id == 'False') {
+                    off();
+                }
+
+                if (group_round > 0 && group_round % 2 == ) {
+                    off();
+                }
+
+                setInterval(() => {
+                    location.reload();
+                }, 3000);
+            });
 
             $(function() {
                 $(".fold").click(function() {
-<!--                    off();-->
+                    off();
                     let tuple = [game_id, login, 'fold'];
                     socket.emit("get_button", tuple);
                 });
@@ -71,28 +76,24 @@
 
             $(function() {
                 $(".check").click(function() {
-<!--                    off();-->
+                    off();
                     let tuple = [game_id, login, 'check'];
                     socket.emit("get_button", tuple);
                 });
             });
 
-            $(function() {
-                $(".raise").click(function() {
-<!--                    off();-->
-                    let tuple = [game_id, login, 'raise'];
-                    socket.emit("get_button", tuple);
-                });
-            });
-
-            socket.on("buttons", function(data) {
-                alert(data);
-            })
-
 <!--            socket.on("buttons", function(data) {-->
-<!--                console.log(data);-->
-<!--                table_cards.html(data);-->
+<!--                group_round.html(data);-->
 <!--            })-->
+
+<!--            $(function() {-->
+<!--                $(".raise").click(function() {-->
+<!--                    off();-->
+<!--                    let tuple = [game_id, login, 'raise'];-->
+<!--                    socket.emit("get_button", tuple);-->
+<!--                });-->
+<!--            });-->
+
 
 <!--            $(".logo").click(function() {-->
 <!--                let answer = confirm("Вы действительно хотите покинуть игру?");-->
