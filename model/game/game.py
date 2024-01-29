@@ -99,6 +99,7 @@ class Game:
         if not self.play_turn:
             for _ in range(1):
                 self.table_cards.append(self.deck.pop())
+            self.play_turn = True
             return self.table_cards
         return self.table_cards
 
@@ -106,5 +107,6 @@ class Game:
         if not self.play_river:
             for _ in range(1):
                 self.table_cards.append(self.deck.pop())
+            self.play_river = True
             return self.table_cards
         return self.table_cards

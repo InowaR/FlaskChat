@@ -36,6 +36,7 @@
         </div>
         <script>
             const socket = io();
+            const message = $("#mes");
             const login = $("#login").html();
             const game_id = $("#game_id").html();
             const group_round = $("#group_round").html();
@@ -85,9 +86,9 @@
                 });
             });
 
-<!--            socket.on("buttons", function(data) {-->
-<!--                group_round.html(data);-->
-<!--            })-->
+            socket.on("buttons", function(data) {
+                message.html(data);
+            })
 
 <!--            $(function() {-->
 <!--                $(".raise").click(function() {-->
