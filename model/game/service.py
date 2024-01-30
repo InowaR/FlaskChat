@@ -8,9 +8,9 @@ class Service:
         self.list_games = []
         self.list_playing_games = []
 
-    def show_players(self, number: str) -> list:
+    def show_players(self, game_id: str) -> list:
         for game in self.list_playing_games:
-            if game.game_id == int(number):
+            if game.game_id == int(game_id):
                 return game.show_players()
 
     def check_players(self, player_name) -> bool:
@@ -49,42 +49,47 @@ class Service:
         else:
             return False
 
-    def find_game_by_id(self, number: str) -> bool:
+    def find_game_by_id(self, game_id: str) -> bool:
         for game in self.list_playing_games:
-            if game.game_id == int(number):
+            if game.game_id == int(game_id):
                 return True
 
-    def check_group_round(self, number: str) -> int:
+    def check_group_round(self, game_id: str) -> int:
         for game in self.list_playing_games:
-            if game.game_id == int(number):
+            if game.game_id == int(game_id):
                 return game.check_group_round()
 
-    def press_button(self, number: str, player_name: str, button: str, round_number: str) -> None:
+    def press_button(self, game_id: str, player_name: str, button: str, round_number: str) -> None:
         for game in self.list_playing_games:
-            if game.game_id == int(number):
+            if game.game_id == int(game_id):
                 game.press_button(player_name, button, round_number)
 
-    def check_player_buttons(self, number: str, player_name: str) -> tuple:
+    def check_player_buttons(self, game_id: str, player_name: str) -> tuple:
         for game in self.list_playing_games:
-            if game.game_id == int(number):
+            if game.game_id == int(game_id):
                 return game.check_player_buttons(player_name)
 
-    def preflop(self, number: str) -> tuple:
+    def blind(self, game_id: str) -> tuple:
         for game in self.list_playing_games:
-            if game.game_id == int(number):
+            if game.game_id == int(game_id):
+                return game.blind()
+
+    def preflop(self, game_id: str) -> tuple:
+        for game in self.list_playing_games:
+            if game.game_id == int(game_id):
                 return game.preflop()
 
-    def flop(self, number: str) -> list:
+    def flop(self, game_id: str) -> list:
         for game in self.list_playing_games:
-            if game.game_id == int(number):
+            if game.game_id == int(game_id):
                 return game.flop()
 
-    def turn(self, number: str) -> list:
+    def turn(self, game_id: str) -> list:
         for game in self.list_playing_games:
-            if game.game_id == int(number):
+            if game.game_id == int(game_id):
                 return game.turn()
 
-    def river(self, number: str) -> list:
+    def river(self, game_id: str) -> list:
         for game in self.list_playing_games:
-            if game.game_id == int(number):
+            if game.game_id == int(game_id):
                 return game.river()

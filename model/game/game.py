@@ -74,11 +74,9 @@ class Game:
         self.table_money += (self.blind1 + self.blind2)
         return self.blind1, self.blind2
 
-    def preflop(self) -> tuple:
+    def preflop(self) -> None:
         self.create_deck()
         self.deal_cards()
-        blind1, blind2 = self.blind()
-        return blind1, blind2
 
     def flop(self) -> list:
         for _ in range(3):

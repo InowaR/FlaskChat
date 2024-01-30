@@ -185,7 +185,7 @@ def check_game():
     if not game_id:
         return render_template("game.html", game_id=False, message='Ожидайте игру')
     else:
-        return redirect(url_for('play_game', game_id=game_id, round=0))
+        return redirect(url_for('play_game', game_id=game_id))
 
 
 @app.route("/game/<game_id>", methods=["GET", "POST"])
@@ -204,8 +204,25 @@ def play_game(game_id: str):
         print(group_round)
 
         check_player_buttons = poker.check_player_buttons(game_id, __login)
-        print('Страница: ', end='')
+        print('Кнопки игрока: ', end='')
         print(check_player_buttons)
+        if 0 <= group_round < 2:
+            b1, b2 = poker.blind(game_id)
+            poker.preflop(game_id)
+            if check_player_buttons[0]:
+                return render_template("game.html", game_id=game_id, login=__login,
+                                       b1=b1, b2=b2, player1=player1, player2=player2, player_round=1)
+            else:
+                return render_template("game.html", game_id=game_id, login=__login,
+                                       b1=b1, b2=b2, player1=player1, player2=player2, player_round=0)
+        if 2 <= group_round < 4:
+            flop_cards = poker.flop(game_id)
+            if check_player_buttons[1]:
+                return render_template("game.html", game_id=game_id, login=__login,
+                                       player1=player1, player2=player2, player_round=1, table_cards=flop_cards)
+            else:
+                return render_template("game.html", game_id=game_id, login=__login,
+                                       player1=player1, player2=player2, player_round=0, table_cards=flop_cards)
 
         # if 0 <= group_round < 2:
 
@@ -217,11 +234,11 @@ def play_game(game_id: str):
 
 @socketio.on("get_button")
 def get_button(message: str):
-    game_id, player_name, button, player_round = message
+    game_id, player_name, button, round_number = message
     if poker.find_game_by_id(game_id):
-        poker.press_button(game_id, player_name, button, player_round)
+        poker.press_button(game_id, player_name, button, round_number)
     print('Сокет: ', end='')
-    print(game_id, player_name, button, player_round)
+    print(game_id, player_name, button, round_number)
 
 
 if __name__ == '__main__':
