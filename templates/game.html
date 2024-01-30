@@ -73,30 +73,31 @@
             $(function() {
                 $(".fold").click(function() {
                     off();
-                    let tuple = [game_id, login, 'fold'];
+                    let tuple = [game_id, login, 'fold', player_round];
                     socket.emit("get_button", tuple);
                 });
             });
 
-            $(function() {
-                $(".check").click(function() {
-                    off();
-                    let tuple = [game_id, login, 'check'];
-                    socket.emit("get_button", tuple);
-                });
-            });
-
-            socket.on("buttons", function(data) {
-                message.html(data);
-            })
+<!--            $(function() {-->
+<!--                $(".check").click(function() {-->
+<!--                    off();-->
+<!--                    let tuple = [game_id, login, 'fold', player_round];-->
+<!--                    socket.emit("get_button", tuple);-->
+<!--                });-->
+<!--            });-->
 
 <!--            $(function() {-->
 <!--                $(".raise").click(function() {-->
 <!--                    off();-->
-<!--                    let tuple = [game_id, login, 'raise'];-->
+<!--                    let tuple = [game_id, login, 'fold', player_round];-->
 <!--                    socket.emit("get_button", tuple);-->
 <!--                });-->
 <!--            });-->
+<!--            -->
+<!--            socket.on("buttons", function(data) {-->
+<!--                message.html(data);-->
+<!--            })-->
+<!--            -->
 
 
 <!--            $(".logo").click(function() {-->

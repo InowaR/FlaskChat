@@ -8,7 +8,7 @@ class Service:
         self.list_games = []
         self.list_playing_games = []
 
-    def show_players(self, number: str):
+    def show_players(self, number: str) -> list:
         for game in self.list_playing_games:
             if game.game_id == int(number):
                 return game.show_players()
@@ -19,7 +19,7 @@ class Service:
                 return True
         return False
 
-    def add_new_player(self, player_name: str):
+    def add_new_player(self, player_name: str) -> None:
         self.list_players.append(player_name)
 
     def add_new_game(self) -> bool:
@@ -54,45 +54,30 @@ class Service:
             if game.game_id == int(number):
                 return True
 
-    def press_button(self, number: str, player_name: str, button: str):
+    def check_group_round(self, number: str) -> int:
         for game in self.list_playing_games:
             if game.game_id == int(number):
-                game.press_button(player_name, button)
+                return game.check_group_round()
 
-    def group_round_number(self, number: str) -> int:
+    def press_button(self, number: str, player_name: str, button: str, round_number: str) -> None:
         for game in self.list_playing_games:
             if game.game_id == int(number):
-                return game.group_round_number()
+                game.press_button(player_name, button, round_number)
 
-    def player_round_number(self, number: str, player_name: str) -> int:
+    def check_player_buttons(self, number: str, player_name: str) -> tuple:
         for game in self.list_playing_games:
             if game.game_id == int(number):
-                return game.player_round_number(player_name)
-
-    def reset_player_round_number(self, number: str, player_name: str):
-        for game in self.list_playing_games:
-            if game.game_id == int(number):
-                game.reset_player_round_number(player_name)
+                return game.check_player_buttons(player_name)
 
     def preflop(self, number: str) -> tuple:
         for game in self.list_playing_games:
             if game.game_id == int(number):
                 return game.preflop()
 
-    def check_preflop(self, number: str) -> bool:
-        for game in self.list_playing_games:
-            if game.game_id == int(number):
-                return game.play_preflop
-
     def flop(self, number: str) -> list:
         for game in self.list_playing_games:
             if game.game_id == int(number):
                 return game.flop()
-
-    def check_flop(self, number: str) -> bool:
-        for game in self.list_playing_games:
-            if game.game_id == int(number):
-                return game.play_flop
 
     def turn(self, number: str) -> list:
         for game in self.list_playing_games:

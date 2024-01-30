@@ -174,7 +174,7 @@ def get_delete_message():
 
 
 @app.route("/game", methods=["GET", "POST"])
-def game():
+def check_game():
     __login = session.get('login')
     if __login is None:
         return redirect(url_for('get_login'))
@@ -185,7 +185,7 @@ def game():
     if not game_id:
         return render_template("game.html", game_id=False, message='Ожидайте игру')
     else:
-        return redirect(url_for('play_game', game_id=game_id))
+        return redirect(url_for('play_game', game_id=game_id, round=0))
 
 
 @app.route("/game/<game_id>", methods=["GET", "POST"])
@@ -199,52 +199,29 @@ def play_game(game_id: str):
         if player[0] != __login:
             player2 = player
     if poker.find_game_by_id(game_id):
-        group_round = poker.group_round_number(game_id)
-        player_round = poker.player_round_number(game_id, __login)
-        print(f'Групповой раунд страница: {group_round}')
-        print(f'Раунд игрока страница: {player_round}')
+        group_round = poker.check_group_round(game_id)
+        print('Групповой раунд: ', end='')
+        print(group_round)
 
-        if 0 <= group_round < 2:
-            b1, b2 = poker.preflop(game_id)
-            return render_template("game.html", game_id=game_id, login=__login,
-                                   player1=player1, player2=player2, bet1=b1, bet2=b2,
-                                   player_round=player_round, message='Игра началась!')
-        if 2 <= group_round < 4:
-            flop_cards = poker.flop(game_id)
-            return render_template("game.html", game_id=game_id, login=__login,
-                                   player1=player1, player2=player2, table_cards=flop_cards,
-                                   player_round=player_round)
-        if 4 <= group_round < 6:
-            # if group_round == 4:
-            #     poker.reset_player_round_number(game_id, __login)
-            turn_cards = poker.turn(game_id)
-            return render_template("game.html", game_id=game_id, login=__login,
-                                   player1=player1, player2=player2, table_cards=turn_cards,
-                                   player_round=player_round)
-        if 6 <= group_round < 8:
-            # if group_round == 6:
-            #     poker.reset_player_round_number(game_id, __login)
-            river_cards = poker.river(game_id)
-            return render_template("game.html", game_id=game_id, login=__login,
-                                   player1=player1, player2=player2, table_cards=river_cards,
-                                   player_round=player_round)
-        if group_round >= 8:
-            return render_template("game.html", game_id=game_id, login=__login,
-                                   player1=player1, player2=player2,
-                                   player_round=player_round, message='Конец раунда')
+        check_player_buttons = poker.check_player_buttons(game_id, __login)
+        print('Страница: ', end='')
+        print(check_player_buttons)
+
+        # if 0 <= group_round < 2:
+
+        # b1, b2 = poker.preflop(game_id)
+        # flop_cards = poker.flop(game_id)
+        # turn_cards = poker.turn(game_id)
+        # river_cards = poker.river(game_id)
 
 
 @socketio.on("get_button")
 def get_button(message: str):
-    game_id = message[0]
-    player = message[1]
-    button = message[2]
+    game_id, player_name, button, player_round = message
     if poker.find_game_by_id(game_id):
-        poker.press_button(game_id, player, button)
-        session['player_round'] = poker.player_round_number(game_id, player)
-        print(session)
-        # mes = 'Ход соперника'
-        # emit("buttons", mes, broadcast=False)
+        poker.press_button(game_id, player_name, button, player_round)
+    print('Сокет: ', end='')
+    print(game_id, player_name, button, player_round)
 
 
 if __name__ == '__main__':
