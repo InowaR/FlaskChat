@@ -59,10 +59,10 @@ class Service:
             if game.game_id == int(game_id):
                 return game.check_group_round()
 
-    def press_button(self, game_id: str, player_name: str, button: str, round_number: str) -> None:
+    def press_button(self, game_id: str, player_name: str, button: str, player_round: str) -> None:
         for game in self.list_playing_games:
             if game.game_id == int(game_id):
-                game.press_button(player_name, button, round_number)
+                game.press_button(player_name, button, player_round)
 
     def check_player_buttons(self, game_id: str, player_name: str) -> tuple:
         for game in self.list_playing_games:

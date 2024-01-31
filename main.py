@@ -200,22 +200,11 @@ def play_game(game_id: str):
             player2 = player
     if poker.find_game_by_id(game_id):
         group_round = poker.check_group_round(game_id)
-        print('Групповой раунд: ', end='')
-        print(group_round)
-        check_player_buttons = poker.check_player_buttons(game_id, __login)
-
-        p, f, t, r = check_player_buttons
-        print(p, type(p))
-        print(f, type(f))
-        print(t, type(t))
-        print(r, type(r))
-
-        print('Кнопки игрока: ', end='')
-        print(check_player_buttons)
+        preflop_status, flop_status, turn_status, river_status = poker.check_player_buttons(game_id, __login)
         if 0 <= group_round < 2:
             b1, b2 = poker.blind(game_id)
             poker.preflop(game_id)
-            if check_player_buttons[0]:
+            if preflop_status:
                 return render_template("game.html", game_id=game_id, login=__login,
                                        b1=b1, b2=b2, player1=player1, player2=player2,
                                        player_round=0, buttons=1)
@@ -225,7 +214,7 @@ def play_game(game_id: str):
                                        player_round=0, buttons=0)
         if 2 <= group_round < 4:
             flop_cards = poker.flop(game_id)
-            if check_player_buttons[1]:
+            if flop_status:
                 return render_template("game.html", game_id=game_id, login=__login,
                                        player1=player1, player2=player2, player_round=1, buttons=1,
                                        table_cards=flop_cards)
@@ -235,7 +224,7 @@ def play_game(game_id: str):
                                        table_cards=flop_cards)
         if 4 <= group_round < 6:
             turn_cards = poker.turn(game_id)
-            if check_player_buttons[2]:
+            if turn_status:
                 return render_template("game.html", game_id=game_id, login=__login,
                                        player1=player1, player2=player2, player_round=2, buttons=1,
                                        table_cards=turn_cards)
@@ -245,7 +234,7 @@ def play_game(game_id: str):
                                        table_cards=turn_cards)
         if 6 <= group_round < 8:
             river_cards = poker.river(game_id)
-            if check_player_buttons[3]:
+            if river_status:
                 return render_template("game.html", game_id=game_id, login=__login,
                                        player1=player1, player2=player2, player_round=3, buttons=1,
                                        table_cards=river_cards)
@@ -260,13 +249,11 @@ def play_game(game_id: str):
 
 @socketio.on("get_button")
 def get_button(message: str):
-    print(message)
-    game_id, player_name, button, round_number = message
+    game_id, player_name, button, player_round = message
     if poker.find_game_by_id(game_id):
-        poker.press_button(game_id, player_name, button, round_number)
-    print('Сокет: ', end='')
-    print(player_name, button, round_number)
+        poker.press_button(game_id, player_name, button, player_round)
+    print(player_name, button, player_round)
 
 
 if __name__ == '__main__':
-    socketio.run(app, allow_unsafe_werkzeug=True)
+    socketio.run(app, use_reloader=True, log_output=True, allow_unsafe_werkzeug=True)
