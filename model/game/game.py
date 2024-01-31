@@ -4,7 +4,7 @@ from model.game.player import Player
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, blind1: int, blind2: int):
         # self.game_id = random.randint(1, 10)
         self.game_id = 1
         self.start_blind = False
@@ -17,6 +17,8 @@ class Game:
         self.table_cards = []
         self.table_money = 0
         self.round = 0
+        self.blind1 = blind1
+        self.blind2 = blind2
 
     def check_group_round(self) -> int:
         return self.round
@@ -39,6 +41,44 @@ class Game:
                         print('player turn = True')
                     if int(round_number) == 3:
                         self.round += 1
+                        player.play_river = True
+                        print('player river = True')
+                if button == 'check':
+                    if int(round_number) == 0:
+                        self.round += 1
+                        player.play_preflop = True
+                        print('player preflop = True')
+                    if int(round_number) == 1:
+                        self.round += 1
+                        player.play_flop = True
+                        print('player flop = True')
+                    if int(round_number) == 2:
+                        self.round += 1
+                        player.play_turn = True
+                        print('player turn = True')
+                    if int(round_number) == 3:
+                        self.round += 1
+                        player.play_river = True
+                        print('player river = True')
+                if button == 'raise':
+                    if int(round_number) == 0:
+                        self.round += 1
+                        player.money -= self.blind1
+                        player.play_preflop = True
+                        print('player preflop = True')
+                    if int(round_number) == 1:
+                        self.round += 1
+                        player.money -= self.blind1
+                        player.play_flop = True
+                        print('player flop = True')
+                    if int(round_number) == 2:
+                        self.round += 1
+                        player.money -= self.blind1
+                        player.play_turn = True
+                        print('player turn = True')
+                    if int(round_number) == 3:
+                        self.round += 1
+                        player.money -= self.blind1
                         player.play_river = True
                         print('player river = True')
 
@@ -74,17 +114,15 @@ class Game:
                 player.hand.append(self.deck.pop())
 
     def blind(self) -> tuple:
-        blind1 = 100
-        blind2 = 200
         if not self.start_blind:
             p1 = self.list_players[0]
             p2 = self.list_players[1]
-            p1.money -= blind1
-            p2.money -= blind2
-            self.table_money += (blind1 + blind2)
+            p1.money -= self.blind1
+            p2.money -= self.blind2
+            self.table_money += (self.blind1 + self.blind2)
             self.start_blind = True
-            return blind1, blind2
-        return blind1, blind2
+            return self.blind1, self.blind2
+        return self.blind1, self.blind2
 
     def preflop(self) -> None:
         if not self.start_preflop:

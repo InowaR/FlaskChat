@@ -202,7 +202,6 @@ def play_game(game_id: str):
         group_round = poker.check_group_round(game_id)
         print('Групповой раунд: ', end='')
         print(group_round)
-
         check_player_buttons = poker.check_player_buttons(game_id, __login)
         print('Кнопки игрока: ', end='')
         print(check_player_buttons)
@@ -223,13 +222,25 @@ def play_game(game_id: str):
             else:
                 return render_template("game.html", game_id=game_id, login=__login,
                                        player1=player1, player2=player2, player_round=0, table_cards=flop_cards)
-
-        # if 0 <= group_round < 2:
-
-        # b1, b2 = poker.preflop(game_id)
-        # flop_cards = poker.flop(game_id)
-        # turn_cards = poker.turn(game_id)
-        # river_cards = poker.river(game_id)
+        if 4 <= group_round < 6:
+            turn_cards = poker.turn(game_id)
+            if check_player_buttons[2]:
+                return render_template("game.html", game_id=game_id, login=__login,
+                                       player1=player1, player2=player2, player_round=1, table_cards=turn_cards)
+            else:
+                return render_template("game.html", game_id=game_id, login=__login,
+                                       player1=player1, player2=player2, player_round=0, table_cards=turn_cards)
+        if 6 <= group_round < 8:
+            river_cards = poker.river(game_id)
+            if check_player_buttons[1]:
+                return render_template("game.html", game_id=game_id, login=__login,
+                                       player1=player1, player2=player2, player_round=1, table_cards=river_cards)
+            else:
+                return render_template("game.html", game_id=game_id, login=__login,
+                                       player1=player1, player2=player2, player_round=0, table_cards=river_cards)
+        if group_round >= 8:
+            return render_template("game.html", game_id=game_id, login=__login,
+                                   player1=player1, player2=player2, player_round=1)
 
 
 @socketio.on("get_button")

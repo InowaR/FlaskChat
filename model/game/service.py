@@ -41,7 +41,7 @@ class Service:
                 p1, p2 = _
                 player1 = Player(p1)
                 player2 = Player(p2)
-                game = Game()
+                game = Game(100, 200)
                 game.add_player(player1)
                 game.add_player(player2)
                 self.list_playing_games.append(game)
