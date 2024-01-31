@@ -27,60 +27,60 @@ class Game:
         for player in self.list_players:
             if player.name == player_name:
                 if button == 'fold':
-                    if int(round_number) == 0:
+                    if round_number == '0':
                         self.round += 1
                         player.play_preflop = True
-                        print('player preflop = True')
-                    if int(round_number) == 1:
+                        print(f'{player.name} preflop = True')
+                    elif round_number == '1':
                         self.round += 1
                         player.play_flop = True
-                        print('player flop = True')
-                    if int(round_number) == 2:
+                        print(f'{player.name} flop = True')
+                    elif round_number == '2':
                         self.round += 1
                         player.play_turn = True
-                        print('player turn = True')
-                    if int(round_number) == 3:
+                        print(f'{player.name} turn = True')
+                    elif round_number == '3':
                         self.round += 1
                         player.play_river = True
-                        print('player river = True')
-                if button == 'check':
-                    if int(round_number) == 0:
+                        print(f'{player.name} river = True')
+                elif button == 'check':
+                    if round_number == '0':
                         self.round += 1
                         player.play_preflop = True
-                        print('player preflop = True')
-                    if int(round_number) == 1:
+                        print(f'{player.name} preflop = True')
+                    elif round_number == '1':
                         self.round += 1
                         player.play_flop = True
-                        print('player flop = True')
-                    if int(round_number) == 2:
+                        print(f'{player.name} flop = True')
+                    elif round_number == '2':
                         self.round += 1
                         player.play_turn = True
-                        print('player turn = True')
-                    if int(round_number) == 3:
+                        print(f'{player.name} turn = True')
+                    elif round_number == '3':
                         self.round += 1
                         player.play_river = True
-                        print('player river = True')
-                if button == 'raise':
-                    if int(round_number) == 0:
+                        print(f'{player.name} river = True')
+                elif button == 'raise':
+                    if round_number == '0':
                         self.round += 1
-                        player.money -= self.blind1
+                        player.money -= 300
                         player.play_preflop = True
-                        print('player preflop = True')
-                    if int(round_number) == 1:
+                        print(f'{player.name} preflop = True')
+                    elif round_number == '1':
                         self.round += 1
-                        player.money -= self.blind1
+                        player.money -= 300
                         player.play_flop = True
-                        print('player flop = True')
-                    if int(round_number) == 2:
+                        print(f'{player.name} flop = True')
+                    elif round_number == '2':
                         self.round += 1
-                        player.money -= self.blind1
+                        player.money -= 300
                         player.play_turn = True
-                        print('player turn = True')
-                    if int(round_number) == 3:
+                        print(f'{player.name} turn = True')
+                    elif round_number == '3':
                         self.round += 1
-                        player.money -= self.blind1
+                        player.money -= 300
                         player.play_river = True
-                        print('player river = True')
+                        print(f'{player.name} river = True')
 
     def check_player_buttons(self, player_name: str) -> tuple:
         for player in self.list_players:

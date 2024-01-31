@@ -16,6 +16,7 @@
                 <h2 id="login">{{ login }}</h2>
                 <h2 id="game_id">{{ game_id }}</h2>
                 <h2 id="player_round">{{ player_round }}</h2>
+                <h2 id="buttons">{{ buttons }}</h2>
             </div>
         </div>
         <div class="area">
@@ -39,6 +40,7 @@
             const login = $("#login").html();
             const game_id = $("#game_id").html();
             const player_round = $("#player_round").html();
+            const buttons = $("#buttons").html();
             const table_cards = $("#table_cards").html();
 
             const fold_button = document.getElementById("fold");
@@ -52,13 +54,12 @@
                 raise_button.disabled = true;
             }
 
-
             $(document).ready(() => {
                 if (game_id == 'False') {
                     off();
                 }
 
-                if (player_round == 1) {
+                if (buttons == 1) {
                     off();
                 }
 
@@ -76,21 +77,22 @@
                 });
             });
 
-<!--            $(function() {-->
-<!--                $(".check").click(function() {-->
-<!--                    off();-->
-<!--                    let tuple = [game_id, login, 'fold', player_round];-->
-<!--                    socket.emit("get_button", tuple);-->
-<!--                });-->
-<!--            });-->
+            $(function() {
+                $(".check").click(function() {
+                    off();
+                    let tuple = [game_id, login, 'check', player_round];
+                    socket.emit("get_button", tuple);
+                });
+            });
 
-<!--            $(function() {-->
-<!--                $(".raise").click(function() {-->
-<!--                    off();-->
-<!--                    let tuple = [game_id, login, 'fold', player_round];-->
-<!--                    socket.emit("get_button", tuple);-->
-<!--                });-->
-<!--            });-->
+            $(function() {
+                $(".raise").click(function() {
+                    off();
+                    let tuple = [game_id, login, 'raise', player_round];
+                    socket.emit("get_button", tuple);
+                });
+            });
+
 <!--            -->
 <!--            socket.on("buttons", function(data) {-->
 <!--                message.html(data);-->
