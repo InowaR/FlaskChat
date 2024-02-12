@@ -210,6 +210,7 @@ def play_game(game_id: str):
         if 0 <= group_round < 2:
             b1, b2 = poker.blind(game_id)
             poker.preflop(game_id)
+            print(poker.check_winner(game_id))
             if preflop_status:
                 return render_template("game.html", game_id=game_id, login=__login,
                                        b1=b1, b2=b2, player1=player1, player2=player2,
@@ -220,6 +221,7 @@ def play_game(game_id: str):
                                        player_round=0, buttons=0, no_raise=no_raise, table_money=table_money)
         if 2 <= group_round < 4:
             flop_cards = poker.flop(game_id)
+            print(poker.check_winner(game_id))
             if flop_status:
                 return render_template("game.html", game_id=game_id, login=__login,
                                        player1=player1, player2=player2, player_round=1, buttons=1,
@@ -230,6 +232,7 @@ def play_game(game_id: str):
                                        table_cards=flop_cards, no_raise=no_raise, table_money=table_money)
         if 4 <= group_round < 6:
             turn_cards = poker.turn(game_id)
+            print(poker.check_winner(game_id))
             if turn_status:
                 return render_template("game.html", game_id=game_id, login=__login,
                                        player1=player1, player2=player2, player_round=2, buttons=1,
@@ -240,6 +243,7 @@ def play_game(game_id: str):
                                        table_cards=turn_cards, no_raise=no_raise, table_money=table_money)
         if 6 <= group_round < 8:
             river_cards = poker.river(game_id)
+            print(poker.check_winner(game_id))
             if river_status:
                 return render_template("game.html", game_id=game_id, login=__login,
                                        player1=player1, player2=player2, player_round=3, buttons=1,
@@ -249,6 +253,7 @@ def play_game(game_id: str):
                                        player1=player1, player2=player2, player_round=3, buttons=0,
                                        table_cards=river_cards, no_raise=no_raise, table_money=table_money)
         if group_round >= 8:
+            print(poker.check_winner(game_id))
             return render_template("game.html", game_id=game_id, login=__login,
                                    player1=player1, player2=player2, buttons=1, table_money=table_money)
 

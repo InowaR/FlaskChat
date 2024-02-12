@@ -1,5 +1,6 @@
 import random
 
+from model.game.card_combinations import check_combinations
 from model.game.player import Player
 
 
@@ -117,11 +118,8 @@ class Game:
             for _ in range(2):
                 player.hand.append(self.deck.pop())
 
-    def check_winner(self):
-        winner = None
-
-        for player in self.list_players:
-            print(player.name, player.hand)
+    def check_winner(self) -> str:
+        return check_combinations(self.list_players)
 
     def blind(self) -> tuple:
         if not self.start_blind:
