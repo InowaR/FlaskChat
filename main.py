@@ -209,8 +209,6 @@ def play_game(game_id: str):
         table_money = poker.show_table_money(game_id)
         group_round = poker.check_group_round(game_id)
         preflop_status, flop_status, turn_status, river_status = poker.check_player_buttons(game_id, __login)
-        print(f'Групповой раунд {group_round}')
-        print(f'Флаги игрока {preflop_status, flop_status, turn_status, river_status}')
         if 0 <= group_round < 2:
             b1, b2 = poker.blind(game_id)
             poker.preflop(game_id)
@@ -221,7 +219,8 @@ def play_game(game_id: str):
             else:
                 return render_template("game.html", game_id=game_id, login=__login,
                                        b1=b1, b2=b2, player1=player1, player2=player2,
-                                       player_round=0, buttons=0, no_raise=no_raise, table_money=table_money)
+                                       player_round=0, buttons=0, no_raise=no_raise,
+                                       message='Игра началась', table_money=table_money)
         if 2 <= group_round < 4:
             flop_cards = poker.flop(game_id)
             if flop_status:
@@ -262,7 +261,6 @@ def get_button(message: str):
     game_id, player_name, button, player_round = message
     if poker.find_game_by_id(game_id):
         poker.press_button(game_id, player_name, button, player_round)
-    print(player_name, button, player_round)
 
 
 if __name__ == '__main__':

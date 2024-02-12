@@ -38,7 +38,7 @@
         </div>
         <script>
             const socket = io();
-            const message = $("#mes");
+<!--            const message = $("#mes");-->
             const login = $("#login").html();
             const game_id = $("#game_id").html();
             const player_round = $("#player_round").html();
@@ -70,9 +70,14 @@
                     raise_button.disabled = true;
                 }
 
-                setInterval(() => {
-                    location.reload();
-                }, 5000);
+                $(document).ready(() => {
+                    const message = $("#mes").html();
+                    setInterval(() => {
+                        if (message != "Игра окончена") {
+                            location.reload();
+                        }
+                    }, 5000);
+                });
             });
 
             $(function() {
@@ -99,21 +104,20 @@
                 });
             });
 
-<!--            -->
-<!--            socket.on("buttons", function(data) {-->
-<!--                message.html(data);-->
-<!--            })-->
-<!--            -->
+
+            socket.on("buttons", function(data) {
+                message.html(data);
+            })
 
 
-<!--            $(".logo").click(function() {-->
-<!--                let answer = confirm("Вы действительно хотите покинуть игру?");-->
-<!--                if (answer) {-->
-<!--                    $(this).closest("form").submit();-->
-<!--                } else {-->
-<!--                    event.preventDefault();-->
-<!--                }-->
-<!--            });-->
+            $(".logo").click(function() {
+                let answer = confirm("Вы действительно хотите покинуть игру?");
+                if (answer) {
+                    $(this).closest("form").submit();
+                } else {
+                    event.preventDefault();
+                }
+            });
 
 <!--            $(document).ready(() => {-->
 <!--                const tag = $("#mes");-->
@@ -125,12 +129,12 @@
 <!--                }, 3000);-->
 <!--            });-->
 
-<!--            $(document).ready(() => {-->
-<!--                setTimeout(() => {-->
-<!--                    const tag = $("#mes");-->
-<!--                    tag.html("");-->
-<!--                }, 4000);-->
-<!--            });-->
+            $(document).ready(() => {
+                setTimeout(() => {
+                    const tag = $("#mes");
+                    tag.html("");
+                }, 3000);
+            });
         </script>
     </body>
 </html>
