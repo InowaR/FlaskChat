@@ -20,6 +20,7 @@ class Game:
         self.round = 0
         self.blind1 = blind1
         self.blind2 = blind2
+        self.end_game = False
 
     def check_group_round(self) -> int:
         return self.round
@@ -36,19 +37,11 @@ class Game:
     def press_button(self, player_name: str, button: str, player_round: str) -> None:
         for player in self.list_players:
             if player.name == player_name:
-                if button == 'fold':
-                    if player_round == '0':
-                        self.round += 1
-                        player.play_preflop = True
-                    elif player_round == '1':
-                        self.round += 1
-                        player.play_flop = True
-                    elif player_round == '2':
-                        self.round += 1
-                        player.play_turn = True
-                    elif player_round == '3':
-                        self.round += 1
-                        player.play_river = True
+                if self.check_player_money(player_name):
+                    self.end_game = True
+                elif button == 'fold':
+                    self.drop_cards(player_name)
+                    self.new_deal(self.blind1, self.blind2)
                 elif button == 'check':
                     if player_round == '0':
                         self.round += 1
@@ -62,6 +55,9 @@ class Game:
                     elif player_round == '3':
                         self.round += 1
                         player.play_river = True
+                    elif player_round == '4':
+                        self.check_winner()
+                        self.new_deal(self.blind1, self.blind2)
                 elif button == 'raise':
                     if player_round == '0':
                         self.round += 1
@@ -83,6 +79,9 @@ class Game:
                         player.money -= 300
                         self.table_money += 300
                         player.play_river = True
+                    elif player_round == '4':
+                        self.check_winner()
+                        self.new_deal(self.blind1, self.blind2)
 
     def check_player_buttons(self, player_name: str) -> tuple:
         for player in self.list_players:
@@ -118,8 +117,18 @@ class Game:
             for _ in range(2):
                 player.hand.append(self.deck.pop())
 
-    def check_winner(self) -> str:
-        return check_combinations(self.list_players)
+    def check_winner(self):
+        winner = check_combinations(self.list_players)
+        for player in self.list_players:
+            if player.name == winner:
+                player.money += self.table_money
+                self.table_money = 0
+
+    def drop_cards(self, player_name: str):
+        for player in self.list_players:
+            if player.name != player_name:
+                player.money += self.table_money
+                self.table_money = 0
 
     def blind(self) -> tuple:
         if not self.start_blind:
@@ -161,3 +170,25 @@ class Game:
             self.start_river = True
             return self.table_cards
         return self.table_cards
+
+    def new_deal(self, blind1: int, blind2: int):
+        self.start_blind = False
+        self.start_preflop = False
+        self.start_flop = False
+        self.start_turn = False
+        self.start_river = False
+        self.deck = []
+        self.table_cards = []
+        self.table_money = 0
+        self.round = 0
+        self.blind1 = blind1
+        self.blind2 = blind2
+        for player in self.list_players:
+            player.hand = []
+            player.play_preflop = False
+            player.play_flop = False
+            player.play_turn = False
+            player.play_river = False
+
+    def check_end_game(self):
+        return self.end_game

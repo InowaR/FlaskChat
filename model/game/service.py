@@ -108,3 +108,9 @@ class Service:
         for game in self.list_playing_games:
             if game.game_id == int(game_id):
                 return game.river()
+
+    def check_end_game(self, game_id: str):
+        for game in self.list_playing_games:
+            if game.game_id == int(game_id):
+                return game.check_end_game()
+
