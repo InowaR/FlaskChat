@@ -23,6 +23,15 @@ class Game:
     def check_group_round(self) -> int:
         return self.round
 
+    def check_player_money(self, player_name: str) -> bool:
+        for player in self.list_players:
+            if player.name == player_name:
+                print(f'Игрок {player.name} - Деньги {player.money}')
+                if player.money < 300:
+                    return True
+                else:
+                    return False
+
     def press_button(self, player_name: str, button: str, player_round: str) -> None:
         for player in self.list_players:
             if player.name == player_name:
@@ -56,18 +65,22 @@ class Game:
                     if player_round == '0':
                         self.round += 1
                         player.money -= 300
+                        self.table_money += 300
                         player.play_preflop = True
                     elif player_round == '1':
                         self.round += 1
                         player.money -= 300
+                        self.table_money += 300
                         player.play_flop = True
                     elif player_round == '2':
                         self.round += 1
                         player.money -= 300
+                        self.table_money += 300
                         player.play_turn = True
                     elif player_round == '3':
                         self.round += 1
                         player.money -= 300
+                        self.table_money += 300
                         player.play_river = True
 
     def check_player_buttons(self, player_name: str) -> tuple:
@@ -83,6 +96,9 @@ class Game:
 
     def show_table_cards(self) -> list:
         return self.table_cards
+
+    def show_table_money(self) -> int:
+        return self.table_money
 
     def add_player(self, player: Player) -> None:
         self.list_players.append(player)
@@ -100,6 +116,12 @@ class Game:
             player.hand = []
             for _ in range(2):
                 player.hand.append(self.deck.pop())
+
+    def check_winner(self):
+        winner = None
+
+        for player in self.list_players:
+            print(player.name, player.hand)
 
     def blind(self) -> tuple:
         if not self.start_blind:

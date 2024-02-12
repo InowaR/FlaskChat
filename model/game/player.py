@@ -1,7 +1,7 @@
 class Player:
     def __init__(self, name: str):
         self.name = name
-        self.money = 1000
+        self.money = 100
         self.hand = []
         self.play_preflop = False
         self.play_flop = False

@@ -17,6 +17,7 @@
                 <h2 id="game_id">{{ game_id }}</h2>
                 <h2 id="player_round">{{ player_round }}</h2>
                 <h2 id="buttons">{{ buttons }}</h2>
+                <h2 id="no_raise">{{ no_raise }}</h2>
             </div>
         </div>
         <div class="area">
@@ -25,6 +26,7 @@
                 <h2>{{ bet2 }}</h2>
                 <h2 id="mes" class="message">{{ message }}</h2>
                 <h2 id="table_cards">{{ table_cards }}</h2>
+                <h2 id="table_money">{{ table_money }}</h2>
                 <h2>{{ bet1 }}</h2>
             </div>
             <div class="buttons">
@@ -41,7 +43,8 @@
             const game_id = $("#game_id").html();
             const player_round = $("#player_round").html();
             const buttons = $("#buttons").html();
-            const table_cards = $("#table_cards").html();
+            const no_raise = $("#no_raise").html();
+<!--            const table_money = $("#table_money").html();-->
 
             const fold_button = document.getElementById("fold");
             const check_button = document.getElementById("check");
@@ -61,6 +64,10 @@
 
                 if (buttons == 1) {
                     off();
+                }
+
+                if (no_raise == 1) {
+                    raise_button.disabled = true;
                 }
 
                 setInterval(() => {

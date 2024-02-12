@@ -13,11 +13,21 @@ class Service:
             if game.game_id == int(game_id):
                 return game.show_players()
 
-    def check_players(self, player_name) -> bool:
+    def show_table_money(self, game_id: str):
+        for game in self.list_playing_games:
+            if game.game_id == int(game_id):
+                return game.show_table_money()
+
+    def check_players(self, player_name: str) -> bool:
         for name in self.list_players:
             if name == player_name:
                 return True
         return False
+
+    def check_player_money(self, game_id: str, player_name: str) -> bool:
+        for game in self.list_playing_games:
+            if game.game_id == int(game_id):
+                return game.check_player_money(player_name)
 
     def add_new_player(self, player_name: str) -> None:
         self.list_players.append(player_name)
