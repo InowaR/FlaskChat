@@ -38,13 +38,11 @@
         </div>
         <script>
             const socket = io();
-<!--            const message = $("#mes");-->
             const login = $("#login").html();
             const game_id = $("#game_id").html();
             const player_round = $("#player_round").html();
             const buttons = $("#buttons").html();
             const no_raise = $("#no_raise").html();
-<!--            const table_money = $("#table_money").html();-->
 
             const fold_button = document.getElementById("fold");
             const check_button = document.getElementById("check");
@@ -117,23 +115,6 @@
                 } else {
                     event.preventDefault();
                 }
-            });
-
-<!--            $(document).ready(() => {-->
-<!--                const tag = $("#mes");-->
-<!--                setInterval(() => {-->
-<!--                    const content = tag.html();-->
-<!--                    if (content === "Ожидайте игру") {-->
-<!--                        location.reload();-->
-<!--                    }-->
-<!--                }, 3000);-->
-<!--            });-->
-
-            $(document).ready(() => {
-                setTimeout(() => {
-                    const tag = $("#mes");
-                    tag.html("");
-                }, 3000);
             });
         </script>
     </body>

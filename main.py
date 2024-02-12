@@ -199,6 +199,10 @@ def play_game(game_id: str):
         if player[0] != __login:
             player2 = player
     if poker.find_game_by_id(game_id):
+        time_now = datetime.datetime.now()
+        time_start_game = poker.get_time_game_start(game_id)
+        delta = time_now - time_start_game
+        print(delta.total_seconds() > 3)
         if poker.check_end_game(game_id):
             return render_template("game.html", game_id=game_id, login=__login,
                                    player1=player1, player2=player2, buttons=1, message='Игра окончена')
@@ -219,8 +223,7 @@ def play_game(game_id: str):
             else:
                 return render_template("game.html", game_id=game_id, login=__login,
                                        b1=b1, b2=b2, player1=player1, player2=player2,
-                                       player_round=0, buttons=0, no_raise=no_raise,
-                                       message='Игра началась', table_money=table_money)
+                                       player_round=0, buttons=0, no_raise=no_raise, table_money=table_money)
         if 2 <= group_round < 4:
             flop_cards = poker.flop(game_id)
             if flop_status:

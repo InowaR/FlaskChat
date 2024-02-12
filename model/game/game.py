@@ -1,3 +1,4 @@
+import datetime
 import random
 
 from model.game.card_combinations import check_combinations
@@ -8,6 +9,7 @@ class Game:
     def __init__(self, blind1: int, blind2: int):
         # self.game_id = random.randint(1, 10)
         self.game_id = 1
+        self.time_start = datetime.datetime.now()
         self.start_blind = False
         self.start_preflop = False
         self.start_flop = False
@@ -21,6 +23,9 @@ class Game:
         self.blind1 = blind1
         self.blind2 = blind2
         self.end_game = False
+
+    def get_time_game_start(self):
+        return self.time_start
 
     def check_group_round(self) -> int:
         return self.round
