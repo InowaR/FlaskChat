@@ -199,10 +199,10 @@ def play_game(game_id: str):
         if player[0] != __login:
             player2 = player
     if poker.find_game_by_id(game_id):
-        # if poker.check_player_money(game_id, player1):
-        #     no_raise = 1
-        # else:
-        no_raise = 1
+        if poker.check_player_money(game_id, __login):
+            no_raise = 1
+        else:
+            no_raise = 0
         print(f'no_raise = {no_raise}')
         table_money = poker.show_table_money(game_id)
         group_round = poker.check_group_round(game_id)
