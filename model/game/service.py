@@ -79,10 +79,11 @@ class Service:
             if game.game_id == int(game_id):
                 return game.check_player_buttons(player_name)
 
-    def check_winner(self, game_id: str) -> str:
+    def new_deal(self, game_id: str):
         for game in self.list_playing_games:
             if game.game_id == int(game_id):
-                return game.check_winner()
+                game.check_winner()
+                game.new_deal()
 
     def blind(self, game_id: str) -> tuple:
         for game in self.list_playing_games:
@@ -118,3 +119,11 @@ class Service:
         for game in self.list_playing_games:
             if game.game_id == int(game_id):
                 return game.get_time_game_start()
+
+    def delete_game(self, game_id: str) -> None:
+        for game in self.list_playing_games:
+            print(f'Все игры {game.game_id}')
+            if game.game_id == int(game_id):
+                print(f'Удалена {game.game_id}')
+                self.list_playing_games.remove(game)
+
