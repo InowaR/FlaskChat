@@ -63,6 +63,12 @@ class Service:
         for game in self.list_playing_games:
             if game.game_id == int(game_id):
                 return True
+            
+    def redirect_to_the_game(self, player_name: str) -> int:
+        for game in self.list_playing_games:
+            if player_name in game.list_players:
+                print(22222222222222222222222)
+                return game.game_id
 
     def check_group_round(self, game_id: str) -> int:
         for game in self.list_playing_games:

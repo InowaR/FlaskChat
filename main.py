@@ -182,6 +182,9 @@ def check_game():
     if not check:
         poker.add_new_player(__login)
     game_id = poker.add_new_playing_game()
+    # fin = poker.redirect_to_the_game(__login)
+    print(game_id)
+    print(poker.show_players(game_id))
     if not game_id:
         return render_template("game.html", game_id=False, message='Ожидайте игру')
     else:
@@ -260,7 +263,7 @@ def play_game(game_id: str):
         if group_round >= 8:
             poker.new_deal(game_id)
             return render_template("game.html", game_id=game_id, login=__login,
-                                   player1=player1, player2=player2, player_round=4, buttons=1, table_money=table_money)
+                                   player1=player1, player2=player2, buttons=1, table_money=table_money)
 
 
 @socketio.on("get_button")
@@ -268,7 +271,7 @@ def get_button(message: str):
     game_id, player_name, button, player_round = message
     if poker.find_game_by_id(game_id):
         poker.press_button(game_id, player_name, button, player_round)
-        print(game_id, player_name, button, player_round)
+        # print(game_id, player_name, button, player_round)
 
 
 if __name__ == '__main__':
