@@ -8,12 +8,6 @@ deck = {
 }
 
 
-# player1_hand = ['♠4', '♣K']
-# player2_hand = ['♦K', '♥A']
-#
-# print(deck['spades'])
-#
-#
 def highest_card(dict_players_cards: dict) -> str:
     print(dict_players_cards)
     d = {}
@@ -33,18 +27,6 @@ def highest_card(dict_players_cards: dict) -> str:
         return max_keys[0]
 
 
-# list_players = []
-#
-# player1 = Player('Alex')
-# player2 = Player('Maria')
-#
-# player1.hand = ['♠5', '♣2']
-# player2.hand = ['♦4', '♥2']
-#
-# list_players.append(player1)
-# list_players.append(player2)
-#
-
 def check_combinations(list_p: list[Player]) -> str:
     dict_players_cards = {}
     for player in list_p:
@@ -62,5 +44,3 @@ def check_combinations(list_p: list[Player]) -> str:
                 dict_players_cards[player.name]['hand'].append(int(card[1]))
 
     return highest_card(dict_players_cards)
-
-

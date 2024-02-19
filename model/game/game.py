@@ -33,7 +33,6 @@ class Game:
     def check_player_money(self, player_name: str) -> bool:
         for player in self.list_players:
             if player.name == player_name:
-                # print(f'Игрок {player.name} - Деньги {player.money}')
                 if player.money < 300:
                     return True
                 else:

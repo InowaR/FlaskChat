@@ -7,6 +7,7 @@ class Service:
         self.list_players = []
         self.list_games = []
         self.list_playing_games = []
+        self.list_old_games = []
 
     def show_players(self, game_id: str) -> list:
         for game in self.list_playing_games:
@@ -69,9 +70,6 @@ class Service:
             for player in game.list_players:
                 if player.name == player_name:
                     return game.game_id
-            # if player_name in game.list_players:
-            #     print(22222222222222222222222)
-            #     return game.game_id
 
     def check_group_round(self, game_id: str) -> int:
         for game in self.list_playing_games:
@@ -131,8 +129,14 @@ class Service:
 
     def delete_game(self, game_id: str) -> None:
         for game in self.list_playing_games:
-            print(f'Все игры {game.game_id}')
             if game.game_id == int(game_id):
                 print(f'Удалена {game.game_id}')
-                self.list_playing_games.remove(game)
+                self.list_old_games.append(game)
+
+    def save_old_poker_games(self):
+        with open('poker_data', 'a') as f:
+            for game in self.list_old_games:
+                f.write(game)
+                self.list_old_games.remove(game)
+
 

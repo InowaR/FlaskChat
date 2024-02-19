@@ -12,6 +12,8 @@ socketio = SocketIO(app)
 
 poker = Service()
 
+def save_old_poker_games():
+    poker.save_old_poker_games()
 
 @app.route('/', methods=['GET'])
 def get_list_chats():
@@ -184,13 +186,7 @@ def check_game():
     game_id = poker.add_new_playing_game()
     find_new_game_id = poker.redirect_to_the_game(__login)
     if find_new_game_id:
-        print(type(find_new_game_id))
-        print(f'Найдена игра {find_new_game_id}')
         return redirect(url_for('play_game', game_id=find_new_game_id))
-    # print(fin)
-    print('Игра не найдена')
-    # print(game_id)
-    # print(poker.show_players(game_id))
     if not game_id:
         return render_template("game.html", game_id=False, message='Ожидайте игру')
     else:
@@ -211,12 +207,9 @@ def play_game(game_id: str):
         time_now = datetime.datetime.now()
         time_start_game = poker.get_time_game_start(game_id)
         delta = time_now - time_start_game
-        # print(delta.total_seconds() > 3)
+        print(delta.total_seconds())
         if poker.check_end_game(game_id):
-            print('игра окончена')
-            # poker.delete_game(game_id)
-            # for p in poker.list_playing_games:
-            #     print(p.game_id)
+            poker.delete_game(game_id)
             return render_template("game.html", game_id=game_id, login=__login,
                                    player1=player1, player2=player2, buttons=1, message='Игра окончена')
         if poker.check_player_money(game_id, __login):
@@ -278,7 +271,6 @@ def get_button(message: str):
     game_id, player_name, button, player_round = message
     if poker.find_game_by_id(game_id):
         poker.press_button(game_id, player_name, button, player_round)
-        # print(game_id, player_name, button, player_round)
 
 
 if __name__ == '__main__':
