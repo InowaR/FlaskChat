@@ -64,7 +64,7 @@ class Service:
         for game in self.list_playing_games:
             if game.game_id == int(game_id):
                 return True
-            
+
     def redirect_to_the_game(self, player_name: str) -> int:
         for game in self.list_playing_games:
             for player in game.list_players:
@@ -127,6 +127,15 @@ class Service:
             if game.game_id == int(game_id):
                 return game.get_time_game_start()
 
+    def set_time_game_start(self, game_id: str):
+        for game in self.list_playing_games:
+            if game.game_id == int(game_id):
+                return game.set_time_game_start()
+    def time_is_over(self, game_id: str, player_name: str, player_round: str):
+        for game in self.list_playing_games:
+            if game.game_id == int(game_id):
+                game.press_button(player_name, 'fold', player_round)
+
     def delete_game(self, game_id: str) -> None:
         for game in self.list_playing_games:
             if game.game_id == int(game_id):
@@ -138,5 +147,3 @@ class Service:
             for game in self.list_old_games:
                 f.write(game)
                 self.list_old_games.remove(game)
-
-

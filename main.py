@@ -207,7 +207,6 @@ def play_game(game_id: str):
         time_now = datetime.datetime.now()
         time_start_game = poker.get_time_game_start(game_id)
         delta = time_now - time_start_game
-        print(delta.total_seconds())
         if poker.check_end_game(game_id):
             poker.delete_game(game_id)
             return render_template("game.html", game_id=game_id, login=__login,
@@ -227,6 +226,8 @@ def play_game(game_id: str):
                                        b1=b1, b2=b2, player1=player1, player2=player2,
                                        player_round=0, buttons=1, table_money=table_money)
             else:
+                if 10 < delta.total_seconds() <= 20:
+                    poker.press_button(game_id, __login, 'check', '0')
                 return render_template("game.html", game_id=game_id, login=__login,
                                        b1=b1, b2=b2, player1=player1, player2=player2,
                                        player_round=0, buttons=0, no_raise=no_raise, table_money=table_money)
@@ -237,6 +238,8 @@ def play_game(game_id: str):
                                        player1=player1, player2=player2, player_round=1, buttons=1,
                                        table_cards=flop_cards, table_money=table_money)
             else:
+                if 20 < delta.total_seconds() <= 30:
+                    poker.press_button(game_id, __login, 'check', '1')
                 return render_template("game.html", game_id=game_id, login=__login,
                                        player1=player1, player2=player2, player_round=1, buttons=0,
                                        table_cards=flop_cards, no_raise=no_raise, table_money=table_money)
@@ -247,6 +250,8 @@ def play_game(game_id: str):
                                        player1=player1, player2=player2, player_round=2, buttons=1,
                                        table_cards=turn_cards, table_money=table_money)
             else:
+                if 30 < delta.total_seconds() <= 40:
+                    poker.press_button(game_id, __login, 'check', '2')
                 return render_template("game.html", game_id=game_id, login=__login,
                                        player1=player1, player2=player2, player_round=2, buttons=0,
                                        table_cards=turn_cards, no_raise=no_raise, table_money=table_money)
@@ -257,10 +262,13 @@ def play_game(game_id: str):
                                        player1=player1, player2=player2, player_round=3, buttons=1,
                                        table_cards=river_cards, table_money=table_money)
             else:
+                if 40 < delta.total_seconds() <= 50:
+                    poker.press_button(game_id, __login, 'check', '3')
                 return render_template("game.html", game_id=game_id, login=__login,
                                        player1=player1, player2=player2, player_round=3, buttons=0,
                                        table_cards=river_cards, no_raise=no_raise, table_money=table_money)
         if group_round >= 8:
+            poker.set_time_game_start(game_id)
             poker.new_deal(game_id)
             return render_template("game.html", game_id=game_id, login=__login,
                                    player1=player1, player2=player2, buttons=1, table_money=table_money)

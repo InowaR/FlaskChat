@@ -27,6 +27,9 @@ class Game:
     def get_time_game_start(self):
         return self.time_start
 
+    def set_time_game_start(self):
+        self.time_start = datetime.datetime.now()
+
     def check_group_round(self) -> int:
         return self.round
 
