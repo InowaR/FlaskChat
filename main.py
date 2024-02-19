@@ -182,9 +182,15 @@ def check_game():
     if not check:
         poker.add_new_player(__login)
     game_id = poker.add_new_playing_game()
-    # fin = poker.redirect_to_the_game(__login)
-    print(game_id)
-    print(poker.show_players(game_id))
+    find_new_game_id = poker.redirect_to_the_game(__login)
+    if find_new_game_id:
+        print(type(find_new_game_id))
+        print(f'Найдена игра {find_new_game_id}')
+        return redirect(url_for('play_game', game_id=find_new_game_id))
+    # print(fin)
+    print('Игра не найдена')
+    # print(game_id)
+    # print(poker.show_players(game_id))
     if not game_id:
         return render_template("game.html", game_id=False, message='Ожидайте игру')
     else:
@@ -207,9 +213,10 @@ def play_game(game_id: str):
         delta = time_now - time_start_game
         # print(delta.total_seconds() > 3)
         if poker.check_end_game(game_id):
-            poker.delete_game(game_id)
-            for p in poker.list_playing_games:
-                print(p.game_id)
+            print('игра окончена')
+            # poker.delete_game(game_id)
+            # for p in poker.list_playing_games:
+            #     print(p.game_id)
             return render_template("game.html", game_id=game_id, login=__login,
                                    player1=player1, player2=player2, buttons=1, message='Игра окончена')
         if poker.check_player_money(game_id, __login):
