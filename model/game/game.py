@@ -120,10 +120,16 @@ class Game:
 
     def check_winner(self):
         winner = check_combinations(self.list_players)
-        for player in self.list_players:
-            if player.name == winner:
-                player.money += self.table_money
-                self.table_money = 0
+        if winner == 'Ничья':
+            money = self.table_money / 2
+            for player in self.list_players:
+                player.money += money
+            self.table_money = 0
+        else:
+            for player in self.list_players:
+                if player.name == winner:
+                    player.money += self.table_money
+                    self.table_money = 0
 
     def drop_cards(self, player_name: str):
         for player in self.list_players:

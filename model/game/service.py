@@ -131,6 +131,7 @@ class Service:
         for game in self.list_playing_games:
             if game.game_id == int(game_id):
                 return game.set_time_game_start()
+
     def time_is_over(self, game_id: str, player_name: str, player_round: str):
         for game in self.list_playing_games:
             if game.game_id == int(game_id):

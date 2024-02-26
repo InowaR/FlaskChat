@@ -42,5 +42,4 @@ def check_combinations(list_p: list[Player]) -> str:
                 dict_players_cards[player.name]['hand'].append(14)
             else:
                 dict_players_cards[player.name]['hand'].append(int(card[1]))
-
     return highest_card(dict_players_cards)
