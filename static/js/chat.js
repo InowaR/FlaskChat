@@ -13,6 +13,7 @@ document.getElementById("message").addEventListener("keyup", function(event) {
 socket.on("chat", function(data) {
     let ul = document.getElementById("chat_messages");
     let li = document.createElement("li");
+    li.setAttribute("style", "max-width: 500px; word-wrap: break-word;");
     li.appendChild(document.createTextNode(data["login"] + ": " + data["message"]));
     let jinjaNumber = document.getElementById("chat").getAttribute("data-login");
     if (data["login"] == jinjaNumber) {
