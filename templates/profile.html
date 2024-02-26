@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>Профиль</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     </head>
     <body class="body">
         <div class="header">
@@ -11,15 +12,16 @@
                 <input class="logo" type="submit" value="Главная">
             </form>
             <form action="{{ url_for('get_logout') }}" method="get">
-                <input type="submit" value="Выйти">
+                <input class="exit" type="submit" value="Выйти">
             </form>
         </div>
         <h3>Профиль пользователя {{ login }}</h3>
         <p>{{ message }}</p>
         <div class="profile">
-        <form action="{{ url_for('get_delete_user') }}" method="get">
-            <input type="submit" value="Удалить пользователя">
-        </form>
+            <form action="{{ url_for('get_delete_user') }}" method="get">
+                <input class="delete_user" type="submit" value="Удалить пользователя">
+            </form>
         </div>
+        <script src="{{ url_for('static', filename='js/alert_profile.js') }}"></script>
     </body>
 </html>
