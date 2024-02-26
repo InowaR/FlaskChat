@@ -142,3 +142,14 @@ a {
 a:visited {
     color: transparent;
 }
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+
+.profile-form input[type="submit"] {
+    width: 100px;
+    margin-top: 10px;
+}
