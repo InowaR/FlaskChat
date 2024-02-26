@@ -54,8 +54,18 @@
     background-color: #0D47A1;
 }
 
+.chat-input {
+    display: flex;
+    justify-content: center;
+}
+
+
 .input-button {
     width: 320px;
+}
+
+.chat-input-button {
+    width: 1230px;
 }
 
 .list-chats-body-area {
@@ -87,10 +97,15 @@
     overflow-y: scroll;
 }
 
+.chat-main {
+    display: flex;
+    justify-content: center;
+}
+
 .chat-area {
     background-color: #B0A2C2;
     height: 400px;
-    width: 300px;
+    width: 1200px;
     overflow-y: scroll;
 }
 

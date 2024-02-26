@@ -36,7 +36,7 @@ def find_chat(chatname: str):
             add_user_to_chat(__login, chatname)
     else:
         message = ""
-    emit("list_find_chats", message, broadcast=True)
+    emit("list_find_chats", message, broadcast=False)
 
 
 @socketio.on("add_new_chat")
@@ -48,7 +48,7 @@ def add_chat(chatname: str):
         message = "Создан новый чат"
     else:
         message = "Чат уже существует"
-    emit("add_new_chat", message, broadcast=True)
+    emit("add_new_chat", message, broadcast=False)
 
 
 @app.route('/add_new_chat', methods=['GET'])
