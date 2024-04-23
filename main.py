@@ -12,8 +12,10 @@ socketio = SocketIO(app)
 
 poker = Service()
 
+
 def save_old_poker_games():
     poker.save_old_poker_games()
+
 
 @app.route('/', methods=['GET'])
 def get_list_chats():
